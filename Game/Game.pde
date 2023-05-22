@@ -10,3 +10,7 @@ void draw() {
   chr.updatePos();
   chr.display();
 }
+
+void keyPressed() {
+  
+}
