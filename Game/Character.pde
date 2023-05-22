@@ -3,7 +3,7 @@ public class Character {
   
   public Character(PVector pos) {
     position = pos;
-    velocity = new PVector(0,0);
+    velocity = new PVector(0, 10);
   }
   
   public void updatePos() {
@@ -11,6 +11,6 @@ public class Character {
   }
   
   public void display() {
-    circle(position.x, position.y, 1.0);
+    circle(position.x, position.y, 50.0);
   }
 }
