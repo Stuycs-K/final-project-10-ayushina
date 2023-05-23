@@ -1,12 +1,12 @@
-public class Reimu {
-  private static float SPEED = 25;
+public class Reimu extends Character {
+  private static final float SPEED = 15.0;
   
-  public Reimu(PVector pos, PVector siz) {
+  public Reimu(PVector pos, float siz) {
     super(pos, siz, SPEED);
   }
  
   public void display() {
     ellipseMode(RADIUS);
-    circle(position.x, position.y, size);
+    circle(getPos().x, getPos().y, size);
   }
 }
