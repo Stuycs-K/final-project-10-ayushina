@@ -1,15 +1,19 @@
 public abstract class Character {
   PVector position, velocity;
   float size, moveSpeed;
+  int cooldown;
+  Bullet[] bullets;
   
-  public Character(PVector pos, float siz, float speed) {
+  public Character(PVector pos, float siz, float speed, int cd) {
     position = pos;
     velocity = new PVector(0, 0);
     size = siz;
     moveSpeed = speed;
+    cooldown = cd;
   }
   
   public abstract void display();
+  public abstract void updateAttack();
   
   public void updatePos() {
     position.add(velocity);

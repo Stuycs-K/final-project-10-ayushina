@@ -1,4 +1,5 @@
 Character chr;
+static int gameTime;
 
 boolean left, down, up, right;
 
@@ -7,7 +8,13 @@ void setup() {
   chr = new Reimu(new PVector(600,800), 20);
 }
 
+static int getTime() {
+  return gameTime;
+}
+
 void draw() {
+  gameTime = millis();
+  
   background(255);
   chr.updatePos();
   chr.display();
@@ -27,6 +34,8 @@ void draw() {
   }
   vel.normalize().mult(chr.moveSpeed);
   chr.setVelocity(vel);
+  
+  chr.updateAttack();
 }
 
 void keyPressed() {
