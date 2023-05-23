@@ -1,15 +1,18 @@
 public abstract class Character {
   PVector position, velocity;
   float size, moveSpeed;
-  int cooldown;
-  Bullet[] bullets;
   
-  public Character(PVector pos, float siz, float speed, int cd) {
+  int birth;
+  int lastAttack;
+  ArrayList<Bullet> bullets;
+  
+  public Character(PVector pos, float siz, float speed) {
     position = pos;
     velocity = new PVector(0, 0);
     size = siz;
     moveSpeed = speed;
-    cooldown = cd;
+    birth = millis();
+    bullets = new ArrayList<Bullet>();
   }
   
   public abstract void display();

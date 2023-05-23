@@ -1,5 +1,4 @@
 Character chr;
-static int gameTime;
 
 boolean left, down, up, right;
 
@@ -8,13 +7,7 @@ void setup() {
   chr = new Reimu(new PVector(600,800), 20);
 }
 
-static int getTime() {
-  return gameTime;
-}
-
-void draw() {
-  gameTime = millis();
-  
+void draw() {  
   background(255);
   chr.updatePos();
   chr.display();
