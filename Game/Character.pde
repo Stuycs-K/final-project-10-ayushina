@@ -2,15 +2,19 @@ public class Character {
   PVector position, velocity;
   float size;
   
-  public Character(PVector pos) {
+  public Character(PVector pos, float s) {
     position = pos;
-    velocity = new PVector(0, -10);
-    size = 20;
+    velocity = new PVector(0, 0);
+    size = s
   }
   
   public void updatePos() {
     position.add(velocity);
     stayOnScreen();
+  }
+  
+  public void setVelocity(PVector vel) {
+    velocity = vel;
   }
   
   public void display() {
