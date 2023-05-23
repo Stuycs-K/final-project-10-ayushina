@@ -1,10 +1,11 @@
 # Work Log
 
-## GROUP MEMBER 1
+## ARSLAN AYUSHIN
 
-### date x
+### 5/22/23
 
-info
+- Added Character and child of Character class
+- Movement with arrow keys and display
 
 ### date y
 
