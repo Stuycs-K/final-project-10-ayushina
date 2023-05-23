@@ -4,7 +4,7 @@ boolean left, down, up, right;
 
 void setup() {
   size(1200, 900);
-  chr = new Character(new PVector(600,800), 20);
+  chr = new Reimu(new PVector(600,800), 20);
 }
 
 void draw() {

@@ -1,26 +1,27 @@
-public class Character {
+public abstract class Character {
   PVector position, velocity;
   float size, moveSpeed;
   
-  public Character(PVector pos, float s) {
+  public Character(PVector pos, float siz, float speed) {
     position = pos;
     velocity = new PVector(0, 0);
-    size = s;
-    moveSpeed = 15;
+    size = siz;
+    moveSpeed = speed;
   }
+  
+  public abstract void display();
   
   public void updatePos() {
     position.add(velocity);
     stayOnScreen();
   }
   
-  public void setVelocity(PVector vel) {
-    velocity = vel;
+  public PVector getPos() {
+    return position;
   }
   
-  public void display() {
-    ellipseMode(RADIUS);
-    circle(position.x, position.y, size);
+  public void setVelocity(PVector vel) {
+    velocity = vel;
   }
   
   private void stayOnScreen() {
