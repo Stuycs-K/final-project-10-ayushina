@@ -1,11 +1,12 @@
 public class Character {
   PVector position, velocity;
-  float size;
+  float size, moveSpeed;
   
   public Character(PVector pos, float s) {
     position = pos;
     velocity = new PVector(0, 0);
-    size = s
+    size = s;
+    moveSpeed = 15;
   }
   
   public void updatePos() {

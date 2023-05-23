@@ -25,7 +25,7 @@ void draw() {
   if (right) {
     vel.add(new PVector(1, 0));
   }
-  vel.normalize();
+  vel.normalize().mult(chr.moveSpeed);
   chr.setVelocity(vel);
 }
 
