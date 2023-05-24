@@ -13,6 +13,10 @@ void draw() {
   background(255);
   chr.updatePos();
   chr.display();
+  for (Bullet b : bulletList) {
+    b.updatePos();
+    b.display();
+  }
   
   PVector vel = new PVector(0,0);
   if (left) {
@@ -31,9 +35,6 @@ void draw() {
   chr.setVelocity(vel);
   
   chr.updateAttack();
-  for (Bullet b : bulletList) {
-    b.updatePos();
-  }
 }
 
 void keyPressed() {

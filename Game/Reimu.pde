@@ -15,7 +15,7 @@ public class Reimu extends Character {
     if (millis() - lastAttack > COOLDOWN) {
       PVector bulletVel = new PVector(0, -10);
       float bulletSize = 20;
-      Game.addBullet(new Bullet(getPos(), bulletVel, bulletSize));
+      Game.addBullet(new Bullet(getPos().copy(), bulletVel, bulletSize));
       lastAttack = millis();
     }
   }
