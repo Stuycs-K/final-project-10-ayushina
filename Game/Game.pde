@@ -1,11 +1,12 @@
 Character chr;
-//ArrayList<Bullet> bulletList;
+static ArrayList<Bullet> bulletList;
 
 boolean left, down, up, right;
 
 void setup() {
   size(1200, 900);
   chr = new Reimu(new PVector(600,800), 20);
+  bulletList = new ArrayList<Bullet>();
 }
 
 void draw() {  
@@ -30,6 +31,9 @@ void draw() {
   chr.setVelocity(vel);
   
   chr.updateAttack();
+  for (Bullet b : bulletList) {
+    b.updatePos();
+  }
 }
 
 void keyPressed() {
@@ -64,4 +68,12 @@ void keyReleased() {
       right = false;
     }
   }
+}
+
+static void addBullet(Bullet b) {
+  bulletList.add(b);
+}
+
+static boolean removeBullet(Bullet b) {
+  return bulletList.remove(b);
 }

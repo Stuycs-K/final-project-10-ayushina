@@ -1,24 +1,16 @@
-public class Bullet {
-  PVector position, velocity;
-  float size;
+public class Bullet extends Mob {
   
   public Bullet() {
-    position = new PVector(0, 0);
-    velocity = new PVector(0, 0);
-    size = 50;
+    super(new PVector(0, 0), 10);
   }
   
   public Bullet(PVector pos, PVector vel, float siz) {
-    position = pos;
-    velocity = vel;
-    size = siz;
-  }
-  
-  public void updatePos() {
-    position.add(velocity);
+    super(pos, siz);
+    setVelocity(vel);
   }
   
   public void display() {
-    
+    ellipseMode(RADIUS);
+    circle(getPos().x, getPos().y, size);
   }
 }

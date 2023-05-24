@@ -12,7 +12,6 @@ public abstract class Mob {
   }
   
   public abstract void display();
-  public abstract void updateAttack();
   
   public void updatePos() {
     position.add(velocity);

@@ -1,13 +1,11 @@
 public abstract class Character extends Mob {
   float moveSpeed;
   int lastAttack;
-  //ArrayList<Bullet> bullets;
   
   public Character(PVector pos, float siz, float speed) {
     super(pos, siz);
     moveSpeed = speed;
     birth = millis();
-    //bullets = new ArrayList<Bullet>();
   }
   
   public abstract void display();
