@@ -6,9 +6,10 @@
 
 info
 
-### date y
+### 5/23/23
 
-info
+- added bullet and enemy class (forgot to add bullet class to commit in class)
+- mob class parent of character and enemy
 
 
 ## GROUP MEMBER 2
