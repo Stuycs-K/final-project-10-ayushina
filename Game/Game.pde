@@ -1,4 +1,5 @@
 Character chr;
+static ArrayList<Mob> mobList;
 static ArrayList<Bullet> bulletList;
 
 boolean left, down, up, right;
@@ -6,6 +7,7 @@ boolean left, down, up, right;
 void setup() {
   size(1200, 900);
   chr = new Reimu(new PVector(600,800), 20);
+  mobList = new ArrayList<Mob>();
   bulletList = new ArrayList<Bullet>();
 }
 
@@ -69,6 +71,14 @@ void keyReleased() {
       right = false;
     }
   }
+}
+
+static void addMob(Mob m) {
+  mobList.add(m);
+}
+
+static boolean removeMob(Mob m) {
+  return mobList.remove(m);
 }
 
 static void addBullet(Bullet b) {

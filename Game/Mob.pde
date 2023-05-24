@@ -9,6 +9,7 @@ public abstract class Mob {
     velocity = new PVector(0, 0);
     size = siz;
     birth = millis();
+    Game.addMob(this);
   }
   
   public abstract void display();
