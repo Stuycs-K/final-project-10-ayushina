@@ -1,16 +1,18 @@
-public class Enemy {
-  PVector position, velocity;
-  float size;
+public class Enemy extends Mob {
   double health;
-  int birth;
   int lastAttack;
   int nextAttack;
   
   public Enemy(PVector pos, float siz, double hp) {
-    position = pos;
-    velocity = new PVector(0, 0);
-    size = siz;
+    super(pos, siz);
     health = hp;
-    birth = millis();
+  }
+  
+  public void display() {
+    ellipseMode(RADIUS);
+    circle(getPos().x, getPos().y, size);
+  }
+  public void updateAttack() {
+    
   }
 }

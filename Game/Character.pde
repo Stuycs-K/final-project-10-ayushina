@@ -1,44 +1,33 @@
-public abstract class Character {
-  PVector position, velocity;
-  float size, moveSpeed;
-  
-  int birth;
+public abstract class Character extends Mob {
+  float moveSpeed;
   int lastAttack;
-  ArrayList<Bullet> bullets;
+  //ArrayList<Bullet> bullets;
   
   public Character(PVector pos, float siz, float speed) {
-    position = pos;
-    velocity = new PVector(0, 0);
-    size = siz;
+    super(pos, siz);
     moveSpeed = speed;
     birth = millis();
-    bullets = new ArrayList<Bullet>();
+    //bullets = new ArrayList<Bullet>();
   }
   
   public abstract void display();
   public abstract void updateAttack();
   
   public void updatePos() {
-    position.add(velocity);
+    super.updatePos();
     stayOnScreen();
   }
   
-  public PVector getPos() {
-    return position;
-  }
-  
-  public void setVelocity(PVector vel) {
-    velocity = vel;
-  }
-  
   private void stayOnScreen() {
-    if (position.x < size)
-      position.set(size, position.y);
-    if (position.x > width-size)
-      position.set(width-size, position.y);
-    if (position.y < size)
-      position.set(position.x, size);
-    if (position.y > height-size)
-      position.set(position.x, height - size);
+    PVector p = getPos();
+    if (p.x < size)
+      p.set(size, position.y);
+    if (p.x > width-size)
+      p.set(width-size, position.y);
+    if (p.y < size)
+      p.set(position.x, size);
+    if (p.y > height-size)
+      p.set(position.x, height - size);
+    setPos(p);
   }
 }

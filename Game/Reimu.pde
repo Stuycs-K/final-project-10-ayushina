@@ -13,7 +13,7 @@ public class Reimu extends Character {
   
   public void updateAttack() {
     if (millis() - lastAttack > COOLDOWN) {
-      bullets.add(new Bullet());
+      //bullets.add(new Bullet());
       lastAttack = millis();
     }
   }
