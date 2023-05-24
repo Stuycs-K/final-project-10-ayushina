@@ -1,4 +1,5 @@
 Character chr;
+ArrayList<Bullet> bulletList;
 
 boolean left, down, up, right;
 
