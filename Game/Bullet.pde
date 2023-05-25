@@ -11,16 +11,18 @@ public class Bullet extends Mob {
     Game.addBullet(this);
   }
   
-  public void updatePos() {
-    super.updatePos();
-    deleteOffScreen();
+  public void destroy() {
+    super.destroy();
+    Game.removeBullet(this);
   }
   
-  private void deleteOffScreen() {
+  public boolean deleteOffScreen() {
     PVector p = getPos();
-    if (p.x < -size || p.x > width+size || p.y < -size || p.y > height+size) {
-      
+    if (p.x < -size || p.x > width+size || p.y < -size || p.y > 500) {
+      destroy();
+      return true;
     }
+    return false;
   }
   
   public void display() {

@@ -12,6 +12,10 @@ public abstract class Mob {
     Game.addMob(this);
   }
   
+  public void destroy() {
+    Game.removeMob(this);
+  }
+  
   public abstract void display();
   
   public void updatePos() {

@@ -17,8 +17,12 @@ void draw() {
     m.updatePos();
     m.display();
   }
-  for (Bullet b: bulletList) {
+  for (int i = 0; i < bulletList.size(); i++) {
+    Bullet b = bulletList.get(i);
     b.registerHit();
+    if (b.deleteOffScreen()) {
+      i--;
+    }
   }
   
   PVector vel = new PVector(0,0);
