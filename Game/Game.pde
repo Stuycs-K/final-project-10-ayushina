@@ -6,18 +6,19 @@ boolean left, down, up, right;
 
 void setup() {
   size(1200, 900);
-  chr = new Reimu(new PVector(600,800), 20);
   mobList = new ArrayList<Mob>();
   bulletList = new ArrayList<Bullet>();
+  chr = new Reimu(new PVector(600,800), 20);
 }
 
 void draw() {  
   background(255);
-  chr.updatePos();
-  chr.display();
-  for (Bullet b : bulletList) {
-    b.updatePos();
-    b.display();
+  for (Mob m : mobList) {
+    m.updatePos();
+    m.display();
+  }
+  for (Bullet b: bulletList) {
+    b.registerHit();
   }
   
   PVector vel = new PVector(0,0);

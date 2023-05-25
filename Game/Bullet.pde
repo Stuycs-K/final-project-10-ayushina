@@ -11,8 +11,24 @@ public class Bullet extends Mob {
     Game.addBullet(this);
   }
   
+  public void updatePos() {
+    super.updatePos();
+    deleteOffScreen();
+  }
+  
+  private void deleteOffScreen() {
+    PVector p = getPos();
+    if (p.x < -size || p.x > width+size || p.y < -size || p.y > height+size) {
+      
+    }
+  }
+  
   public void display() {
     ellipseMode(RADIUS);
     circle(getPos().x, getPos().y, size);
+  }
+  
+  public void registerHit() {
+    
   }
 }
