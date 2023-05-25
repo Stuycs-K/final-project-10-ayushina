@@ -12,6 +12,16 @@
 - added bullet and enemy class (forgot to add bullet class to commit in class)
 - mob class parent of character and enemy
 
+### 5/24/23
+
+- character spawns moving bullets every 100 ms
+- merged wip branch to main
+- added a list of all mobs and all bullets but theres an error
+
+### 5/25/23
+
+ -
+
 
 ## GROUP MEMBER 2
 
