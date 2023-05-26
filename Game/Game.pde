@@ -1,6 +1,7 @@
 Character chr;
 static ArrayList<Mob> mobList;
 static ArrayList<Bullet> bulletList;
+static ArrayList<Enemy> enemyList;
 
 boolean left, down, up, right;
 
@@ -8,7 +9,9 @@ void setup() {
   size(1200, 900);
   mobList = new ArrayList<Mob>();
   bulletList = new ArrayList<Bullet>();
+  enemyList = new ArrayList<Enemy>();
   chr = new Reimu(new PVector(600,800), 20);
+  new Enemy(new PVector(300,300), 50, 100);
 }
 
 void draw() {  
@@ -83,7 +86,21 @@ static void addMob(Mob m) {
 }
 
 static boolean removeMob(Mob m) {
+  if (m.type == "bullet") {
+    bulletList.remove(m);
+  }
+  if (m.type == "enemy") {
+    enemyList.remove(m);
+  }
   return mobList.remove(m);
+}
+
+static void addEnemy(Enemy e) {
+  enemyList.add(e);
+}
+
+static boolean removeEnemy(Enemy e) {
+  return enemyList.remove(e);
 }
 
 static void addBullet(Bullet b) {

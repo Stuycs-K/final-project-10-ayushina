@@ -6,6 +6,7 @@ public abstract class Character extends Mob {
     super(pos, siz);
     moveSpeed = speed;
     birth = millis();
+    type = "character";
   }
   
   public abstract void display();

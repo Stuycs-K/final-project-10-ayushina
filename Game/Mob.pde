@@ -1,6 +1,7 @@
 public abstract class Mob {
   PVector position, velocity;
   float size;
+  String type;
   
   int birth;
   
@@ -31,5 +32,8 @@ public abstract class Mob {
   
   public void setVelocity(PVector vel) {
     velocity = vel;
+  }
+  public float getSize() {
+    return size;
   }
 }

@@ -1,13 +1,18 @@
 public class Bullet extends Mob {
+  Mob owner;
   
-  public Bullet() {
+  public Bullet(Mob own) {
     super(new PVector(0, 0), 10);
+    type = "bullet";
+    owner = own;
     Game.addBullet(this);
   }
   
-  public Bullet(PVector pos, PVector vel, float siz) {
+  public Bullet(Mob own, PVector pos, PVector vel, float siz) {
     super(pos, siz);
     setVelocity(vel);
+    type = "bullet";
+    owner = own;
     Game.addBullet(this);
   }
   
@@ -18,7 +23,7 @@ public class Bullet extends Mob {
   
   public boolean deleteOffScreen() {
     PVector p = getPos();
-    if (p.x < -size || p.x > width+size || p.y < -size || p.y > 500) {
+    if (p.x < -size || p.x > width+size || p.y < -size || p.y > height+size) {
       destroy();
       return true;
     }
@@ -31,6 +36,13 @@ public class Bullet extends Mob {
   }
   
   public void registerHit() {
-    
+    if (owner.type == "character") {
+      for (Enemy e : Game.enemyList) {
+        if (getPos().dist(e.getPos()) <= getSize() + e.getSize()) {
+          e.takeDamage();
+          Game.removeMob(this);
+        }
+      }
+    }
   }
 }
