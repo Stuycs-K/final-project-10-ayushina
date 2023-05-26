@@ -2,6 +2,9 @@ Character chr;
 static ArrayList<Mob> mobList;
 static ArrayList<Bullet> bulletList;
 static ArrayList<Enemy> enemyList;
+static ArrayList<Mob> mNext;
+static ArrayList<Bullet> bNext;
+static ArrayList<Enemy> eNext;
 
 boolean left, down, up, right;
 
@@ -10,6 +13,9 @@ void setup() {
   mobList = new ArrayList<Mob>();
   bulletList = new ArrayList<Bullet>();
   enemyList = new ArrayList<Enemy>();
+  mNext = new ArrayList<Mob>();
+  bNext = new ArrayList<Bullet>();
+  eNext = new ArrayList<Enemy>();
   chr = new Reimu(new PVector(600,800), 20);
   new Enemy(new PVector(300,300), 50, 100);
 }
@@ -23,9 +29,7 @@ void draw() {
   for (int i = 0; i < bulletList.size(); i++) {
     Bullet b = bulletList.get(i);
     b.registerHit();
-    if (b.deleteOffScreen()) {
-      i--;
-    }
+    b.deleteOffScreen();
   }
   
   PVector vel = new PVector(0,0);
@@ -45,6 +49,10 @@ void draw() {
   chr.setVelocity(vel);
   
   chr.updateAttack();
+  
+  mobList = new ArrayList<Mob>(mNext);
+  bulletList = new ArrayList<Bullet>(bNext);
+  enemyList = new ArrayList<Enemy>(eNext);
 }
 
 void keyPressed() {
@@ -82,31 +90,31 @@ void keyReleased() {
 }
 
 static void addMob(Mob m) {
-  mobList.add(m);
+  mNext.add(m);
 }
 
 static boolean removeMob(Mob m) {
   if (m.type == "bullet") {
-    bulletList.remove(m);
+    bNext.remove(m);
   }
   if (m.type == "enemy") {
-    enemyList.remove(m);
+    eNext.remove(m);
   }
-  return mobList.remove(m);
+  return mNext.remove(m);
 }
 
 static void addEnemy(Enemy e) {
-  enemyList.add(e);
+  eNext.add(e);
 }
 
 static boolean removeEnemy(Enemy e) {
-  return enemyList.remove(e);
+  return eNext.remove(e);
 }
 
 static void addBullet(Bullet b) {
-  bulletList.add(b);
+  bNext.add(b);
 }
 
 static boolean removeBullet(Bullet b) {
-  return bulletList.remove(b);
+  return bNext.remove(b);
 }

@@ -1,6 +1,7 @@
 public class Reimu extends Character {
   private static final float SPEED = 15.0;
   private static final int COOLDOWN = 100;
+  private static final double DAMAGE = 10;
   
   public Reimu(PVector pos, float siz) {
     super(pos, siz, SPEED);
@@ -15,7 +16,7 @@ public class Reimu extends Character {
     if (millis() - lastAttack > COOLDOWN) {
       PVector bulletVel = new PVector(0, -10);
       float bulletSize = 20;
-      new Bullet(this, getPos().copy(), bulletVel, bulletSize);
+      new Bullet(this, getPos().copy(), bulletVel, bulletSize, DAMAGE);
       lastAttack = millis();
     }
   }

@@ -1,5 +1,6 @@
 public class Bullet extends Mob {
   Mob owner;
+  double damage;
   
   public Bullet(Mob own) {
     super(new PVector(0, 0), 10);
@@ -13,6 +14,15 @@ public class Bullet extends Mob {
     setVelocity(vel);
     type = "bullet";
     owner = own;
+    Game.addBullet(this);
+  }
+  
+  public Bullet(Mob own, PVector pos, PVector vel, float siz, double dmg) {
+    super(pos, siz);
+    setVelocity(vel);
+    type = "bullet";
+    owner = own;
+    damage = dmg;
     Game.addBullet(this);
   }
   
@@ -39,8 +49,8 @@ public class Bullet extends Mob {
     if (owner.type == "character") {
       for (Enemy e : Game.enemyList) {
         if (getPos().dist(e.getPos()) <= getSize() + e.getSize()) {
-          e.takeDamage();
-          Game.removeMob(this);
+          e.takeDamage(damage);
+          destroy();
         }
       }
     }
