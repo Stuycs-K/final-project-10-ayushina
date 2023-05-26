@@ -20,16 +20,18 @@ public abstract class Mob {
   public abstract void display();
   
   public void updatePos() {
-    position.add(velocity);
+    position.add(getVelocity().mult(deltaTime / (float) 16.667));
   }
   
   public PVector getPos() {
-    return position;
+    return position.copy();
   }
   public void setPos(PVector pos) {
     position = pos;
   }
-  
+  public PVector getVelocity() {
+    return velocity.copy();
+  }
   public void setVelocity(PVector vel) {
     velocity = vel;
   }

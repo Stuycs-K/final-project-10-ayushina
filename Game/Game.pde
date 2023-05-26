@@ -6,6 +6,12 @@ static ArrayList<Mob> mNext;
 static ArrayList<Bullet> bNext;
 static ArrayList<Enemy> eNext;
 
+static int gameStart;
+int nextSpawn;
+
+static int gameTime;
+static int deltaTime;
+
 boolean left, down, up, right;
 
 void setup() {
@@ -17,11 +23,17 @@ void setup() {
   bNext = new ArrayList<Bullet>();
   eNext = new ArrayList<Enemy>();
   chr = new Reimu(new PVector(600,800), 20);
-  new Enemy(new PVector(300,300), 50, 100);
+  gameStart = millis();
 }
 
 void draw() {  
+  deltaTime = millis() - gameTime;
+  gameTime = millis();
+  
   background(255);
+  
+  spawnEnemies();
+  
   for (Mob m : mobList) {
     m.updatePos();
     m.display();
@@ -53,6 +65,14 @@ void draw() {
   mobList = new ArrayList<Mob>(mNext);
   bulletList = new ArrayList<Bullet>(bNext);
   enemyList = new ArrayList<Enemy>(eNext);
+}
+
+void spawnEnemies() {
+  int elapsed = millis() - gameStart;
+  if (elapsed > 2000 && nextSpawn == 0) {
+    new Enemy(new PVector(300,300), 50, 100);
+    nextSpawn++;
+  }
 }
 
 void keyPressed() {
