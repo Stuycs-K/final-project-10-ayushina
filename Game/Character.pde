@@ -1,36 +1,32 @@
-public class Character {
-  PVector position, velocity;
-  float size, moveSpeed;
+public abstract class Character extends Mob {
+  float moveSpeed;
+  int lastAttack;
   
-  public Character(PVector pos, float s) {
-    position = pos;
-    velocity = new PVector(0, 0);
-    size = s;
-    moveSpeed = 15;
+  public Character(PVector pos, float siz, float speed) {
+    super(pos, siz);
+    moveSpeed = speed;
+    birth = millis();
+    type = "character";
   }
   
+  public abstract void display();
+  public abstract void updateAttack();
+  
   public void updatePos() {
-    position.add(velocity);
+    super.updatePos();
     stayOnScreen();
   }
   
-  public void setVelocity(PVector vel) {
-    velocity = vel;
-  }
-  
-  public void display() {
-    ellipseMode(RADIUS);
-    circle(position.x, position.y, size);
-  }
-  
   private void stayOnScreen() {
-    if (position.x < size)
-      position.set(size, position.y);
-    if (position.x > width-size)
-      position.set(width-size, position.y);
-    if (position.y < size)
-      position.set(position.x, size);
-    if (position.y > height-size)
-      position.set(position.x, height - size);
+    PVector p = getPos();
+    if (p.x < size)
+      p.set(size, position.y);
+    if (p.x > width-size)
+      p.set(width-size, position.y);
+    if (p.y < size)
+      p.set(position.x, size);
+    if (p.y > height-size)
+      p.set(position.x, height - size);
+    setPos(p);
   }
 }

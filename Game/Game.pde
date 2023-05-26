@@ -1,16 +1,36 @@
 Character chr;
+static ArrayList<Mob> mobList;
+static ArrayList<Bullet> bulletList;
+static ArrayList<Enemy> enemyList;
+static ArrayList<Mob> mNext;
+static ArrayList<Bullet> bNext;
+static ArrayList<Enemy> eNext;
 
 boolean left, down, up, right;
 
 void setup() {
   size(1200, 900);
-  chr = new Character(new PVector(600,800), 20);
+  mobList = new ArrayList<Mob>();
+  bulletList = new ArrayList<Bullet>();
+  enemyList = new ArrayList<Enemy>();
+  mNext = new ArrayList<Mob>();
+  bNext = new ArrayList<Bullet>();
+  eNext = new ArrayList<Enemy>();
+  chr = new Reimu(new PVector(600,800), 20);
+  new Enemy(new PVector(300,300), 50, 100);
 }
 
-void draw() {
+void draw() {  
   background(255);
-  chr.updatePos();
-  chr.display();
+  for (Mob m : mobList) {
+    m.updatePos();
+    m.display();
+  }
+  for (int i = 0; i < bulletList.size(); i++) {
+    Bullet b = bulletList.get(i);
+    b.registerHit();
+    b.deleteOffScreen();
+  }
   
   PVector vel = new PVector(0,0);
   if (left) {
@@ -27,6 +47,12 @@ void draw() {
   }
   vel.normalize().mult(chr.moveSpeed);
   chr.setVelocity(vel);
+  
+  chr.updateAttack();
+  
+  mobList = new ArrayList<Mob>(mNext);
+  bulletList = new ArrayList<Bullet>(bNext);
+  enemyList = new ArrayList<Enemy>(eNext);
 }
 
 void keyPressed() {
@@ -61,4 +87,34 @@ void keyReleased() {
       right = false;
     }
   }
+}
+
+static void addMob(Mob m) {
+  mNext.add(m);
+}
+
+static boolean removeMob(Mob m) {
+  if (m.type == "bullet") {
+    bNext.remove(m);
+  }
+  if (m.type == "enemy") {
+    eNext.remove(m);
+  }
+  return mNext.remove(m);
+}
+
+static void addEnemy(Enemy e) {
+  eNext.add(e);
+}
+
+static boolean removeEnemy(Enemy e) {
+  return eNext.remove(e);
+}
+
+static void addBullet(Bullet b) {
+  bNext.add(b);
+}
+
+static boolean removeBullet(Bullet b) {
+  return bNext.remove(b);
 }
