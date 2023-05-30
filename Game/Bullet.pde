@@ -54,5 +54,11 @@ public class Bullet extends Mob {
         }
       }
     }
+    else {
+      if (getPos().dist(Game.chr.getPos()) <= getSize() + Game.chr.getSize()) {
+        Game.chr.takeDamage();
+        destroy();
+      }
+    }
   }
 }

@@ -1,10 +1,13 @@
-Character chr;
+static Character chr;
+
 static ArrayList<Mob> mobList;
 static ArrayList<Bullet> bulletList;
 static ArrayList<Enemy> enemyList;
 static ArrayList<Mob> mNext;
 static ArrayList<Bullet> bNext;
 static ArrayList<Enemy> eNext;
+
+static boolean gameOver;
 
 static int gameStart;
 int nextSpawn;
@@ -22,7 +25,9 @@ void setup() {
   mNext = new ArrayList<Mob>();
   bNext = new ArrayList<Bullet>();
   eNext = new ArrayList<Enemy>();
-  chr = new Reimu(new PVector(600,800), 20);
+  
+  chr = new Reimu(new PVector(600,800));
+  
   gameStart = millis();
 }
 
@@ -42,6 +47,9 @@ void draw() {
     Bullet b = bulletList.get(i);
     b.registerHit();
     b.deleteOffScreen();
+  }
+  for (Enemy e : enemyList) {
+    e.updateAttack();
   }
   
   PVector vel = new PVector(0,0);
