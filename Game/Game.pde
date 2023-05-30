@@ -70,7 +70,7 @@ void draw() {
 void spawnEnemies() {
   int elapsed = millis() - gameStart;
   if (elapsed > 2000 && nextSpawn == 0) {
-    new Enemy(new PVector(300,300), 50, 100);
+    new Nerd(new PVector(300,300), new PVector(500,500));
     nextSpawn++;
   }
 }

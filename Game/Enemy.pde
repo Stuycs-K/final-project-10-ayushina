@@ -1,4 +1,4 @@
-public class Enemy extends Mob {
+public abstract class Enemy extends Mob {
   double health;
   int lastAttack;
   int nextAttack;
@@ -15,17 +15,13 @@ public class Enemy extends Mob {
     Game.removeEnemy(this);
   }
   
-  public void display() {
-    ellipseMode(RADIUS);
-    circle(getPos().x, getPos().y, size);
-  }
+  public abstract void display();
+  
   public void takeDamage(double dmg) {
     health -= dmg;
     if (health <= 0) {
       Game.removeMob(this);
     }
   }
-  public void updateAttack() {
-    
-  }
+  public abstract void updateAttack();
 }
