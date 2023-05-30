@@ -20,7 +20,7 @@ public abstract class Mob {
   public abstract void display();
   
   public void updatePos() {
-    position.add(getVelocity().mult(deltaTime / (float) 16.667));
+    position.add(getVelocity().mult(deltaTime * 60 / (float) 1000));
   }
   
   public PVector getPos() {

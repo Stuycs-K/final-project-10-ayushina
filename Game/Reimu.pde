@@ -1,5 +1,5 @@
 public class Reimu extends Character {
-  private static final float SPEED = 15.0;
+  private static final float SPEED = 8.0;
   private static final float SIZE = 5;
   private static final int COOLDOWN = 100;
   private static final double DAMAGE = 10;
