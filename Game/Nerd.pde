@@ -5,6 +5,7 @@ public class Nerd extends Enemy {
   private PVector targetPos;
   private int delay;
   private int lifespan;
+  private int nextAttack;
 
   public Nerd(PVector pos, PVector targetPos, int delay, int lifespan) {
     super(pos, SIZE, HP);
@@ -22,9 +23,19 @@ public class Nerd extends Enemy {
   
   public void updateAttack() {
     int elapsed = millis() - birth;
-    if (elapsed < lifespan - 1) { //stop attacking 1 second before dying
+    if (elapsed < lifespan - 1000) { //stop attacking 1 second before dying
       if (elapsed > delay) {
-        elapsed = (elapsed - delay) % 2; //every 2 seconds
+        elapsed = (elapsed - delay) % 2000; //every 2 seconds
+        if (elapsed >= 0 && elapsed < 800 && nextAttack == 0) {
+          for (int i = 0; i < 5; i++) {
+            PVector bulletVel = Game.chr.getPos().sub(getPos()).normalize().mult(6 + i * 2);
+            new Bullet(this, getPos(), bulletVel, 10);
+          }
+          nextAttack = (nextAttack + 1) % 2;
+        }
+        if (elapsed >= 800 && elapsed < 2000 && nextAttack == 1) {
+          nextAttack = (nextAttack + 1) % 2;
+        }
       }
     }
   }
