@@ -26,6 +26,9 @@ public abstract class Mob {
   public PVector getPos() {
     return position.copy();
   }
+  public PVector getDisplayPos() {
+    return position.copy().add(Game.windowPos);
+  }
   public void setPos(PVector pos) {
     position = pos;
   }

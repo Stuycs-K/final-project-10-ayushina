@@ -25,7 +25,7 @@ void setup() {
   size(1200, 900);
   WIDTH = 800; //640x480
   HEIGHT = 600;
-  windowPos = new PVector();
+  windowPos = new PVector(50, 150);
   
   mobList = new ArrayList<Mob>();
   bulletList = new ArrayList<Bullet>();

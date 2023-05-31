@@ -18,7 +18,7 @@ public class Nerd extends Enemy {
   public void display() {
     fill(200, 50, 50);
     ellipseMode(RADIUS);
-    circle(getPos().x, getPos().y, size);
+    circle(getDisplayPos().x, getDisplayPos().y, size);
     fill(255);
   }
   
@@ -50,7 +50,7 @@ public class Nerd extends Enemy {
       else {
         targetPos = new PVector(Game.WIDTH + size, Game.HEIGHT + size);
       }
-      setVelocity(targetPos.sub(getPos()).normalize().mult(10));
+      setVelocity(targetPos.sub(getPos()).normalize().mult(8));
     }
   }
 }

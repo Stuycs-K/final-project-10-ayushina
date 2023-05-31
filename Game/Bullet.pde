@@ -42,7 +42,7 @@ public class Bullet extends Mob {
   
   public void display() {
     ellipseMode(RADIUS);
-    circle(getPos().x, getPos().y, size);
+    circle(getDisplayPos().x, getDisplayPos().y, size);
   }
   
   public void registerHit() {
