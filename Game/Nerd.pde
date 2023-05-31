@@ -23,6 +23,10 @@ public class Nerd extends Enemy {
   
   public void updateAttack() {
     int elapsed = millis() - birth;
+    if (elapsed >= lifespan) {
+      destroy();
+      return;
+    }
     if (elapsed < lifespan - 1000) { //stop attacking 1 second before dying
       if (elapsed > delay) {
         elapsed = (elapsed - delay) % 2000; //every 2 seconds
@@ -37,6 +41,15 @@ public class Nerd extends Enemy {
           nextAttack = (nextAttack + 1) % 2;
         }
       }
+    }
+    else {
+      if (getPos().x < width / 2) {
+        targetPos = new PVector(0, height);
+      }
+      else {
+        targetPos = new PVector(width, height);
+      }
+      setVelocity(targetPos.sub(getPos()).normalize().mult(10));
     }
   }
 }
