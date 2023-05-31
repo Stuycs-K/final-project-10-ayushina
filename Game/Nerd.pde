@@ -3,6 +3,7 @@ public class Nerd extends Enemy {
   private static final double HP = 100;
   
   private PVector targetPos;
+  private PVector startPos;
   private int delay;
   private int lifespan;
   private int nextAttack;
@@ -43,11 +44,11 @@ public class Nerd extends Enemy {
       }
     }
     else {
-      if (getPos().x < width / 2) {
-        targetPos = new PVector(0, height);
+      if (getPos().x < Game.WIDTH / 2) {
+        targetPos = new PVector(-size, Game.HEIGHT + size);
       }
       else {
-        targetPos = new PVector(width, height);
+        targetPos = new PVector(Game.WIDTH + size, Game.HEIGHT + size);
       }
       setVelocity(targetPos.sub(getPos()).normalize().mult(10));
     }

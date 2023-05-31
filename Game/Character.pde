@@ -31,13 +31,13 @@ public abstract class Character extends Mob {
   private void stayOnScreen() {
     PVector p = getPos();
     if (p.x < size)
-      p.set(size, position.y);
-    if (p.x > width-size)
-      p.set(width-size, position.y);
+      p.set(size, p.y);
+    if (p.x > Game.WIDTH-size)
+      p.set(Game.WIDTH-size, p.y);
     if (p.y < size)
-      p.set(position.x, size);
-    if (p.y > height-size)
-      p.set(position.x, height - size);
+      p.set(p.x, size);
+    if (p.y > Game.HEIGHT-size)
+      p.set(p.x, Game.HEIGHT - size);
     setPos(p);
   }
 }

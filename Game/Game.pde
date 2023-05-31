@@ -12,6 +12,10 @@ static boolean gameOver;
 static int gameStart;
 int nextSpawn;
 
+static PVector windowPos;
+static int WIDTH;
+static int HEIGHT;
+
 static int gameTime;
 static int deltaTime;
 
@@ -19,6 +23,10 @@ boolean left, down, up, right;
 
 void setup() {
   size(1200, 900);
+  WIDTH = 800; //640x480
+  HEIGHT = 600;
+  windowPos = new PVector();
+  
   mobList = new ArrayList<Mob>();
   bulletList = new ArrayList<Bullet>();
   enemyList = new ArrayList<Enemy>();

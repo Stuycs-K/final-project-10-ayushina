@@ -33,7 +33,7 @@ public class Bullet extends Mob {
   
   public boolean deleteOffScreen() {
     PVector p = getPos();
-    if (p.x < -size || p.x > width+size || p.y < -size || p.y > height+size) {
+    if (p.x < -size || p.x > Game.WIDTH+size || p.y < -size || p.y > Game.HEIGHT+size) {
       destroy();
       return true;
     }
