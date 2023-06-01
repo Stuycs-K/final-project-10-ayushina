@@ -31,16 +31,21 @@
  - bullets check distance and register hit on enemy
  - bullets do damage and kill enemy
  - fixed getPos() to return copy of pvector
- - forgot to commit something in class
  - merged wip branch to main
 
+ ### 5/26/23
 
-## GROUP MEMBER 2
+ - velocity is multiplied by the change in time
+ - spawnEnemies() method that adds enemies based on game time
+ - enemy is abstract class
 
-### date x
+ ### 5/30/23
+ 
+ - bullets owned by enemies kill player
+ - first enemy attack pattern
+ - nerd enemy attacks every 2 seconds and despawns after a few seconds
 
-info
+ ### 5/31/23
 
-### date y
-
-info
+ - fixed stayOnScreen()
+ - made game area smaller and in the middle of the processing window
