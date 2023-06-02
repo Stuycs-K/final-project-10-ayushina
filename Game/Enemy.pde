@@ -1,10 +1,12 @@
 public abstract class Enemy extends Mob {
   double health;
+  int points;
   
-  public Enemy(PVector pos, float siz, double hp) {
+  public Enemy(PVector pos, float siz, double hp, int points) {
     super(pos, siz);
     health = hp;
     type = "enemy";
+    this.points = points;
     Game.addEnemy(this);
   }
   
@@ -18,8 +20,13 @@ public abstract class Enemy extends Mob {
   public void takeDamage(double dmg) {
     health -= dmg;
     if (health <= 0) {
+      Game.kills++;
+      Game.score += this.points;
       Game.removeMob(this);
     }
+  }
+  public boolean invincible() {
+    return health <= 0;
   }
   public abstract void updateAttack();
 }

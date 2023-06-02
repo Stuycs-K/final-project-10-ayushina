@@ -29,7 +29,7 @@ public abstract class Character extends Mob {
     Game.lives -= 1;
     Game.pldead00.play();
     if (Game.lives <= 0) {
-      Game.gameOver = true;
+      gameOver(false);
     }
   }
   public boolean invincible() {

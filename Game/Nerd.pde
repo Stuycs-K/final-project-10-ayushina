@@ -1,6 +1,7 @@
 public class Nerd extends Enemy {
   private static final float SIZE = 20;
   private static final double HP = 30;
+  private static final int SCORE = 5000;
   
   private PVector targetPos;
   private PVector startPos;
@@ -9,7 +10,7 @@ public class Nerd extends Enemy {
   private int nextAttack;
 
   public Nerd(PVector pos, PVector targetPos, int delay, int lifespan) {
-    super(pos, SIZE, HP);
+    super(pos, SIZE, HP, SCORE);
     this.targetPos = targetPos.copy();
     this.delay = delay;
     this.lifespan = lifespan;

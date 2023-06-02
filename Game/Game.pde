@@ -9,10 +9,13 @@ static ArrayList<Mob> mNext;
 static ArrayList<Bullet> bNext;
 static ArrayList<Enemy> eNext;
 
-static boolean gameOver;
+static String gameState;
+static int lastStateChange;
+static boolean gameWon;
 
 static int score;
 static int lives;
+static int kills;
 static int lastDied;
 static final int DEATH_TIME = 2000;
 
@@ -74,6 +77,9 @@ void setup() {
   loadImages();
   loadSounds();
   
+  gameState = "game";
+  gameWon = false;
+  
   size(1200, 900);
   WIDTH = 700; //640x480
   HEIGHT = 850;
@@ -81,6 +87,7 @@ void setup() {
   
   score = 0;
   lives = 0;
+  kills = 0;
   lastDied = -1;
   
   mobList = new ArrayList<Mob>();
@@ -109,32 +116,71 @@ void drawBorder() {
   textSize(36);
   text("Score", windowPos.x + WIDTH + 25, 100);
   text(chr.getName(), windowPos.x + WIDTH + 25, 200);
+  text("Kills", windowPos.x + WIDTH + 25, 300);
+  
   fill(255);
   textSize(48);
   text(score, windowPos.x + WIDTH + 150, 100);
   for (int i = 0; i < lives; i++) {
     image(heart, windowPos.x + WIDTH + 150 + i * heart.width, 200 - heart.height);
   }
+  text(kills, windowPos.x + WIDTH + 150, 300);
   
   fill(255);
   stroke(0);
 }
 
-void draw() {  
-  deltaTime = millis() - gameTime;
-  gameTime = millis();
-  
-  background(90, 10, 10);
-  
-  spawnEnemies();
-  updateMobs();
-  updateCharacter();
+void gameOverScreen() {
+  textSize(64);
+  String txt;
+  if (gameWon) {
+    txt = "You Win!";
+  }
+  else {
+    txt = "You Lose!";
+  }
+  textAlign(CENTER);
+  text(txt, windowPos.x + WIDTH / 2, windowPos.y + 100);
+  textSize(36);
+  text("Final Score: " + score, windowPos.x + WIDTH / 2, windowPos.y + 300);
+  textAlign(BASELINE);
+}
 
-  mobList = new ArrayList<Mob>(mNext);
-  bulletList = new ArrayList<Bullet>(bNext);
-  enemyList = new ArrayList<Enemy>(eNext);
+void draw() {  
+  if (gameState == "game") {
+    deltaTime = millis() - gameTime;
+    gameTime = millis() - lastStateChange;
+    
+    background(90, 10, 10);
+    
+    spawnEnemies();
+    updateMobs();
+    updateCharacter();
   
-  drawBorder();
+    mobList = new ArrayList<Mob>(mNext);
+    bulletList = new ArrayList<Bullet>(bNext);
+    enemyList = new ArrayList<Enemy>(eNext);
+    
+    drawBorder();
+  }
+  else if (gameState == "gameOver") {
+    background(90, 10, 10);
+    gameOverScreen();
+    drawBorder();
+  }
+  else {
+    print(gameState);
+  }
+}
+
+void gameOver(boolean won) {
+  gameState = "gameOver";
+  lastStateChange = millis();
+  gameWon = won;
+  
+  mobList = new ArrayList<Mob>();
+  bulletList = new ArrayList<Bullet>();
+  enemyList = new ArrayList<Enemy>();
 }
 
 void updateCharacter() {

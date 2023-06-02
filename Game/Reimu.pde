@@ -4,7 +4,7 @@ public class Reimu extends Character {
   private static final float SIZE = 7;
   private static final int COOLDOWN = 100;
   private static final double DAMAGE = 1;
-  private static final String NAME = "Reimu";
+  private static final String NAME = "Player";
   
   public Reimu(PVector pos) {
     super(pos, SIZE, SPEED, FOCUS_SPEED, NAME);
