@@ -58,6 +58,7 @@ public class Book extends Enemy {
         if (millis() - lastFired >= 1000) { //shoot every 1 second
           //two circles
           lastFired = millis();
+          shootSound();
           shotsFired++;
           for (int i = 0; i < 16; i++) {
             PVector bulletVel = new PVector(4, 0);

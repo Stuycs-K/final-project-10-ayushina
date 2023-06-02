@@ -53,6 +53,7 @@ public class Nerd extends Enemy {
             new Bullet(this, getPos(), bulletVel, 15, new int[] {94, 12, 94});
           }
           nextAttack = (nextAttack + 1) % 2;
+          shootSound();
         }
         if (elapsed >= 800 && elapsed < 2000 && nextAttack == 1) {
           //circle
@@ -62,6 +63,7 @@ public class Nerd extends Enemy {
             new Bullet(this, getPos(), bulletVel, 10, new int[] {94, 12, 94});
           }
           nextAttack = (nextAttack + 1) % 2;
+          shootSound();
         }
       }
     }

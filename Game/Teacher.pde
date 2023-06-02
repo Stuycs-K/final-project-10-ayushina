@@ -20,7 +20,7 @@ public class Teacher extends BossEnemy{
   
   public void display() {
     imageMode(CENTER);
-    image(Game.book, getDisplayPos().x, getDisplayPos().y);
+    image(Game.teacher, getDisplayPos().x, getDisplayPos().y);
     imageMode(CORNER);
   }
   
@@ -55,6 +55,7 @@ public class Teacher extends BossEnemy{
         if (elapsed >= 0 && elapsed < 1000 && nextAttack == 0) {
           //laser beam
           nextAttack = (nextAttack + 1) % 2;
+          shootSound();
           
           for (int spd = 0; spd < 4; spd++) {
             for (int a = 0; a < 17; a++) {
@@ -75,6 +76,7 @@ public class Teacher extends BossEnemy{
               new Bullet(this, getPos(), bulletVel.normalize().mult(spd), 10, new int[] {90, 112, 224});
             }
           }
+          shootSound();
           nextAttack = (nextAttack + 1) % 2;
         }
       }
@@ -91,7 +93,10 @@ public class Teacher extends BossEnemy{
       for (int i = 0; i < 4; i++) {
         if (elapsedA >= 0 + i * 100 && elapsedA < 400 && nextAttack == i) {
           //laser beam
-          PVector bulletVel = Game.chr.getPos().sub(getPos()).normalize().mult(9);
+          if (nextAttack == 0) {
+            shootSound();
+          }
+          PVector bulletVel = Game.chr.getPos().sub(getPos()).normalize().mult(12);
           new Bullet(this, getPos(), bulletVel, 8, new int[] {200, 200, 20});
           nextAttack++;
         }
@@ -102,6 +107,9 @@ public class Teacher extends BossEnemy{
       int elapsedB = (elapsed) & 2000; //every 2 seconds
       for (int a = 0; a < 10; a++) {
         if (elapsedB >= 0 + a * 100 && elapsedB < 1000 && nextAttackB == a) {
+          if (nextAttackB == 0) {
+            shootSound();
+          }
           nextAttackB++;
           //circle
           a = a * 10 + 10;

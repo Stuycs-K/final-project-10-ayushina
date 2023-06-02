@@ -47,6 +47,7 @@ static PImage reimuRight[];
 
 static PImage nerd;
 static PImage book;
+static PImage teacher;
 
 private PImage flipImage(PImage img) {
   PImage p = img.copy();
@@ -80,12 +81,30 @@ void loadImages() {
   nerd = loadImage("nerd.png");
   //book
   book = loadImage("book.png");
+  //teacher
+  teacher = loadImage("teacher.png");
+}
+
+void shootSound() {
+  if (random(3) < 1) {
+    tan00.play();
+  }
+  else if (random(2) < 1) {
+    tan01.play();
+  }
+  else {
+    tan02.play();
+  }
 }
 
 static SoundFile pldead00;
+static SoundFile tan00,tan01,tan02;
 
 void loadSounds() {
   pldead00 = new SoundFile(this, "pldead00.wav");
+  tan00 = new SoundFile(this, "tan00.wav");
+  tan01 = new SoundFile(this, "tan01.wav");
+  tan02 = new SoundFile(this, "tan02.wav");
 }
 
 void newGame(int mode) {
@@ -186,8 +205,9 @@ void drawBorder() {
   textSize(36);
   text("Score", windowPos.x + WIDTH + 25, 100);
   text(chr.getName(), windowPos.x + WIDTH + 25, 200);
-  text("Kills", windowPos.x + WIDTH + 25, 300);
-  text("Time", windowPos.x + WIDTH + 25, 400);
+  text("Boss", windowPos.x + WIDTH + 25, 300);
+  text("Kills", windowPos.x + WIDTH + 25, 400);
+  text("Time", windowPos.x + WIDTH + 25, 500);
   
   fill(255);
   textSize(48);
@@ -195,14 +215,23 @@ void drawBorder() {
   for (int i = 0; i < lives; i++) {
     image(heart, windowPos.x + WIDTH + 150 + i * heart.width, 200 - heart.height);
   }
-  text(kills, windowPos.x + WIDTH + 150, 300);
+  if (currentBoss.size() == 1) {
+    BossEnemy b = currentBoss.get(0);
+    int lives = b.maxPhases - b.phase;
+    for (int i = 0; i < lives; i++) {
+      image(heart, windowPos.x + WIDTH + 150 + i * heart.width, 300 - heart.height);
+    }
+    double percent = b.health / b.maxHealth;
+    rect(10, 10, (float) percent * WIDTH + 20, 10);
+  }
+  text(kills, windowPos.x + WIDTH + 150, 400);
   //fill(66,135,245);
   //textSize(60);
   //text(gameTime/1000, windowPos.x + WIDTH + 150 - 3, 400 + 4);
   //textSize(48);
   //fill(255);
   //text(gameTime/1000, windowPos.x + WIDTH + 150, 400);
-  text(gameTime/1000, windowPos.x + WIDTH + 150, 400);
+  text(gameTime/1000, windowPos.x + WIDTH + 150, 500);
   
   fill(255);
   stroke(0);
