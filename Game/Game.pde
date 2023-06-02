@@ -30,8 +30,8 @@ static int HEIGHT;
 static int gameTime;
 static int deltaTime;
 
-static int[] lastMouseUp;
-static int[] lastMouseDown;
+static float[] lastMouseUp;
+static float[] lastMouseDown;
 
 
 static boolean left, down, up, right;
@@ -92,6 +92,7 @@ void newGame() {
   
   gameTime = 0;
   deltaTime = 0;
+  nextSpawn = 0;
   
   left = false;
   down = false;
@@ -111,21 +112,21 @@ void newGame() {
   chr = new Reimu(new PVector(600,800));
 }
 
-boolean inRectCenter(int[] coords, int[] rect) {
+boolean inRectCenter(float[] coords, float[] rect) {
   if (coords.length != 2) {
     return false;
   }
-  int x = coords[0];
-  int y = coords[1];
-  int rectX = rect[0];
-  int rectY = rect[1];
-  int rectWidth = rect[2];
-  int rectHeight = rect[3];
+  float x = coords[0];
+  float y = coords[1];
+  float rectX = rect[0];
+  float rectY = rect[1];
+  float rectWidth = rect[2];
+  float rectHeight = rect[3];
   
-  int left = rectX - rectWidth/2;
-  int right = rectX + rectWidth/2;
-  int top = rectY - rectHeight/2;
-  int bottom = rectY + rectHeight/2;
+  float left = rectX - rectWidth/2;
+  float right = rectX + rectWidth/2;
+  float top = rectY - rectHeight/2;
+  float bottom = rectY + rectHeight/2;
   return x >= left && x <= right && y >= top && y <= bottom;
 }
 
@@ -138,8 +139,8 @@ void setup() {
   HEIGHT = 850;
   windowPos = new PVector(50, 25);
   
-  lastMouseUp = new int[]{};
-  lastMouseDown = new int[]{};
+  lastMouseUp = new float[]{};
+  lastMouseDown = new float[]{};
   
   gameState = "start";
 }
@@ -194,6 +195,23 @@ void gameOverScreen() {
   textSize(36);
   text("Final Score: " + score, windowPos.x + WIDTH / 2, windowPos.y + 300);
   textAlign(BASELINE);
+  
+  //replay button
+  float[] playButton = new float[] {windowPos.x + WIDTH / 2, windowPos.y + 500, 400, 100};
+  if (!mousePressed && inRectCenter(lastMouseDown, playButton) && inRectCenter(lastMouseUp, playButton)) {
+    newGame();
+  }
+  rectMode(CENTER);
+  fill(255,0);
+  stroke(12, 220, 19);
+  strokeWeight(6);
+  rect(playButton[0], playButton[1], playButton[2], playButton[3]);
+  
+  fill(250, 157, 157);
+  textSize(64);
+  textAlign(CENTER);
+  text("Play Again?", playButton[0], playButton[1] + playButton[3] / 4);
+  textAlign(BASELINE);
 }
 
 void gameTime() {
@@ -207,7 +225,7 @@ void gameTime() {
 void draw() {  
   if (gameState == "start") {
     background(166,60,91);
-    int[] playButton = new int[] {width / 2 - 400, height / 2, 300, 100};
+    float[] playButton = new float[] {width / 2 - 400, height / 2, 300, 100};
     if (!mousePressed && inRectCenter(lastMouseDown, playButton) && inRectCenter(lastMouseUp, playButton)) {
       newGame();
     }
@@ -307,8 +325,7 @@ void updateMobs() {
 }
 
 void spawnEnemies() {
-  int elapsed = millis() - gameStart;
-  if (elapsed > 2000 && nextSpawn == 0) {
+  if (gameTime > 2000 && nextSpawn == 0) {
     new Nerd(new PVector(300,300), new PVector(500,500), 1000, 8000);
     new Nerd(new PVector(400,300), new PVector(500,500), 1000, 8000);
     nextSpawn++;
@@ -317,14 +334,14 @@ void spawnEnemies() {
 
 void mousePressed() {
   if (lastMouseDown.length == 0) {
-    lastMouseDown = new int[2];
+    lastMouseDown = new float[2];
   }
   lastMouseDown[0] = mouseX;
   lastMouseDown[1] = mouseY;
 }
 void mouseReleased() {
   if (lastMouseUp.length == 0) {
-    lastMouseUp = new int[2];
+    lastMouseUp = new float[2];
   }
   lastMouseUp[0] = mouseX;
   lastMouseUp[1] = mouseY;
