@@ -44,6 +44,8 @@ static PImage reimuStanding[];
 static PImage reimuLeft[];
 static PImage reimuRight[];
 
+static PImage nerd;
+
 private PImage flipImage(PImage img) {
   PImage p = img.copy();
   for (int r = 0; r < p.height; r++) {
@@ -57,6 +59,7 @@ private PImage flipImage(PImage img) {
 void loadImages() {
   heart = loadImage("heart.png");
   
+  //reimu
   PImage reimuSprites = loadImage("reimu-sprites.png");
   reimuStanding = new PImage[4];
   for(int i = 0; i < 4; i++) {
@@ -70,6 +73,9 @@ void loadImages() {
   for (int i = 0; i < 7; i++) {
     reimuRight[i] = flipImage(reimuSprites.get(i * 64, 96, 64, 96));
   }
+  
+  //nerd
+  nerd = loadImage("nerd.png");
 }
 
 static SoundFile pldead00;

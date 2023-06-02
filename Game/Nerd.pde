@@ -17,11 +17,14 @@ public class Nerd extends Enemy {
   }
   
   public void display() {
-    fill(200, 50, 50);
-    stroke(255);
-    ellipseMode(RADIUS);
-    circle(getDisplayPos().x, getDisplayPos().y, size);
-    fill(255);
+    imageMode(CENTER);
+    image(Game.nerd, getDisplayPos().x, getDisplayPos().y);
+    imageMode(CORNER);
+    //fill(200, 50, 50);
+    //stroke(255);
+    //ellipseMode(RADIUS);
+    //circle(getDisplayPos().x, getDisplayPos().y, size);
+    //fill(255);
   }
   
   public void updateAttack() {
