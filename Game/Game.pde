@@ -364,6 +364,7 @@ void draw() {
 
 void gameOver(boolean won) {
   gameState = "gameOver";
+  resetMouse();
   lastStateChange = millis();
   gameWon = won;
   
