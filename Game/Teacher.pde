@@ -44,8 +44,12 @@ public class Teacher extends BossEnemy{
         }
       }
       else {
-        setVelocity(new PVector(0,0));
-
+        if (lastMove == -1 || millis() - lastMove >= 1200) { //move every 1.2 seconds
+          lastMove = millis();
+          targetPos = new PVector(constrain(getPos().x -50 + random(100), 0, Game.WIDTH), constrain(getPos().y - 10 + random(20), 0, Game.HEIGHT));
+          float rate = targetPos.dist(getPos())/(60*(1200/1000)); //in 1.2 seconds
+          setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+        }
 
         elapsed = (elapsed - delay) % 2000; //every 2 seconds
         if (elapsed >= 0 && elapsed < 1000 && nextAttack == 0) {
@@ -76,8 +80,12 @@ public class Teacher extends BossEnemy{
       }
     }
     else if (phase == 1) {
-      setVelocity(new PVector(0,0));
-
+      if (lastMove == -1 || millis() - lastMove >= 1200) { //move every 1.2 seconds
+        lastMove = millis();
+        targetPos = new PVector(constrain(getPos().x -50 + random(100), 300, Game.WIDTH - 300), constrain(getPos().y - 10 + random(20), 0, 400));
+        float rate = targetPos.dist(getPos())/(60*(1200/1000)); //in 1.2 seconds
+        setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+      }
       
       int elapsedA = (elapsed) % 600; //every 0.6 seconds
       for (int i = 0; i < 4; i++) {
