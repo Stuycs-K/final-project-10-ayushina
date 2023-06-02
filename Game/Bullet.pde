@@ -1,6 +1,7 @@
 public class Bullet extends Mob {
   Mob owner;
   double damage;
+  int[] bulletColor;
   
   public Bullet(Mob own) {
     super(new PVector(0, 0), 10);
@@ -9,20 +10,22 @@ public class Bullet extends Mob {
     Game.addBullet(this);
   }
   
-  public Bullet(Mob own, PVector pos, PVector vel, float siz) {
+  public Bullet(Mob own, PVector pos, PVector vel, float siz, int[] bulletColor) {
     super(pos, siz);
     setVelocity(vel);
     type = "bullet";
     owner = own;
+    this.bulletColor = bulletColor;
     Game.addBullet(this);
   }
   
-  public Bullet(Mob own, PVector pos, PVector vel, float siz, double dmg) {
+  public Bullet(Mob own, PVector pos, PVector vel, float siz, int[] bulletColor, double dmg) {
     super(pos, siz);
     setVelocity(vel);
     type = "bullet";
     owner = own;
     damage = dmg;
+    this.bulletColor = bulletColor;
     Game.addBullet(this);
   }
   
@@ -33,7 +36,7 @@ public class Bullet extends Mob {
   
   public boolean deleteOffScreen() {
     PVector p = getPos();
-    if (p.x < -size || p.x > width+size || p.y < -size || p.y > height+size) {
+    if (p.x < -size || p.x > Game.WIDTH+size || p.y < -size || p.y > Game.HEIGHT+size) {
       destroy();
       return true;
     }
@@ -42,16 +45,31 @@ public class Bullet extends Mob {
   
   public void display() {
     ellipseMode(RADIUS);
-    circle(getPos().x, getPos().y, size);
+    if (owner.type == "character") {
+      stroke(0, 0);
+      fill(bulletColor[0], bulletColor[1], bulletColor[2], 50);
+    }
+    else {
+      stroke(bulletColor[0], bulletColor[1], bulletColor[2]);
+    }
+    circle(getDisplayPos().x, getDisplayPos().y, size);
+    stroke(0);
+    fill(255);
   }
   
   public void registerHit() {
     if (owner.type == "character") {
       for (Enemy e : Game.enemyList) {
-        if (getPos().dist(e.getPos()) <= getSize() + e.getSize()) {
+        if (!e.invincible() && getPos().dist(e.getPos()) <= getSize() + e.getSize()) {
           e.takeDamage(damage);
           destroy();
         }
+      }
+    }
+    else {
+      if (!Game.chr.invincible() && getPos().dist(Game.chr.getPos()) <= getSize() + Game.chr.getSize()) {
+        Game.chr.takeDamage();
+        destroy();
       }
     }
   }

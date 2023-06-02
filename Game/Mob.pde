@@ -20,20 +20,28 @@ public abstract class Mob {
   public abstract void display();
   
   public void updatePos() {
-    position.add(velocity);
+    position.add(getVelocity().mult(deltaTime * 60 / (float) 1000));
   }
   
   public PVector getPos() {
-    return position;
+    return position.copy();
+  }
+  public PVector getDisplayPos() {
+    return position.copy().add(Game.windowPos);
   }
   public void setPos(PVector pos) {
     position = pos;
   }
-  
+  public PVector getVelocity() {
+    return velocity.copy();
+  }
   public void setVelocity(PVector vel) {
     velocity = vel;
   }
   public float getSize() {
     return size;
+  }
+  public boolean invincible() {
+    return false;
   }
 }

@@ -1,12 +1,16 @@
-public class Enemy extends Mob {
+public abstract class Enemy extends Mob {
   double health;
-  int lastAttack;
+  int points;
   int nextAttack;
+  int nextAttackB;
+  PVector targetPos;
+
   
-  public Enemy(PVector pos, float siz, double hp) {
+  public Enemy(PVector pos, float siz, double hp, int points) {
     super(pos, siz);
     health = hp;
     type = "enemy";
+    this.points = points;
     Game.addEnemy(this);
   }
   
@@ -15,17 +19,18 @@ public class Enemy extends Mob {
     Game.removeEnemy(this);
   }
   
-  public void display() {
-    ellipseMode(RADIUS);
-    circle(getPos().x, getPos().y, size);
-  }
+  public abstract void display();
+  
   public void takeDamage(double dmg) {
     health -= dmg;
     if (health <= 0) {
+      Game.kills++;
+      Game.score += this.points;
       Game.removeMob(this);
     }
   }
-  public void updateAttack() {
-    
+  public boolean invincible() {
+    return health <= 0;
   }
+  public abstract void updateAttack();
 }
