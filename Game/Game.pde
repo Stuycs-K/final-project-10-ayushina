@@ -14,6 +14,7 @@ static int lastStateChange;
 static boolean gameWon;
 
 static int score;
+static int timeScore;
 static int lives;
 static int kills;
 static int lastDied;
@@ -73,22 +74,28 @@ void loadSounds() {
   pldead00 = new SoundFile(this, "pldead00.wav");
 }
 
-void setup() {  
-  loadImages();
-  loadSounds();
-  
+void newGame() { 
   gameState = "game";
   gameWon = false;
-  
-  size(1200, 900);
-  WIDTH = 700; //640x480
-  HEIGHT = 850;
-  windowPos = new PVector(50, 25);
+  gameStart = millis();
+  lastStateChange = gameStart;
   
   score = 0;
+  timeScore = 0;
   lives = 0;
   kills = 0;
   lastDied = -1;
+  
+  gameTime = 0;
+  deltaTime = 0;
+  
+  left = false;
+  down = false;
+  up = false;
+  right = false;
+  lastLeft = -1;
+  lastRight = -1;
+  focus = false;
   
   mobList = new ArrayList<Mob>();
   bulletList = new ArrayList<Bullet>();
@@ -98,8 +105,18 @@ void setup() {
   eNext = new ArrayList<Enemy>();
   
   chr = new Reimu(new PVector(600,800));
+}
+
+void setup() {  
+  loadImages();
+  loadSounds();
   
-  gameStart = millis();
+  size(1200, 900);
+  WIDTH = 700; //640x480
+  HEIGHT = 850;
+  windowPos = new PVector(50, 25);
+  
+  newGame();
 }
 
 void drawBorder() {
@@ -117,6 +134,7 @@ void drawBorder() {
   text("Score", windowPos.x + WIDTH + 25, 100);
   text(chr.getName(), windowPos.x + WIDTH + 25, 200);
   text("Kills", windowPos.x + WIDTH + 25, 300);
+  text("Time", windowPos.x + WIDTH + 25, 400);
   
   fill(255);
   textSize(48);
@@ -125,6 +143,13 @@ void drawBorder() {
     image(heart, windowPos.x + WIDTH + 150 + i * heart.width, 200 - heart.height);
   }
   text(kills, windowPos.x + WIDTH + 150, 300);
+  //fill(66,135,245);
+  //textSize(60);
+  //text(gameTime/1000, windowPos.x + WIDTH + 150 - 3, 400 + 4);
+  //textSize(48);
+  //fill(255);
+  //text(gameTime/1000, windowPos.x + WIDTH + 150, 400);
+  text(gameTime/1000, windowPos.x + WIDTH + 150, 400);
   
   fill(255);
   stroke(0);
@@ -146,10 +171,17 @@ void gameOverScreen() {
   textAlign(BASELINE);
 }
 
+void gameTime() {
+  deltaTime = millis() - gameStart - gameTime;
+  gameTime = millis() - gameStart;
+  
+  score += (gameTime - timeScore) / 50;
+  timeScore += ((gameTime - timeScore) / 50) * 50;
+}
+
 void draw() {  
   if (gameState == "game") {
-    deltaTime = millis() - gameTime;
-    gameTime = millis() - lastStateChange;
+    gameTime();
     
     background(90, 10, 10);
     
