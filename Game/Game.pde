@@ -142,7 +142,12 @@ void draw() {
   if (right) {
     vel.add(new PVector(1, 0));
   }
-  vel.normalize().mult(chr.moveSpeed);
+  if (focus) {
+    vel.normalize().mult(chr.focusSpeed);
+  }
+  else {
+    vel.normalize().mult(chr.moveSpeed);
+  }
   chr.setVelocity(vel);
   
   chr.updateAttack();
@@ -185,7 +190,7 @@ void keyPressed() {
       right = true;
     }
     if (keyCode == SHIFT) {
-      focused = true;
+      focus = true;
     }
   }
 }
@@ -205,7 +210,7 @@ void keyReleased() {
       right = false;
     }
     if (keyCode == SHIFT) {
-      focused = false;
+      focus = false;
     }
   }
 }

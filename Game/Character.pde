@@ -1,13 +1,15 @@
 public abstract class Character extends Mob {
   float moveSpeed;
+  float focusSpeed;
   int lastAttack;
   
   String name;
   
   
-  public Character(PVector pos, float siz, float speed, String name) {
+  public Character(PVector pos, float siz, float speed, float focus, String name) {
     super(pos, siz);
     moveSpeed = speed;
+    focusSpeed = focus;
     birth = millis();
     type = "character";
     this.name = name;
