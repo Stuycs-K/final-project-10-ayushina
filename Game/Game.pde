@@ -87,14 +87,18 @@ void loadSounds() {
   pldead00 = new SoundFile(this, "pldead00.wav");
 }
 
-void newGame(int time) {
-  if (time == 0) {
-    time = 10000;
+void newGame(int mode) {
+  if (mode == 0) {
+    int time = 10000;
     newGame();
     gameStart = millis() - time;
     lastStateChange = gameStart;
     gameTime = time;
     nextSpawn = 5;
+  }
+  else if (mode == 1) {
+    newGame();
+    lives = 8;
   }
 }
 
@@ -106,7 +110,7 @@ void newGame() {
   
   score = 0;
   timeScore = 0;
-  lives = 0;
+  lives = 3;
   kills = 0;
   lastDied = -1;
   
@@ -263,7 +267,7 @@ void resetMouse() {
 void draw() {  
   if (gameState == "start") {
     background(166,60,91);
-    float[] playButton = new float[] {width / 2 - 400, height / 2, 300, 100};
+    float[] playButton = new float[] {width / 2 - 400, height / 2, 400, 100};
     if (mouseOnButton(playButton)) {
       newGame();
       resetMouse();
@@ -276,13 +280,21 @@ void draw() {
     text("Click Play", width / 2, 300);
     textAlign(BASELINE);
     
-    //cheat
-    float[] skipButton = new float[] {width / 2 - 400, height / 2 + 300, 300, 100};
+    //cheat 1
+    float[] skipButton = new float[] {width / 2 - 400, height / 2 + 150, 400, 100};
     if (mouseOnButton(skipButton)) {
       newGame(0);
       resetMouse();
     }
     drawButton(skipButton, "Skip forward");
+    
+    //cheat 2
+    float[] livesButton = new float[] {width / 2 - 400, height / 2 + 300, 400, 100};
+    if (mouseOnButton(livesButton)) {
+      newGame(1);
+      resetMouse();
+    }
+    drawButton(livesButton, "More lives");
     
     rectMode(CORNER);
     fill(255);

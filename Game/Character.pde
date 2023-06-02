@@ -13,8 +13,6 @@ public abstract class Character extends Mob {
     birth = millis();
     type = "character";
     this.name = name;
-    
-    Game.lives = 3;
   }
   
   public abstract void display();
