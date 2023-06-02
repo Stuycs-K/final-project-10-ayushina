@@ -9,6 +9,9 @@ static ArrayList<Enemy> eNext;
 
 static boolean gameOver;
 
+static int score;
+static int lives;
+
 static int gameStart;
 int nextSpawn;
 
@@ -21,11 +24,18 @@ static int deltaTime;
 
 boolean left, down, up, right;
 
+PImage heart;
+
 void setup() {
+  heart = loadImage("heart.png");
+  
   size(1200, 900);
-  WIDTH = 800; //640x480
-  HEIGHT = 600;
-  windowPos = new PVector(50, 150);
+  WIDTH = 700; //640x480
+  HEIGHT = 850;
+  windowPos = new PVector(50, 25);
+  
+  score = 0;
+  lives = 0;
   
   mobList = new ArrayList<Mob>();
   bulletList = new ArrayList<Bullet>();
@@ -37,6 +47,31 @@ void setup() {
   chr = new Reimu(new PVector(600,800));
   
   gameStart = millis();
+}
+
+void drawBorder() {
+  fill(166,60,91);
+  stroke(166,60,91);
+  rectMode(CORNERS);
+  rect(0, 0, width, windowPos.y);
+  rect(0, 0, windowPos.x, height);
+  rect(windowPos.x + WIDTH, 0, width, height);
+  rect(0, windowPos.y + HEIGHT, width, height);
+  
+  rectMode(CORNER);
+  fill(220);
+  textSize(36);
+  text("Score", windowPos.x + WIDTH + 25, 100);
+  text(chr.getName(), windowPos.x + WIDTH + 25, 200);
+  fill(255);
+  textSize(48);
+  text(score, windowPos.x + WIDTH + 150, 100);
+  for (int i = 0; i < lives; i++) {
+    image(heart, windowPos.x + WIDTH + 150 + i * heart.width, 200 - heart.height);
+  }
+  
+  fill(255);
+  stroke(0);
 }
 
 void draw() {  
@@ -81,12 +116,16 @@ void draw() {
   mobList = new ArrayList<Mob>(mNext);
   bulletList = new ArrayList<Bullet>(bNext);
   enemyList = new ArrayList<Enemy>(eNext);
+  
+  
+  drawBorder();
 }
 
 void spawnEnemies() {
   int elapsed = millis() - gameStart;
   if (elapsed > 2000 && nextSpawn == 0) {
     new Nerd(new PVector(300,300), new PVector(500,500), 1000, 8000);
+    new Nerd(new PVector(400,300), new PVector(500,500), 1000, 8000);
     nextSpawn++;
   }
 }

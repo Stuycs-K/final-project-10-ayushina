@@ -1,11 +1,12 @@
 public class Reimu extends Character {
-  private static final float SPEED = 8.0;
-  private static final float SIZE = 5;
+  private static final float SPEED = 7.0;
+  private static final float SIZE = 8;
   private static final int COOLDOWN = 100;
   private static final double DAMAGE = 10;
+  private static final String NAME = "Reimu";
   
   public Reimu(PVector pos) {
-    super(pos, SIZE, SPEED);
+    super(pos, SIZE, SPEED, NAME);
   }
  
   public void display() {

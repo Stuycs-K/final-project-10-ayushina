@@ -2,23 +2,29 @@ public abstract class Character extends Mob {
   float moveSpeed;
   int lastAttack;
   
-  int lives;
+  String name;
   
-  public Character(PVector pos, float siz, float speed) {
+  
+  public Character(PVector pos, float siz, float speed, String name) {
     super(pos, siz);
     moveSpeed = speed;
     birth = millis();
     type = "character";
+    this.name = name;
     
-    lives = 3;
+    Game.lives = 3;
   }
   
   public abstract void display();
   public abstract void updateAttack();
   
+  public String getName() {
+    return name;
+  }
+  
   public void takeDamage() {
-    lives -= 1;
-    if (lives <= 0) {
+    Game.lives -= 1;
+    if (Game.lives <= 0) {
       Game.gameOver = true;
     }
   }
