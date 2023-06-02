@@ -8,6 +8,7 @@ static ArrayList<Enemy> enemyList;
 static ArrayList<Mob> mNext;
 static ArrayList<Bullet> bNext;
 static ArrayList<Enemy> eNext;
+static ArrayList<BossEnemy> currentBoss;
 
 static String gameState;
 static int lastStateChange;
@@ -89,16 +90,17 @@ void loadSounds() {
 
 void newGame(int mode) {
   if (mode == 0) {
-    int time = 10000;
+    int time = 30000;
     newGame();
     gameStart = millis() - time;
     lastStateChange = gameStart;
     gameTime = time;
-    nextSpawn = 5;
+    nextSpawn = 12;
+    lives = 99;
   }
   else if (mode == 1) {
     newGame();
-    lives = 8;
+    lives = 99;
   }
 }
 
@@ -110,7 +112,7 @@ void newGame() {
   
   score = 0;
   timeScore = 0;
-  lives = 3;
+  lives = 5;
   kills = 0;
   lastDied = -1;
   
@@ -132,6 +134,7 @@ void newGame() {
   mNext = new ArrayList<Mob>();
   bNext = new ArrayList<Bullet>();
   eNext = new ArrayList<Enemy>();
+  currentBoss = new ArrayList<BossEnemy>();
   
   chr = new Reimu(new PVector(600,800));
 }
@@ -286,7 +289,7 @@ void draw() {
       newGame(0);
       resetMouse();
     }
-    drawButton(skipButton, "Skip forward");
+    drawButton(skipButton, "Skip + Inf lives");
     
     //cheat 2
     float[] livesButton = new float[] {width / 2 - 400, height / 2 + 300, 400, 100};
@@ -294,7 +297,7 @@ void draw() {
       newGame(1);
       resetMouse();
     }
-    drawButton(livesButton, "More lives");
+    drawButton(livesButton, "Inf lives");
     
     rectMode(CORNER);
     fill(255);
@@ -316,7 +319,7 @@ void draw() {
     
     drawBorder();
     
-    if (gameTime > 30 * 1000) {// game length
+    if (gameTime > 33 * 1000 && currentBoss.size() == 0) {// game length
       gameOver(true);
     }
   }
@@ -421,6 +424,10 @@ void spawnEnemies() {
       new Book(new PVector(WIDTH/3, 300), randomDir, 50, 1000, 2);
     }
   }
+  if (gameTime > 31000 && nextSpawn == 12) {
+    new Teacher();
+    nextSpawn++;
+  }
 }
 
 void mousePressed() {
@@ -512,4 +519,12 @@ static void addBullet(Bullet b) {
 
 static boolean removeBullet(Bullet b) {
   return bNext.remove(b);
+}
+
+static void addBoss(BossEnemy e) {
+  currentBoss.add(e);
+}
+
+static boolean removeBoss(BossEnemy e) {
+  return currentBoss.remove(e);
 }

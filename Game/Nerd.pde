@@ -2,7 +2,6 @@ public class Nerd extends Enemy {
   private static final float SIZE = 20;
   private static final int SCORE = 5000;
   
-  private PVector targetPos;
   private boolean entering;
   private boolean leaving;
   private int delay;

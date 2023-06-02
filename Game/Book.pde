@@ -2,7 +2,6 @@ public class Book extends Enemy {
   private static final float SIZE = 30;
   private static final int SCORE = 6900;
   
-  private PVector targetPos;
   private boolean entering;
   private boolean leaving;
   private int delay;
