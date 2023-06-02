@@ -5,6 +5,7 @@ Group members: Arslan Ayushin
 ## Overview
 This is a bullet hell game in Processing inspired by Touhou. The player moves around shooting enemies while dodging enemy attack patterns. The player wins after killing the boss enemy and loses if they get hit too many times.
 ## Instructions
+make sure you have the Processing sound library
 open the project in Processing and run it
 click the Play button
 move with arrow keys
