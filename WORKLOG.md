@@ -4,21 +4,48 @@
 
 ### 5/22/23
 
-- Added Character and child of Character class
-- Movement with arrow keys and display
+- Added Character class with position and velocity
+- Added child of Character class Reimu and made Character abstract
+- Movement with arrow keys, set velocity based on which keys are down
+- display() character
 
 ### 5/23/23
 
-- added bullet and enemy class (forgot to add bullet class to commit in class)
-- mob class parent of character and enemy
+- added bullet and enemy class (forgot to add this file to commit in class)
+- added variables to track the time spawned
+- Mob/moveable class which is parent of both character and enemy (revision to prototype)
 
+### 5/24/23
 
-## GROUP MEMBER 2
+- added bullet display()
+- added a bulletList to move all bullets every frame
+- character spawns moving bullets every 100 ms timer
+- merged wip branch to main
+- added a list of all mobs and all bullets but theres an error
 
-### date x
+### 5/25/23
 
-info
+ - fixed mobList by initializing it
+ - copy of mobList for changes to fix error when changing while looping through a list
+ - spawn a default enemy at start of game
+ - bullets check distance and register hit on enemy
+ - bullets do damage and kill enemy
+ - fixed getPos() to return copy of pvector
+ - merged wip branch to main
 
-### date y
+ ### 5/26/23
 
-info
+ - velocity is multiplied by the change in time
+ - spawnEnemies() method that adds enemies based on game time
+ - enemy is abstract class
+
+ ### 5/30/23
+ 
+ - bullets owned by enemies kill player
+ - first enemy attack pattern
+ - nerd enemy attacks every 2 seconds and despawns after a few seconds
+
+ ### 5/31/23
+
+ - fixed stayOnScreen()
+ - made game area smaller and in the middle of the processing window
