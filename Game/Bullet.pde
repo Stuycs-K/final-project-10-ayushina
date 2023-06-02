@@ -10,22 +10,23 @@ public class Bullet extends Mob {
     Game.addBullet(this);
   }
   
-  public Bullet(Mob own, PVector pos, PVector vel, float siz) {
+  public Bullet(Mob own, PVector pos, PVector vel, float siz, int[] bulletColor) {
     super(pos, siz);
     setVelocity(vel);
     type = "bullet";
     owner = own;
+    this.bulletColor = bulletColor;
     Game.addBullet(this);
   }
   
-  public Bullet(Mob own, PVector pos, PVector vel, float siz, double dmg, int[] bulletColor) {
+  public Bullet(Mob own, PVector pos, PVector vel, float siz, int[] bulletColor, double dmg) {
     super(pos, siz);
     setVelocity(vel);
     type = "bullet";
     owner = own;
     damage = dmg;
-    Game.addBullet(this);
     this.bulletColor = bulletColor;
+    Game.addBullet(this);
   }
   
   public void destroy() {
@@ -47,6 +48,9 @@ public class Bullet extends Mob {
     if (owner.type == "character") {
       stroke(0, 0);
       fill(bulletColor[0], bulletColor[1], bulletColor[2], 50);
+    }
+    else {
+      stroke(bulletColor[0], bulletColor[1], bulletColor[2]);
     }
     circle(getDisplayPos().x, getDisplayPos().y, size);
     stroke(0);

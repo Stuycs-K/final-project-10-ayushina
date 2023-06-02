@@ -112,7 +112,7 @@ void draw() {
   deltaTime = millis() - gameTime;
   gameTime = millis();
   
-  background(255);
+  background(90, 10, 10);
   
   spawnEnemies();
   

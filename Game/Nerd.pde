@@ -1,6 +1,6 @@
 public class Nerd extends Enemy {
   private static final float SIZE = 20;
-  private static final double HP = 100;
+  private static final double HP = 30;
   
   private PVector targetPos;
   private PVector startPos;
@@ -34,7 +34,7 @@ public class Nerd extends Enemy {
         if (elapsed >= 0 && elapsed < 800 && nextAttack == 0) {
           for (int i = 0; i < 5; i++) {
             PVector bulletVel = Game.chr.getPos().sub(getPos()).normalize().mult(6 + i * 2);
-            new Bullet(this, getPos(), bulletVel, 10);
+            new Bullet(this, getPos(), bulletVel, 15, new int[] {94, 12, 94});
           }
           nextAttack = (nextAttack + 1) % 2;
         }

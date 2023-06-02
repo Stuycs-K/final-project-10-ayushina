@@ -3,7 +3,7 @@ public class Reimu extends Character {
   private static final float FOCUS_SPEED = 5.0;
   private static final float SIZE = 7;
   private static final int COOLDOWN = 100;
-  private static final double DAMAGE = 10;
+  private static final double DAMAGE = 1;
   private static final String NAME = "Reimu";
   
   public Reimu(PVector pos) {
@@ -46,10 +46,23 @@ public class Reimu extends Character {
   
   public void updateAttack() {
     if (millis() - lastAttack > COOLDOWN) {
-      PVector bulletVel = new PVector(0, -30);
-      float bulletSize = 20;
+      float bulletSize = 30;
       int[] bulletColor = new int[] {245, 167, 66};
-      new Bullet(this, getPos(), bulletVel, bulletSize, DAMAGE, bulletColor);
+      
+      for (int i = 0; i < 5; i++) {
+        PVector bulletPos = getPos();
+        bulletPos.y -= 10;
+        PVector bulletVel = new PVector(0, -20);
+        if (focus) {
+          bulletVel.rotate(radians(-2 + i * 1));
+          bulletPos.x = getPos().x - 10 + i * 5;
+        }
+        else {
+          bulletVel.rotate(radians(-14 + i * 7));
+          bulletPos.x = getPos().x - 20 + i * 10;
+        }
+        new Bullet(this, bulletPos, bulletVel, bulletSize, bulletColor, DAMAGE);
+      }
       lastAttack = millis();
     }
   }
