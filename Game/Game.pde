@@ -45,6 +45,7 @@ static PImage reimuLeft[];
 static PImage reimuRight[];
 
 static PImage nerd;
+static PImage book;
 
 private PImage flipImage(PImage img) {
   PImage p = img.copy();
@@ -76,12 +77,25 @@ void loadImages() {
   
   //nerd
   nerd = loadImage("nerd.png");
+  //book
+  book = loadImage("book.png");
 }
 
 static SoundFile pldead00;
 
 void loadSounds() {
   pldead00 = new SoundFile(this, "pldead00.wav");
+}
+
+void newGame(int time) {
+  if (time == 0) {
+    time = 10000;
+    newGame();
+    gameStart = millis() - time;
+    lastStateChange = gameStart;
+    gameTime = time;
+    nextSpawn = 5;
+  }
 }
 
 void newGame() { 
@@ -204,20 +218,11 @@ void gameOverScreen() {
   
   //replay button
   float[] playButton = new float[] {windowPos.x + WIDTH / 2, windowPos.y + 500, 400, 100};
-  if (!mousePressed && inRectCenter(lastMouseDown, playButton) && inRectCenter(lastMouseUp, playButton)) {
+  if (mouseOnButton(playButton)) {
     newGame();
+    resetMouse();
   }
-  rectMode(CENTER);
-  fill(255,0);
-  stroke(12, 220, 19);
-  strokeWeight(6);
-  rect(playButton[0], playButton[1], playButton[2], playButton[3]);
-  
-  fill(250, 157, 157);
-  textSize(64);
-  textAlign(CENTER);
-  text("Play Again?", playButton[0], playButton[1] + playButton[3] / 4);
-  textAlign(BASELINE);
+  drawButton(playButton, "Play Again?");
 }
 
 void gameTime() {
@@ -228,28 +233,56 @@ void gameTime() {
   timeScore += ((gameTime - timeScore) / 50) * 50;
 }
 
-void draw() {  
-  if (gameState == "start") {
-    background(166,60,91);
-    float[] playButton = new float[] {width / 2 - 400, height / 2, 300, 100};
-    if (!mousePressed && inRectCenter(lastMouseDown, playButton) && inRectCenter(lastMouseUp, playButton)) {
-      newGame();
-    }
+void drawButton(float[] button, String text) {
     rectMode(CENTER);
     fill(255,0);
     stroke(12, 220, 19);
     strokeWeight(6);
-    rect(playButton[0], playButton[1], playButton[2], playButton[3]);
+    rect(button[0], button[1], button[2], button[3]);
     
     fill(250, 157, 157);
     textSize(64);
     textAlign(CENTER);
-    text("Play", playButton[0], playButton[1] + playButton[3] / 4);
+    text(text, button[0], button[1] + button[3] / 4);
     
+    textAlign(BASELINE);
+    fill(255);
+    stroke(0);
+    rectMode(CORNER);
+}
+
+boolean mouseOnButton(float[] button) {
+  return !mousePressed && inRectCenter(lastMouseDown, button) && inRectCenter(lastMouseUp, button);
+}
+
+void resetMouse() {
+  lastMouseUp = new float[]{};
+  lastMouseDown = new float[]{};
+}
+
+void draw() {  
+  if (gameState == "start") {
+    background(166,60,91);
+    float[] playButton = new float[] {width / 2 - 400, height / 2, 300, 100};
+    if (mouseOnButton(playButton)) {
+      newGame();
+      resetMouse();
+    }
+    drawButton(playButton, "Play");
+    
+    textAlign(CENTER);
     textSize(96);
     fill(255);
     text("Click Play", width / 2, 300);
     textAlign(BASELINE);
+    
+    //cheat
+    float[] skipButton = new float[] {width / 2 - 400, height / 2 + 300, 300, 100};
+    if (mouseOnButton(skipButton)) {
+      newGame(0);
+      resetMouse();
+    }
+    drawButton(skipButton, "Skip forward");
     
     rectMode(CORNER);
     fill(255);
@@ -270,6 +303,10 @@ void draw() {
     enemyList = new ArrayList<Enemy>(eNext);
     
     drawBorder();
+    
+    if (gameTime > 30 * 1000) {// game length
+      gameOver(true);
+    }
   }
   else if (gameState == "gameOver") {
     background(90, 10, 10);
@@ -285,6 +322,10 @@ void gameOver(boolean won) {
   gameState = "gameOver";
   lastStateChange = millis();
   gameWon = won;
+  
+  if (won) {
+    score += 20000;
+  }
   
   mobList = new ArrayList<Mob>();
   bulletList = new ArrayList<Bullet>();
@@ -331,10 +372,42 @@ void updateMobs() {
 }
 
 void spawnEnemies() {
-  if (gameTime > 2000 && nextSpawn == 0) {
-    new Nerd(new PVector(300,300), new PVector(500,500), 1000, 8000);
-    new Nerd(new PVector(400,300), new PVector(500,500), 1000, 8000);
+  if (gameTime > 2000 && nextSpawn == 0) {//2-10
+    new Nerd(new PVector(WIDTH/2, 200), 100, 1000, 8000); //3 attacks
     nextSpawn++;
+  }
+  for (int i = 0; i < 4; i++) {
+    if (gameTime > 8000 + i * 333 && nextSpawn == 1 + i) {
+      new Nerd(new PVector(WIDTH/2 - 150 + i * 100,300), 25, 1000, 4000); //1 attack
+      nextSpawn++;
+    }
+  }
+  if (gameTime > 10000 && nextSpawn == 5) {
+    new Book(new PVector(WIDTH/2, 100), "left", 50, 1000, 4); //4 shots
+    nextSpawn++;
+  }
+  if (gameTime > 13000 && nextSpawn == 6) {
+    nextSpawn++;
+    new Book(new PVector(300, 200), "right", 25, 1500, 2);
+    new Book(new PVector(WIDTH-300, 200), "left", 25, 1500, 2);
+    new Nerd(new PVector(WIDTH/2, 100), 50, 500, 4000); //1 attack;
+  }
+  if (gameTime > 18000 && nextSpawn == 7) {
+    nextSpawn++;
+    new Nerd(new PVector(WIDTH/2, 150), 200, 1000, 10000); //4 attacks;
+  }
+  for (int i = 0; i < 4; i++) {
+    if (gameTime > 20000 + i * 2000 && nextSpawn == 8 + i) {
+      nextSpawn++;
+      String randomDir;
+      if (random(2) < 1) {
+        randomDir = "left";
+      }
+      else {
+        randomDir = "right";
+      }
+      new Book(new PVector(WIDTH/3, 300), randomDir, 50, 1000, 2);
+    }
   }
 }
 

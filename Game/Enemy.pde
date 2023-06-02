@@ -1,6 +1,7 @@
 public abstract class Enemy extends Mob {
   double health;
   int points;
+  int nextAttack;
   
   public Enemy(PVector pos, float siz, double hp, int points) {
     super(pos, siz);
