@@ -23,24 +23,40 @@ static int gameTime;
 static int deltaTime;
 
 static boolean left, down, up, right;
+static int lastLeft, lastRight;
+static boolean focus;
 
 static PImage heart;
 
 static PImage reimuStanding[];
-static PImage reimuMoving[];
+static PImage reimuLeft[];
+static PImage reimuRight[];
+
+private PImage flipImage(PImage img) {
+  PImage p = img.copy();
+  for (int r = 0; r < p.height; r++) {
+    for (int c = 0; c < p.width; c++) {
+      p.set(c, r, img.get(p.width - 1 - c, r));
+    }
+  }
+  return p;
+}
 
 void loadImages() {
   heart = loadImage("heart.png");
   
   PImage reimuSprites = loadImage("reimu-sprites.png");
-  reimuSprites.resize(512,512);
   reimuStanding = new PImage[4];
   for(int i = 0; i < 4; i++) {
     reimuStanding[i] = reimuSprites.get(i * 64, 0, 64, 96);
   }
-  reimuMoving = new PImage[7];
+  reimuLeft = new PImage[7];
   for (int i = 0; i < 7; i++) {
-    reimuMoving[i] = reimuSprites.get(i * 64, 96, 64, 96);
+    reimuLeft[i] = reimuSprites.get(i * 64, 96, 64, 96);
+  }
+  reimuRight = new PImage[7];
+  for (int i = 0; i < 7; i++) {
+    reimuRight[i] = flipImage(reimuSprites.get(i * 64, 96, 64, 96));
   }
 }
 
@@ -151,6 +167,9 @@ void spawnEnemies() {
 void keyPressed() {
   if (key == CODED) {
     if (keyCode == LEFT) {
+      if (left == false) {
+        lastLeft = millis();
+      }
       left = true;
     }
     if (keyCode == DOWN) {
@@ -160,7 +179,13 @@ void keyPressed() {
       up = true;
     }
     if (keyCode == RIGHT) {
+      if (right == false) {
+        lastRight = millis();
+      }
       right = true;
+    }
+    if (keyCode == SHIFT) {
+      focused = true;
     }
   }
 }
@@ -178,6 +203,9 @@ void keyReleased() {
     }
     if (keyCode == RIGHT) {
       right = false;
+    }
+    if (keyCode == SHIFT) {
+      focused = false;
     }
   }
 }

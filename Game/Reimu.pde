@@ -10,9 +10,29 @@ public class Reimu extends Character {
   }
  
   public void display() {
-    int elapsed = millis() - birth;
     imageMode(CENTER);
-    image(Game.reimuStanding[(elapsed % 400)/100], getDisplayPos().x, getDisplayPos().y);
+    if (Game.left && !Game.right) {
+      int elapsed = millis() - Game.lastLeft;
+      if (elapsed < 300) {
+        image(Game.reimuLeft[elapsed/50], getDisplayPos().x, getDisplayPos().y);
+      }
+      else {
+        image(Game.reimuLeft[6], getDisplayPos().x, getDisplayPos().y);
+      }
+    }
+    else if (Game.right && !Game.left) {
+      int elapsed = millis() - Game.lastRight;
+      if (elapsed < 300) {
+        image(Game.reimuRight[elapsed/50], getDisplayPos().x, getDisplayPos().y);
+      }
+      else {
+        image(Game.reimuRight[6], getDisplayPos().x, getDisplayPos().y);
+      }
+    }
+    else {
+      int elapsed = millis() - birth;
+      image(Game.reimuStanding[(elapsed % 400)/100], getDisplayPos().x, getDisplayPos().y);
+    }
     imageMode(CORNER);
   }
   
