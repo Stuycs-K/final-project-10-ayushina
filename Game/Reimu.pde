@@ -10,8 +10,10 @@ public class Reimu extends Character {
   }
  
   public void display() {
-    ellipseMode(RADIUS);
-    circle(getDisplayPos().x, getDisplayPos().y, size);
+    int elapsed = millis() - birth;
+    imageMode(CENTER);
+    image(Game.reimuStanding[(elapsed % 400)/100], getDisplayPos().x, getDisplayPos().y);
+    imageMode(CORNER);
   }
   
   public void updateAttack() {

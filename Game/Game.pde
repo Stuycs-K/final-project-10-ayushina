@@ -22,12 +22,30 @@ static int HEIGHT;
 static int gameTime;
 static int deltaTime;
 
-boolean left, down, up, right;
+static boolean left, down, up, right;
 
-PImage heart;
+static PImage heart;
 
-void setup() {
+static PImage reimuStanding[];
+static PImage reimuMoving[];
+
+void loadImages() {
   heart = loadImage("heart.png");
+  
+  PImage reimuSprites = loadImage("reimu-sprites.png");
+  reimuSprites.resize(512,512);
+  reimuStanding = new PImage[4];
+  for(int i = 0; i < 4; i++) {
+    reimuStanding[i] = reimuSprites.get(i * 64, 0, 64, 96);
+  }
+  reimuMoving = new PImage[7];
+  for (int i = 0; i < 7; i++) {
+    reimuMoving[i] = reimuSprites.get(i * 64, 96, 64, 96);
+  }
+}
+
+void setup() {  
+  loadImages();
   
   size(1200, 900);
   WIDTH = 700; //640x480
