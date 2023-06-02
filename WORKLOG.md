@@ -43,9 +43,28 @@
  
  - bullets owned by enemies kill player
  - first enemy attack pattern
- - nerd enemy attacks every 2 seconds and despawns after a few seconds
+ - nerd enemy attacks every 2 seconds
+ - enemey moves off screen and despawns after a few seconds
 
  ### 5/31/23
 
  - fixed stayOnScreen()
  - made game area smaller and in the middle of the processing window
+
+ ### 6/1/23
+
+ - drawBorder() draws the background, score, lives, kills outside of the game window
+ - added character sprite animations with PImage
+    - flipImage() based on which arrow key left/right was held last
+    - moving animation
+    - death animation
+ - character shoots bullets in a cone (different angles)
+ - imported sound library for death sound
+ - draw() is different based on game state
+    - gameOver state with game over screen and play again button
+    - start state with play button
+ - moved code from setup to newGame()
+ - new enemy Book
+ - new BossEnemy Teacher with 2 phases
+    - one attack pattern per phase
+
