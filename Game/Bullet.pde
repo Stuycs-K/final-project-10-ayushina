@@ -60,14 +60,14 @@ public class Bullet extends Mob {
   public void registerHit() {
     if (owner.type == "character") {
       for (Enemy e : Game.enemyList) {
-        if (getPos().dist(e.getPos()) <= getSize() + e.getSize()) {
+        if (!e.invincible() && getPos().dist(e.getPos()) <= getSize() + e.getSize()) {
           e.takeDamage(damage);
           destroy();
         }
       }
     }
     else {
-      if (getPos().dist(Game.chr.getPos()) <= getSize() + Game.chr.getSize()) {
+      if (!Game.chr.invincible() && getPos().dist(Game.chr.getPos()) <= getSize() + Game.chr.getSize()) {
         Game.chr.takeDamage();
         destroy();
       }

@@ -11,6 +11,10 @@ public class Reimu extends Character {
   }
  
   public void display() {
+    int deathElapsed = millis() - Game.lastDied;
+    if (Game.lastDied != -1 && deathElapsed <= Game.DEATH_TIME) {
+      tint(255, sq(deathElapsed / (float) Game.DEATH_TIME) * 255);
+    }
     imageMode(CENTER);
     if (Game.left && !Game.right) {
       int elapsed = millis() - Game.lastLeft;
@@ -35,6 +39,7 @@ public class Reimu extends Character {
       image(Game.reimuStanding[(elapsed % 400)/100], getDisplayPos().x, getDisplayPos().y);
     }
     imageMode(CORNER);
+    noTint();
     
     if (Game.focus == true) {
       ellipseMode(RADIUS);

@@ -1,3 +1,5 @@
+import processing.sound.*;
+
 static Character chr;
 
 static ArrayList<Mob> mobList;
@@ -11,6 +13,8 @@ static boolean gameOver;
 
 static int score;
 static int lives;
+static int lastDied;
+static final int DEATH_TIME = 2000;
 
 static int gameStart;
 int nextSpawn;
@@ -60,8 +64,15 @@ void loadImages() {
   }
 }
 
+static SoundFile pldead00;
+
+void loadSounds() {
+  pldead00 = new SoundFile(this, "pldead00.wav");
+}
+
 void setup() {  
   loadImages();
+  loadSounds();
   
   size(1200, 900);
   WIDTH = 700; //640x480
@@ -70,6 +81,7 @@ void setup() {
   
   score = 0;
   lives = 0;
+  lastDied = -1;
   
   mobList = new ArrayList<Mob>();
   bulletList = new ArrayList<Bullet>();
@@ -115,20 +127,17 @@ void draw() {
   background(90, 10, 10);
   
   spawnEnemies();
+  updateMobs();
+  updateCharacter();
+
+  mobList = new ArrayList<Mob>(mNext);
+  bulletList = new ArrayList<Bullet>(bNext);
+  enemyList = new ArrayList<Enemy>(eNext);
   
-  for (Mob m : mobList) {
-    m.updatePos();
-    m.display();
-  }
-  for (int i = 0; i < bulletList.size(); i++) {
-    Bullet b = bulletList.get(i);
-    b.registerHit();
-    b.deleteOffScreen();
-  }
-  for (Enemy e : enemyList) {
-    e.updateAttack();
-  }
-  
+  drawBorder();
+}
+
+void updateCharacter() {
   PVector vel = new PVector(0,0);
   if (left) {
     vel.add(new PVector(-1, 0));
@@ -149,15 +158,22 @@ void draw() {
     vel.normalize().mult(chr.moveSpeed);
   }
   chr.setVelocity(vel);
-  
   chr.updateAttack();
-  
-  mobList = new ArrayList<Mob>(mNext);
-  bulletList = new ArrayList<Bullet>(bNext);
-  enemyList = new ArrayList<Enemy>(eNext);
-  
-  
-  drawBorder();
+}
+
+void updateMobs() {
+  for (Mob m : mobList) {
+    m.updatePos();
+    m.display();
+  }
+  for (int i = 0; i < bulletList.size(); i++) {
+    Bullet b = bulletList.get(i);
+    b.registerHit();
+    b.deleteOffScreen();
+  }
+  for (Enemy e : enemyList) {
+    e.updateAttack();
+  }
 }
 
 void spawnEnemies() {

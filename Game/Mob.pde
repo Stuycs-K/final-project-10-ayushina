@@ -41,4 +41,7 @@ public abstract class Mob {
   public float getSize() {
     return size;
   }
+  public boolean invincible() {
+    return false;
+  }
 }

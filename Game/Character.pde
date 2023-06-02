@@ -25,9 +25,19 @@ public abstract class Character extends Mob {
   }
   
   public void takeDamage() {
+    Game.lastDied = millis();
     Game.lives -= 1;
+    Game.pldead00.play();
     if (Game.lives <= 0) {
       Game.gameOver = true;
+    }
+  }
+  public boolean invincible() {
+    if (millis() - Game.lastDied <= Game.DEATH_TIME) {
+      return true;
+    }
+    else {
+      return false;
     }
   }
   
