@@ -30,6 +30,10 @@ static int HEIGHT;
 static int gameTime;
 static int deltaTime;
 
+static int[] lastMouseUp;
+static int[] lastMouseDown;
+
+
 static boolean left, down, up, right;
 static int lastLeft, lastRight;
 static boolean focus;
@@ -107,6 +111,24 @@ void newGame() {
   chr = new Reimu(new PVector(600,800));
 }
 
+boolean inRectCenter(int[] coords, int[] rect) {
+  if (coords.length != 2) {
+    return false;
+  }
+  int x = coords[0];
+  int y = coords[1];
+  int rectX = rect[0];
+  int rectY = rect[1];
+  int rectWidth = rect[2];
+  int rectHeight = rect[3];
+  
+  int left = rectX - rectWidth/2;
+  int right = rectX + rectWidth/2;
+  int top = rectY - rectHeight/2;
+  int bottom = rectY + rectHeight/2;
+  return x >= left && x <= right && y >= top && y <= bottom;
+}
+
 void setup() {  
   loadImages();
   loadSounds();
@@ -116,7 +138,10 @@ void setup() {
   HEIGHT = 850;
   windowPos = new PVector(50, 25);
   
-  newGame();
+  lastMouseUp = new int[]{};
+  lastMouseDown = new int[]{};
+  
+  gameState = "start";
 }
 
 void drawBorder() {
@@ -159,10 +184,10 @@ void gameOverScreen() {
   textSize(64);
   String txt;
   if (gameWon) {
-    txt = "You Win!";
+    txt = "You Won!";
   }
   else {
-    txt = "You Lose!";
+    txt = "You Died!";
   }
   textAlign(CENTER);
   text(txt, windowPos.x + WIDTH / 2, windowPos.y + 100);
@@ -180,7 +205,34 @@ void gameTime() {
 }
 
 void draw() {  
-  if (gameState == "game") {
+  if (gameState == "start") {
+    background(166,60,91);
+    int[] playButton = new int[] {width / 2 - 400, height / 2, 300, 100};
+    if (!mousePressed && inRectCenter(lastMouseDown, playButton) && inRectCenter(lastMouseUp, playButton)) {
+      newGame();
+    }
+    rectMode(CENTER);
+    fill(255,0);
+    stroke(12, 220, 19);
+    strokeWeight(6);
+    rect(playButton[0], playButton[1], playButton[2], playButton[3]);
+    
+    fill(250, 157, 157);
+    textSize(64);
+    textAlign(CENTER);
+    text("Play", playButton[0], playButton[1] + playButton[3] / 4);
+    
+    textSize(96);
+    fill(255);
+    text("Click Play", width / 2, 300);
+    textAlign(BASELINE);
+    
+    rectMode(CORNER);
+    fill(255);
+    strokeWeight(4);
+    stroke(0);
+  }
+  else if (gameState == "game") {
     gameTime();
     
     background(90, 10, 10);
@@ -261,6 +313,21 @@ void spawnEnemies() {
     new Nerd(new PVector(400,300), new PVector(500,500), 1000, 8000);
     nextSpawn++;
   }
+}
+
+void mousePressed() {
+  if (lastMouseDown.length == 0) {
+    lastMouseDown = new int[2];
+  }
+  lastMouseDown[0] = mouseX;
+  lastMouseDown[1] = mouseY;
+}
+void mouseReleased() {
+  if (lastMouseUp.length == 0) {
+    lastMouseUp = new int[2];
+  }
+  lastMouseUp[0] = mouseX;
+  lastMouseUp[1] = mouseY;
 }
 
 void keyPressed() {

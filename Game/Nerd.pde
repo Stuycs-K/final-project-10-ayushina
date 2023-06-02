@@ -18,6 +18,7 @@ public class Nerd extends Enemy {
   
   public void display() {
     fill(200, 50, 50);
+    stroke(255);
     ellipseMode(RADIUS);
     circle(getDisplayPos().x, getDisplayPos().y, size);
     fill(255);
