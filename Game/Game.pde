@@ -223,14 +223,15 @@ void drawBorder() {
     }
     double percent = b.health / b.maxHealth;
     rect(10, 10, (float) percent * WIDTH + 20, 10);
+    
+    fill(66,135,245);
+    textSize(60);
+    text((b.timeOut-(millis()-b.phaseStart))/1000, windowPos.x + WIDTH - 60, 70);
+    textSize(48);
+    fill(255);
+    text((b.timeOut-(millis()-b.phaseStart))/1000, windowPos.x + WIDTH - 60, 70);
   }
   text(kills, windowPos.x + WIDTH + 150, 400);
-  //fill(66,135,245);
-  //textSize(60);
-  //text(gameTime/1000, windowPos.x + WIDTH + 150 - 3, 400 + 4);
-  //textSize(48);
-  //fill(255);
-  //text(gameTime/1000, windowPos.x + WIDTH + 150, 400);
   text(gameTime/1000, windowPos.x + WIDTH + 150, 500);
   
   fill(255);
