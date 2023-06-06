@@ -68,3 +68,10 @@
  - new BossEnemy Teacher with 2 phases
     - one attack pattern per phase
 
+### 6/5/23
+
+ - boss changes phase after 30 second timeout if not killed
+ - draw time left before time out
+ - give points for
+    - killing boss phase before timeout
+    - dealing damage to enemies
