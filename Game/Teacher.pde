@@ -1,6 +1,6 @@
 public class Teacher extends BossEnemy{
   private static final float SIZE = 30;
-  private static final int SCORE = 1000;
+  private static final int SCORE = 10000;
   private static final int PHASES = 2;
   private static final double HP = 500;
   
@@ -27,7 +27,7 @@ public class Teacher extends BossEnemy{
   public void updateAttack() {
     int elapsed = millis() - phaseStart;
     if (elapsed > timeOut) {
-      nextPhase();
+      nextPhase(false);
     }
     
     if (phase >= maxPhases) {

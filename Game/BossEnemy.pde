@@ -22,24 +22,28 @@ public abstract class BossEnemy extends Enemy {
     Game.removeBoss(this);
   }
   
-  public void nextPhase() {
+  public void nextPhase(boolean givePoints) {
     phase++;
     phaseStart = millis();
     setVelocity(new PVector(0,0));
     setPos(spawn);
     nextAttack = 0;
     health = maxHealth;
+    
+    if (givePoints) {
+      Game.score += this.points;
+    }
     if (phase >= maxPhases) {
       Game.kills++;
-      Game.score += this.points;
       Game.removeMob(this);
     }
   }
   
   public void takeDamage(double dmg) {
     health -= dmg;
+    Game.score += dmg;
     if (health <= 0) {
-      nextPhase();
+      nextPhase(true);
     }
   }
 }
