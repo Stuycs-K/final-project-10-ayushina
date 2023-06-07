@@ -3,6 +3,9 @@ public class Bullet extends Mob {
   double damage;
   int[] bulletColor;
   
+  boolean homing;
+  PVector homingTarget;
+  
   public Bullet(Mob own) {
     super(new PVector(0, 0), 10);
     type = "bullet";
@@ -27,6 +30,16 @@ public class Bullet extends Mob {
     damage = dmg;
     this.bulletColor = bulletColor;
     Game.addBullet(this);
+  }
+  
+  public void updatePos() {
+    if (homing) {
+      PVector vel = getVelocity();
+      float mag = vel.mag();
+      vel.normalize().add((homingTarget.sub(getPos())).normalize()).normalize().mult(mag);
+      setVelocity(vel);
+    }
+    super.updatePos();
   }
   
   public void destroy() {
