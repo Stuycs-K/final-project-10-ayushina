@@ -65,6 +65,7 @@ public class Reimu extends Character {
     if (millis() - lastAttack > COOLDOWN) {
       float bulletSize = 30;
       int[] bulletColor = new int[] {245, 167, 66};
+      int[] homingColor = new int[] {66, 135, 245};
       
       for (int i = 0; i < 5; i++) {
         PVector bulletPos = getPos();
@@ -82,7 +83,7 @@ public class Reimu extends Character {
           new Bullet(this, bulletPos, bulletVel, bulletSize, bulletColor, false, DAMAGE);
         }
         else {
-          new Bullet(this, bulletPos, bulletVel, bulletSize, bulletColor, true, DAMAGE);
+          new Bullet(this, bulletPos, bulletVel, bulletSize * 2 / 3, homingColor, true, DAMAGE);
         }
         
       }
