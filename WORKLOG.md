@@ -75,3 +75,10 @@
  - give points for
     - killing boss phase before timeout
     - dealing damage to enemies
+
+### 6/6/23
+
+ - character plays reversed moving animation after letting go of left/right
+ - added new homing bullets
+    - reimu character shoots homing bullets
+    - homing bullets find and move towards nearest enemy
