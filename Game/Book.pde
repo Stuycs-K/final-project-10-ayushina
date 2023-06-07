@@ -1,6 +1,6 @@
 public class Book extends Enemy {
   private static final float SIZE = 30;
-  private static final int SCORE = 6900;
+  private static final int SCORE = 690;
   
   private boolean entering;
   private boolean leaving;

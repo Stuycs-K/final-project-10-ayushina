@@ -1,6 +1,6 @@
 public class Nerd extends Enemy {
   private static final float SIZE = 20;
-  private static final int SCORE = 5000;
+  private static final int SCORE = 500;
   
   private boolean entering;
   private boolean leaving;

@@ -16,8 +16,14 @@ public class Reimu extends Character {
       tint(255, sq(deathElapsed / (float) Game.DEATH_TIME) * 255);
     }
     imageMode(CENTER);
-    if (Game.left && !Game.right) {
-      int elapsed = millis() - Game.lastLeft;
+    if ((Game.left || millis() - Game.lastLeftUp < 300) && !Game.right) {
+      int elapsed;
+      if (Game.left) {
+        elapsed = millis() - Game.lastLeft;
+      }
+      else {
+        elapsed = 300 - (millis() - Game.lastLeftUp);
+      }
       if (elapsed < 300) {
         image(Game.reimuLeft[elapsed/50], getDisplayPos().x, getDisplayPos().y);
       }
@@ -25,8 +31,14 @@ public class Reimu extends Character {
         image(Game.reimuLeft[6], getDisplayPos().x, getDisplayPos().y);
       }
     }
-    else if (Game.right && !Game.left) {
-      int elapsed = millis() - Game.lastRight;
+    else if ((Game.right || millis() - Game.lastRightUp < 300) && !Game.left) {
+      int elapsed;
+      if (Game.right) {
+        elapsed = millis() - Game.lastRight;
+      }
+      else {
+        elapsed = 300 - (millis() - Game.lastRightUp);
+      }
       if (elapsed < 300) {
         image(Game.reimuRight[elapsed/50], getDisplayPos().x, getDisplayPos().y);
       }

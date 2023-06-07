@@ -14,7 +14,7 @@ public class Teacher extends BossEnemy{
     
     this.spawn = new PVector(WIDTH/2, 100);
     targetPos = spawn.copy();    
-    delay = 2000;
+    delay = 6000;
     lastMove = -1;
   }
   

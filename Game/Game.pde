@@ -14,6 +14,10 @@ static String gameState;
 static int lastStateChange;
 static boolean gameWon;
 
+final static String start = "start";
+final static String game = "game";
+final static String gameOver = "gameOver";
+
 static int score;
 static int timeScore;
 static int lives;
@@ -37,6 +41,7 @@ static float[] lastMouseDown;
 
 static boolean left, down, up, right;
 static int lastLeft, lastRight;
+static int lastLeftUp, lastRightUp;
 static boolean focus;
 
 static PImage heart;
@@ -124,7 +129,7 @@ void newGame(int mode) {
 }
 
 void newGame() { 
-  gameState = "game";
+  gameState = Game.game;
   gameWon = false;
   gameStart = millis();
   lastStateChange = gameStart;
@@ -188,7 +193,7 @@ void setup() {
   lastMouseUp = new float[]{};
   lastMouseDown = new float[]{};
   
-  gameState = "start";
+  gameState = Game.start;
 }
 
 void drawBorder() {
@@ -224,12 +229,14 @@ void drawBorder() {
     double percent = b.health / b.maxHealth;
     rect(10, 10, (float) percent * WIDTH + 20, 10);
     
-    fill(66,135,245);
-    textSize(60);
-    text((b.timeOut-(millis()-b.phaseStart))/1000, windowPos.x + WIDTH - 60, 70);
-    textSize(48);
-    fill(255);
-    text((b.timeOut-(millis()-b.phaseStart))/1000, windowPos.x + WIDTH - 60, 70);
+    if (gameState != Game.gameOver) {
+      fill(66,135,245);
+      textSize(60);
+      text((b.timeOut-(millis()-b.phaseStart))/1000, windowPos.x + WIDTH - 60, 70);
+      textSize(48);
+      fill(255);
+      text((b.timeOut-(millis()-b.phaseStart))/1000, windowPos.x + WIDTH - 60, 70);
+    }
   }
   text(kills, windowPos.x + WIDTH + 150, 400);
   text(gameTime/1000, windowPos.x + WIDTH + 150, 500);
@@ -298,7 +305,7 @@ void resetMouse() {
 }
 
 void draw() {  
-  if (gameState == "start") {
+  if (gameState == Game.start) {
     background(166,60,91);
     float[] playButton = new float[] {width / 2 - 400, height / 2, 400, 100};
     if (mouseOnButton(playButton)) {
@@ -334,7 +341,7 @@ void draw() {
     strokeWeight(4);
     stroke(0);
   }
-  else if (gameState == "game") {
+  else if (gameState == Game.game) {
     gameTime();
     
     background(90, 10, 10);
@@ -353,7 +360,7 @@ void draw() {
       gameOver(true);
     }
   }
-  else if (gameState == "gameOver") {
+  else if (gameState == Game.gameOver) {
     background(90, 10, 10);
     gameOverScreen();
     drawBorder();
@@ -364,12 +371,12 @@ void draw() {
 }
 
 void gameOver(boolean won) {
-  gameState = "gameOver";
+  gameState = Game.gameOver;
   lastStateChange = millis();
   gameWon = won;
   
   if (won) {
-    score += 20000;
+    score += 10000;
   }
   
   mobList = new ArrayList<Mob>();
@@ -504,6 +511,9 @@ void keyPressed() {
 void keyReleased() {
   if (key == CODED) {
     if (keyCode == LEFT) {
+      if (left == true) {
+        lastLeftUp = millis();
+      }
       left = false;
     }
     if (keyCode == DOWN) {
@@ -513,6 +523,9 @@ void keyReleased() {
       up = false;
     }
     if (keyCode == RIGHT) {
+      if (right == true) {
+        lastRightUp = millis();
+      }
       right = false;
     }
     if (keyCode == SHIFT) {
