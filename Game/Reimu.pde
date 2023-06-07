@@ -78,7 +78,13 @@ public class Reimu extends Character {
           bulletVel.rotate(radians(-14 + i * 7));
           bulletPos.x = getPos().x - 20 + i * 10;
         }
-        new Bullet(this, bulletPos, bulletVel, bulletSize, bulletColor, DAMAGE);
+        if (i >= 1 && i <= 3) {
+          new Bullet(this, bulletPos, bulletVel, bulletSize, bulletColor, false, DAMAGE);
+        }
+        else {
+          new Bullet(this, bulletPos, bulletVel, bulletSize, bulletColor, true, DAMAGE);
+        }
+        
       }
       lastAttack = millis();
     }

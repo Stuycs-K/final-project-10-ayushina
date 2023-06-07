@@ -4,7 +4,6 @@ public class Bullet extends Mob {
   int[] bulletColor;
   
   boolean homing;
-  PVector homingTarget;
   
   public Bullet(Mob own) {
     super(new PVector(0, 0), 10);
@@ -22,20 +21,37 @@ public class Bullet extends Mob {
     Game.addBullet(this);
   }
   
-  public Bullet(Mob own, PVector pos, PVector vel, float siz, int[] bulletColor, double dmg) {
+  public Bullet(Mob own, PVector pos, PVector vel, float siz, int[] bulletColor, boolean homing, double dmg) {
     super(pos, siz);
     setVelocity(vel);
     type = "bullet";
     owner = own;
     damage = dmg;
     this.bulletColor = bulletColor;
+    this.homing = homing;
     Game.addBullet(this);
   }
   
+  public PVector closestEnemy() {
+    Enemy first = Game.enemyList.get(0);
+    float minDist = first.getPos().dist(Game.chr.getPos());
+    PVector closest = first.getPos();
+    for (int i = 1; i < Game.enemyList.size(); i++) {
+      Enemy e = Game.enemyList.get(i);
+      float dist = e.getPos().dist(Game.chr.getPos());
+      if (dist <= minDist) {
+        minDist = dist;
+        closest = e.getPos();
+      }
+    }
+    return closest;
+  }
+  
   public void updatePos() {
-    if (homing) {
+    if (homing && Game.enemyList.size() > 0) {
       PVector vel = getVelocity();
       float mag = vel.mag();
+      PVector homingTarget = closestEnemy();
       vel.normalize().add((homingTarget.sub(getPos())).normalize()).normalize().mult(mag);
       setVelocity(vel);
     }
