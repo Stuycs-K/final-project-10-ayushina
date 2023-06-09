@@ -82,3 +82,9 @@
  - added new homing bullets
     - reimu character shoots homing bullets
     - homing bullets find and move towards nearest enemy
+
+### 6/7/23
+
+ - updated character moving animation
+ - moved the moving anim code from drawChar() to drawMoving()
+ - moving animation loops after the first part finishes in animTime
