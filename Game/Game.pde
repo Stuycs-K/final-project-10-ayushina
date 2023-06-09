@@ -43,11 +43,13 @@ static boolean left, down, up, right;
 static boolean leftDown, rightDown;
 static int lastLeft, lastRight;
 static int lastLeftUp, lastRightUp;
+static int lastFocus, lastFocusUp;
 static boolean focus;
 
 static PImage heart;
 
-static PImage reimuStanding[];
+static PImage reimuStandingLeft[];
+static PImage reimuStandingRight[];
 static PImage reimuLeft[];
 static PImage reimuRight[];
 
@@ -70,9 +72,13 @@ void loadImages() {
   
   //reimu
   PImage reimuSprites = loadImage("reimu-sprites.png");
-  reimuStanding = new PImage[4];
+  reimuStandingLeft = new PImage[4];
   for(int i = 0; i < 4; i++) {
-    reimuStanding[i] = reimuSprites.get(i * 64, 0, 64, 96);
+    reimuStandingLeft[i] = reimuSprites.get(i * 64, 0, 64, 96);
+  }
+  reimuStandingRight = new PImage[4];
+  for(int i = 0; i < 4; i++) {
+    reimuStandingRight[i] = flipImage(reimuSprites.get(i * 64, 0, 64, 96));
   }
   reimuLeft = new PImage[7];
   for (int i = 0; i < 7; i++) {
@@ -149,8 +155,12 @@ void newGame() {
   down = false;
   up = false;
   right = false;
+  leftDown = false;
+  rightDown = false;
   lastLeft = -1;
   lastRight = -1;
+  lastFocus = -1;
+  lastFocusUp = -1;
   focus = false;
   
   mobList = new ArrayList<Mob>();
@@ -522,6 +532,9 @@ void keyPressed() {
       rightDown = true;
     }
     if (keyCode == SHIFT) {
+      if (focus == false) {
+        lastFocus = millis();
+      }
       focus = true;
     }
   }
@@ -562,6 +575,9 @@ void keyReleased() {
       rightDown = false;
     }
     if (keyCode == SHIFT) {
+      if (focus) {
+        lastFocusUp = millis();
+      }
       focus = false;
     }
   }

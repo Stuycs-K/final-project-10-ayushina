@@ -13,7 +13,7 @@ public class Reimu extends Character {
   private static final double frame = 1000/30; //for reference
   private static final double animTime = frame * 8;
   
-  private void drawMoving(String direction) { //lastUp < animTime
+  private void drawMoving(String direction) {
     int elapsed;
     float alpha;
     PImage[] sprites;
@@ -68,7 +68,12 @@ public class Reimu extends Character {
     }
     else {
       int elapsed = millis() - birth;
-      image(Game.reimuStanding[(int) ((elapsed % (frame * 16))/(frame * 4))], getDisplayPos().x, getDisplayPos().y);
+      if (lastLeftUp > lastRightUp) {
+        image(Game.reimuStandingLeft[(int) ((elapsed % (frame * 16))/(frame * 4))], getDisplayPos().x, getDisplayPos().y);
+      }
+      else {
+        image(Game.reimuStandingRight[(int) ((elapsed % (frame * 16))/(frame * 4))], getDisplayPos().x, getDisplayPos().y);
+      }
     }
     imageMode(CORNER);
     noTint();
