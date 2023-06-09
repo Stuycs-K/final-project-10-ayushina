@@ -40,6 +40,7 @@ static float[] lastMouseDown;
 
 
 static boolean left, down, up, right;
+static boolean leftDown, rightDown;
 static int lastLeft, lastRight;
 static int lastLeftUp, lastRightUp;
 static boolean focus;
@@ -485,10 +486,19 @@ void mouseReleased() {
 void keyPressed() {
   if (key == CODED) {
     if (keyCode == LEFT) {
-      if (left == false) {
-        lastLeft = millis();
+      if (!(leftDown && rightDown)) {
+        if (rightDown) { //cancel out
+          right = false;
+          lastRightUp = millis();
+        }
+        else {
+          if (left == false) {
+            lastLeft = millis();
+          }
+          left = true;
+        }
       }
-      left = true;
+      leftDown = true;
     }
     if (keyCode == DOWN) {
       down = true;
@@ -497,10 +507,19 @@ void keyPressed() {
       up = true;
     }
     if (keyCode == RIGHT) {
-      if (right == false) {
-        lastRight = millis();
+      if (!(leftDown && rightDown)) {
+        if (leftDown) { //cancel out
+          left = false;
+          lastLeftUp = millis();
+        }
+        else {
+          if (right == false) {
+            lastRight = millis();
+          }
+          right = true;
+        }
       }
-      right = true;
+      rightDown = true;
     }
     if (keyCode == SHIFT) {
       focus = true;
@@ -511,10 +530,17 @@ void keyPressed() {
 void keyReleased() {
   if (key == CODED) {
     if (keyCode == LEFT) {
-      if (left == true) {
-        lastLeftUp = millis();
+      if (rightDown) { //cancel out
+        right = true;
+        lastRight = millis();
       }
-      left = false;
+      else {
+        if (left) {
+          lastLeftUp = millis();
+        }
+        left = false;
+      }
+      leftDown = false;
     }
     if (keyCode == DOWN) {
       down = false;
@@ -523,10 +549,17 @@ void keyReleased() {
       up = false;
     }
     if (keyCode == RIGHT) {
-      if (right == true) {
-        lastRightUp = millis();
+      if (leftDown) { //cancel out
+        left = true;
+        lastLeft = millis();
       }
-      right = false;
+      else {
+        if (right) {
+          lastRightUp = millis();
+        }
+        right = false;
+      }
+      rightDown = false;
     }
     if (keyCode == SHIFT) {
       focus = false;

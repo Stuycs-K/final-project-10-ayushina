@@ -9,49 +9,73 @@ public class Reimu extends Character {
   public Reimu(PVector pos) {
     super(pos, SIZE, SPEED, FOCUS_SPEED, NAME);
   }
- 
-  public void display() {
+  
+  private static final double frame = 1000/30; //for reference
+  private static final double animTime = frame * 8;
+  
+  private void drawMoving(String direction) { //lastUp < animTime
+    int elapsed;
+    float alpha;
+    PImage[] sprites;
+    int lastDown;
+    int lastUp;
+    
+    if (direction == "left") {
+      sprites = Game.reimuLeft;
+      lastDown = Game.lastLeft;
+      lastUp = Game.lastLeftUp;
+    }
+    else {
+      sprites = Game.reimuRight;
+      lastDown = Game.lastRight;
+      lastUp = Game.lastRightUp;
+    }
+    
+    if (direction == "left" && Game.left || direction == "right" && Game.right) { //forward
+      elapsed = millis() - lastDown;
+      alpha = elapsed / (float) animTime;
+      alpha = 1 - pow(1 - alpha, 2);
+    }
+    else { //backward
+      elapsed = millis() - lastUp;
+      alpha = elapsed / (float) animTime;
+      alpha = pow(1 - alpha, 2);
+      if (alpha == 1) {
+        alpha = 0.999;
+      }
+    }
+    
+    if (elapsed < animTime) {
+      image(sprites[(int) (alpha * (3))], getDisplayPos().x, getDisplayPos().y); //looping animation starts at 3
+    }
+    else {
+      elapsed -= animTime;
+      image(sprites[(int) (3 + (elapsed % (frame * 16))/(frame * 4))], getDisplayPos().x, getDisplayPos().y);
+    }
+  }
+  
+  private void drawChar() {
     int deathElapsed = millis() - Game.lastDied;
     if (Game.lastDied != -1 && deathElapsed <= Game.DEATH_TIME) {
       tint(255, sq(deathElapsed / (float) Game.DEATH_TIME) * 255);
     }
     imageMode(CENTER);
-    if ((Game.left || millis() - Game.lastLeftUp < 300) && !Game.right) {
-      int elapsed;
-      if (Game.left) {
-        elapsed = millis() - Game.lastLeft;
-      }
-      else {
-        elapsed = 300 - (millis() - Game.lastLeftUp);
-      }
-      if (elapsed < 300) {
-        image(Game.reimuLeft[elapsed/50], getDisplayPos().x, getDisplayPos().y);
-      }
-      else {
-        image(Game.reimuLeft[6], getDisplayPos().x, getDisplayPos().y);
-      }
+    if ((Game.left || millis() - Game.lastLeftUp < animTime) && !Game.right) {
+      drawMoving("left");
     }
-    else if ((Game.right || millis() - Game.lastRightUp < 300) && !Game.left) {
-      int elapsed;
-      if (Game.right) {
-        elapsed = millis() - Game.lastRight;
-      }
-      else {
-        elapsed = 300 - (millis() - Game.lastRightUp);
-      }
-      if (elapsed < 300) {
-        image(Game.reimuRight[elapsed/50], getDisplayPos().x, getDisplayPos().y);
-      }
-      else {
-        image(Game.reimuRight[6], getDisplayPos().x, getDisplayPos().y);
-      }
+    else if ((Game.right || millis() - Game.lastRightUp < animTime) && !Game.left) {
+      drawMoving("right");
     }
     else {
       int elapsed = millis() - birth;
-      image(Game.reimuStanding[(elapsed % 400)/100], getDisplayPos().x, getDisplayPos().y);
+      image(Game.reimuStanding[(int) ((elapsed % (frame * 16))/(frame * 4))], getDisplayPos().x, getDisplayPos().y);
     }
     imageMode(CORNER);
     noTint();
+  }
+ 
+  public void display() {
+    drawChar();
     
     if (Game.focus == true) {
       ellipseMode(RADIUS);
@@ -63,30 +87,26 @@ public class Reimu extends Character {
   
   public void updateAttack() {
     if (millis() - lastAttack > COOLDOWN) {
-      float bulletSize = 30;
+      float bulletSize = 20;
       int[] bulletColor = new int[] {245, 167, 66};
       int[] homingColor = new int[] {66, 135, 245};
       
-      for (int i = 0; i < 5; i++) {
+      for (int i = 0; i < 3; i++) {
         PVector bulletPos = getPos();
         bulletPos.y -= 10;
         PVector bulletVel = new PVector(0, -20);
         if (focus) {
-          bulletVel.rotate(radians(-2 + i * 1));
+          bulletVel.rotate(radians(-1 + i * 1));
           bulletPos.x = getPos().x - 10 + i * 5;
         }
         else {
-          bulletVel.rotate(radians(-14 + i * 7));
+          bulletVel.rotate(radians(-6 + i * 6));
           bulletPos.x = getPos().x - 20 + i * 10;
         }
-        if (i >= 1 && i <= 3) {
-          new Bullet(this, bulletPos, bulletVel, bulletSize, bulletColor, false, DAMAGE);
-        }
-        else {
-          new Bullet(this, bulletPos, bulletVel, bulletSize * 2 / 3, homingColor, true, DAMAGE);
-        }
-        
+        new Bullet(this, bulletPos, bulletVel, bulletSize, bulletColor, false, DAMAGE);
       }
+      //new Bullet(this, bulletPos, bulletVel, bulletSize, homingColor, true, DAMAGE);
+      
       lastAttack = millis();
     }
   }
