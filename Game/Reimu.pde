@@ -6,6 +6,8 @@ public class Reimu extends Character {
   private static final double DAMAGE = 1;
   private static final String NAME = "Player";
   
+  PVector orbPos;
+  
   public Reimu(PVector pos) {
     super(pos, SIZE, SPEED, FOCUS_SPEED, NAME);
   }
@@ -78,8 +80,42 @@ public class Reimu extends Character {
     imageMode(CORNER);
     noTint();
   }
+  
+  private static final double orbAnimTime = frame * 4;
+  
+  public void drawOrbs() {
+    if (focus) {
+      int elapsed = millis() - lastFocus;
+      if (elapsed < orbAnimTime) {
+        
+      }
+      else {
+        orbPos = new PVector(15, -65);
+        PVector pos = getDisplayPos();
+        imageMode(CENTER);
+        image(reimuOrb[0], pos.x + orbPos.x, pos.y + orbPos.y);
+        image(reimuOrb[0], pos.x - orbPos.x, pos.y + orbPos.y);
+        imageMode(CORNER);
+      }
+    }
+    else {
+      int elapsed = millis() - lastFocusUp;
+      if (elapsed < orbAnimTime) {
+        
+      }
+      else {
+        orbPos = new PVector(45, 0);
+        PVector pos = getDisplayPos();
+        imageMode(CENTER);
+        image(reimuOrb[0], pos.x + orbPos.x, pos.y + orbPos.y);
+        image(reimuOrb[0], pos.x - orbPos.x, pos.y + orbPos.y);
+        imageMode(CORNER);
+      }
+    }
+  }
  
   public void display() {
+    drawOrbs();
     drawChar();
     
     if (Game.focus == true) {

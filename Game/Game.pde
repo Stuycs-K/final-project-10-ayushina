@@ -52,6 +52,7 @@ static PImage reimuStandingLeft[];
 static PImage reimuStandingRight[];
 static PImage reimuLeft[];
 static PImage reimuRight[];
+static PImage reimuOrb[];
 
 static PImage nerd;
 static PImage book;
@@ -87,6 +88,10 @@ void loadImages() {
   reimuRight = new PImage[7];
   for (int i = 0; i < 7; i++) {
     reimuRight[i] = flipImage(reimuSprites.get(i * 64, 96, 64, 96));
+  }
+  reimuOrb = new PImage[4];
+  for (int i = 0; i < 4; i++) {
+    reimuOrb[i] = reimuSprites.get(4 * 64 + i * 32, 32, 32, 32);
   }
   
   //nerd
