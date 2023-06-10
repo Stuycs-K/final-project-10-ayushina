@@ -13,6 +13,7 @@ static ArrayList<BossEnemy> currentBoss;
 static String gameState;
 static int lastStateChange;
 static boolean gameWon;
+static boolean newHighScore;
 
 final static String start = "start";
 final static String game = "game";
@@ -24,6 +25,8 @@ static int phaseScore;
 static int damageScore;
 static int grazeScore;
 static int killScore;
+
+static int highScore;
 
 static int lives;
 static int kills;
@@ -124,12 +127,23 @@ void shootSound() {
 
 static SoundFile pldead00;
 static SoundFile tan00,tan01,tan02;
+static SoundFile graze;
 
 void loadSounds() {
   pldead00 = new SoundFile(this, "pldead00.wav");
   tan00 = new SoundFile(this, "tan00.wav");
   tan01 = new SoundFile(this, "tan01.wav");
   tan02 = new SoundFile(this, "tan02.wav");
+  graze = new SoundFile(this, "graze.wav");
+}
+
+static final String SCORE_FILE = "highScore.txt";
+
+void loadData() {
+  String[] scoreData = loadStrings(SCORE_FILE);
+  if (scoreData != null && scoreData.length > 0) {
+    highScore = int(scoreData[0]);
+  }
 }
 
 void newGame(int mode) {
@@ -151,6 +165,7 @@ void newGame(int mode) {
 void newGame() { 
   gameState = Game.game;
   gameWon = false;
+  newHighScore = false;
   gameStart = millis();
   lastStateChange = gameStart;
   
@@ -208,6 +223,7 @@ boolean inRectCenter(float[] coords, float[] rect) {
 void setup() {  
   loadImages();
   loadSounds();
+  loadData();
   
   size(1200, 900);
   WIDTH = 700; //640x480
@@ -232,24 +248,26 @@ void drawBorder() {
   rectMode(CORNER);
   fill(220);
   textSize(36);
-  text("Score", windowPos.x + WIDTH + 25, 100);
-  text(chr.getName(), windowPos.x + WIDTH + 25, 200);
-  text("Boss", windowPos.x + WIDTH + 25, 300);
-  text("Kills", windowPos.x + WIDTH + 25, 400);
-  text("Graze", windowPos.x + WIDTH + 25, 500);
-  text("Time", windowPos.x + WIDTH + 25, 600);
+  text("High Score", windowPos.x + WIDTH + 25, 100);
+  text("Score", windowPos.x + WIDTH + 25, 200);
+  text(chr.getName(), windowPos.x + WIDTH + 25, 300);
+  text("Boss", windowPos.x + WIDTH + 25, 400);
+  text("Kills", windowPos.x + WIDTH + 25, 500);
+  text("Graze", windowPos.x + WIDTH + 25, 600);
+  text("Time", windowPos.x + WIDTH + 25, 700);
   
   fill(255);
   textSize(48);
-  text(score, windowPos.x + WIDTH + 150, 100);
+  text(highScore, windowPos.x + WIDTH + 250, 100);
+  text(score, windowPos.x + WIDTH + 250, 200);
   for (int i = 0; i < lives; i++) {
-    image(heart, windowPos.x + WIDTH + 150 + i * heart.width, 200 - heart.height);
+    image(heart, windowPos.x + WIDTH + 150 + i * heart.width, 300 - heart.height);
   }
   if (currentBoss.size() == 1) {
     BossEnemy b = currentBoss.get(0);
     int lives = b.maxPhases - b.phase;
     for (int i = 0; i < lives; i++) {
-      image(heart, windowPos.x + WIDTH + 150 + i * heart.width, 300 - heart.height);
+      image(heart, windowPos.x + WIDTH + 150 + i * heart.width, 400 - heart.height);
     }
     double percent = b.health / b.maxHealth;
     rect(10, 10, (float) percent * WIDTH + 20, 10);
@@ -263,9 +281,9 @@ void drawBorder() {
       text((b.timeOut-(millis()-b.phaseStart))/1000, windowPos.x + WIDTH - 60, 70);
     }
   }
-  text(kills, windowPos.x + WIDTH + 150, 400);
-  text(grazes, windowPos.x + WIDTH + 150, 500);
-  text(gameTime/1000, windowPos.x + WIDTH + 150, 600);
+  text(kills, windowPos.x + WIDTH + 150, 500);
+  text(grazes, windowPos.x + WIDTH + 150, 600);
+  text(gameTime/1000, windowPos.x + WIDTH + 150, 700);
   
   fill(255);
   stroke(0);
@@ -413,13 +431,22 @@ void draw() {
   }
 }
 
+static final int WIN_SCORE = 20000;
+
 void gameOver(boolean won) {
   gameState = Game.gameOver;
   lastStateChange = millis();
   gameWon = won;
   
   if (won) {
-    score += 10000;
+    score += WIN_SCORE;
+  }
+  
+  if (score > highScore) {
+    String[] scoreData = new String[1];
+    scoreData[0] = "" + score;
+    saveStrings(SCORE_FILE, scoreData);
+    highScore = score;
   }
   
   mobList = new ArrayList<Mob>();
