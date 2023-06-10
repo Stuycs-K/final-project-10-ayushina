@@ -52,7 +52,7 @@ public class Bullet extends Mob {
       PVector vel = getVelocity();
       float mag = vel.mag();
       PVector homingTarget = closestEnemy();
-      vel.normalize().add((homingTarget.sub(getPos())).normalize()).normalize().mult(mag);
+      vel.normalize().add((homingTarget.sub(getPos())).normalize().mult(0.3)).normalize().mult(mag);
       setVelocity(vel);
     }
     super.updatePos();
@@ -75,12 +75,13 @@ public class Bullet extends Mob {
   public void display() {
     ellipseMode(RADIUS);
     if (owner.type == "character") {
-      stroke(0, 0);
-      fill(bulletColor[0], bulletColor[1], bulletColor[2], 50);
+      stroke(bulletColor[0], bulletColor[1], bulletColor[2], 50);
+      fill(255, 70);
     }
     else {
       stroke(bulletColor[0], bulletColor[1], bulletColor[2]);
     }
+    
     circle(getDisplayPos().x, getDisplayPos().y, size);
     stroke(0);
     fill(255);

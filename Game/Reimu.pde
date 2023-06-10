@@ -10,6 +10,7 @@ public class Reimu extends Character {
   
   public Reimu(PVector pos) {
     super(pos, SIZE, SPEED, FOCUS_SPEED, NAME);
+    orbPos = downOrb;
   }
   
   private static final double frame = 1000/30; //for reference
@@ -82,43 +83,49 @@ public class Reimu extends Character {
   }
   
   private static final double orbAnimTime = frame * 4;
+  private final PVector upOrb = new PVector(15, -65);
+  private final PVector downOrb = new PVector(45, 0);
   
   public void drawOrbs() {
-    if (focus) {
+    if (lastFocus == -1) {
+      orbPos = downOrb;
+    }
+    else if (focus) {
       int elapsed = millis() - lastFocus;
       if (elapsed < orbAnimTime) {
-        
+        double alpha = elapsed / orbAnimTime;
+        PVector start = downOrb.copy();
+        PVector end = upOrb.copy();
+        orbPos = start.add(end.sub(start).mult((float) alpha));
       }
       else {
-        orbPos = new PVector(15, -65);
-        PVector pos = getDisplayPos();
-        imageMode(CENTER);
-        image(reimuOrb[0], pos.x + orbPos.x, pos.y + orbPos.y);
-        image(reimuOrb[0], pos.x - orbPos.x, pos.y + orbPos.y);
-        imageMode(CORNER);
+        orbPos = upOrb;
       }
     }
     else {
       int elapsed = millis() - lastFocusUp;
       if (elapsed < orbAnimTime) {
-        
+        double alpha = elapsed / orbAnimTime;
+        PVector start = upOrb.copy();
+        PVector end = downOrb.copy();
+        orbPos = start.add(end.sub(start).mult((float) alpha));
       }
       else {
-        orbPos = new PVector(45, 0);
-        PVector pos = getDisplayPos();
-        imageMode(CENTER);
-        image(reimuOrb[0], pos.x + orbPos.x, pos.y + orbPos.y);
-        image(reimuOrb[0], pos.x - orbPos.x, pos.y + orbPos.y);
-        imageMode(CORNER);
+        orbPos = downOrb;
       }
     }
+    PVector pos = getDisplayPos();
+    imageMode(CENTER);
+    image(reimuOrb[0], pos.x + orbPos.x, pos.y + orbPos.y);
+    image(reimuOrb[0], pos.x - orbPos.x, pos.y + orbPos.y);
+    imageMode(CORNER);
   }
  
   public void display() {
     drawOrbs();
     drawChar();
     
-    if (Game.focus == true) {
+    if (focus == true) {
       ellipseMode(RADIUS);
       stroke(255,0,0);
       circle(getDisplayPos().x, getDisplayPos().y, size);
@@ -128,16 +135,16 @@ public class Reimu extends Character {
   
   public void updateAttack() {
     if (millis() - lastAttack > COOLDOWN) {
-      float bulletSize = 20;
+      float bulletSize = 15;
       int[] bulletColor = new int[] {245, 167, 66};
       int[] homingColor = new int[] {66, 135, 245};
       
       for (int i = 0; i < 3; i++) {
         PVector bulletPos = getPos();
         bulletPos.y -= 10;
-        PVector bulletVel = new PVector(0, -20);
+        PVector bulletVel = new PVector(0, -30);
         if (focus) {
-          bulletVel.rotate(radians(-1 + i * 1));
+          bulletVel.rotate(radians(-4 + i * 4));
           bulletPos.x = getPos().x - 10 + i * 5;
         }
         else {
@@ -146,7 +153,10 @@ public class Reimu extends Character {
         }
         new Bullet(this, bulletPos, bulletVel, bulletSize, bulletColor, false, DAMAGE);
       }
-      //new Bullet(this, bulletPos, bulletVel, bulletSize, homingColor, true, DAMAGE);
+      
+      PVector bulletVel = new PVector(0, -20);
+      new Bullet(this, new PVector(getPos().x + orbPos.x, getPos().y + orbPos.y), bulletVel.copy().rotate(radians(30)), bulletSize, homingColor, true, DAMAGE);
+      new Bullet(this, new PVector(getPos().x - orbPos.x, getPos().y + orbPos.y), bulletVel.copy().rotate(radians(-30)), bulletSize, homingColor, true, DAMAGE);
       
       lastAttack = millis();
     }
