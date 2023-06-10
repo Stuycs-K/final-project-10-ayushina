@@ -13,7 +13,7 @@ public abstract class BossEnemy extends Enemy {
     phaseStart = millis();
     
     maxHealth = hp;
-    timeOut = 100000;
+    timeOut = 40000;
     Game.addBoss(this);
   }
   

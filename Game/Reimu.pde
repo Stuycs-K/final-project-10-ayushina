@@ -154,9 +154,18 @@ public class Reimu extends Character {
         new Bullet(this, bulletPos, bulletVel, bulletSize, bulletColor, false, DAMAGE);
       }
       
-      PVector bulletVel = new PVector(0, -20);
-      new Bullet(this, new PVector(getPos().x + orbPos.x, getPos().y + orbPos.y), bulletVel.copy().rotate(radians(30)), bulletSize, homingColor, true, DAMAGE);
-      new Bullet(this, new PVector(getPos().x - orbPos.x, getPos().y + orbPos.y), bulletVel.copy().rotate(radians(-30)), bulletSize, homingColor, true, DAMAGE);
+      PVector leftVel = new PVector(0, -20);
+      PVector rightVel = new PVector(0, -20);
+      if (focus) {
+        leftVel.rotate(radians(15));
+        rightVel.rotate(radians(-15));
+      }
+      else {
+        leftVel.rotate(radians(30));
+        rightVel.rotate(radians(-30));
+      }
+      new Bullet(this, new PVector(getPos().x + orbPos.x, getPos().y + orbPos.y), leftVel, bulletSize, homingColor, true, DAMAGE / 2);
+      new Bullet(this, new PVector(getPos().x - orbPos.x, getPos().y + orbPos.y), rightVel, bulletSize, homingColor, true, DAMAGE / 2);
       
       lastAttack = millis();
     }

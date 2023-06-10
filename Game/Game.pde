@@ -11,15 +11,20 @@ static ArrayList<Enemy> eNext;
 static ArrayList<BossEnemy> currentBoss;
 
 static String gameState;
-static int lastStateChange;
+static int stateStart;
 static boolean gameWon;
 static boolean newHighScore;
 
-static final int WIN_SCORE = 20000;
+static final int WIN_SCORE = 5000;
 
 final static String start = "start";
 final static String game = "game";
 final static String gameOver = "gameOver";
+
+static int[] bg;
+static final int[] DEFAULT_BG = new int[] {90, 10, 10};
+
+static SoundFile bgm;
 
 static int timeCounted;
 
@@ -32,7 +37,7 @@ static int killScore;
 
 static int highScore;
 
-static final int PLAYER_LIVES = 1;
+static final int PLAYER_LIVES = 5;
 
 static int lives;
 static int kills;
@@ -40,9 +45,8 @@ static int lastDied;
 static final int DEATH_TIME = 2000;
 static int grazes;
 static final float GRAZE_RADIUS = 32;
-static final int GRAZE_SCORE = 50;
+static final int GRAZE_SCORE = 70;
 
-static int gameStart;
 int nextSpawn;
 
 static PVector windowPos;
@@ -135,12 +139,43 @@ static SoundFile pldead00;
 static SoundFile tan00,tan01,tan02;
 static SoundFile graze;
 
+static SoundFile bgm01;
+static SoundFile bgm16;
+static SoundFile bgm17;
+
 void loadSounds() {
   pldead00 = new SoundFile(this, "pldead00.wav");
   tan00 = new SoundFile(this, "tan00.wav");
   tan01 = new SoundFile(this, "tan01.wav");
   tan02 = new SoundFile(this, "tan02.wav");
   graze = new SoundFile(this, "graze.wav");
+  
+  bgm01 = new SoundFile(this, "01. Wondrous Tales of Romance ~ Mystic Square.wav");
+  bgm16 = new SoundFile(this, "16. Alice in Wonderland.wav");
+  bgm17 = new SoundFile(this, "17. the Grimoire of Alice.wav");
+}
+
+String getMusicName(SoundFile music) {
+  if (music == bgm01) {
+    return "01. Wondrous Tales of Romance ~ Mystic Square";
+  }
+  else if (music == bgm16) {
+    return "16. Alice in Wonderland";
+  }
+  else if (music == bgm17) {
+    return "17. the Grimoire of Alice";
+  }
+  return "";
+}
+
+void changeBGM(SoundFile music) {
+  if (bgm != null) {
+    bgm.stop();
+  }
+  if (music != null) {
+    bgm = music;
+    bgm.loop();
+  }
 }
 
 static final String SCORE_FILE = "highScore.txt";
@@ -156,8 +191,7 @@ void newGame(int mode) {
   if (mode == 0) {
     int time = 30000;
     newGame();
-    gameStart = millis() - time;
-    lastStateChange = gameStart;
+    stateStart = millis() - time;
     gameTime = time;
     nextSpawn = 12;
     lives = 99;
@@ -169,11 +203,11 @@ void newGame(int mode) {
 }
 
 void newGame() { 
-  gameState = Game.game;
+  changeState(Game.game);
   gameWon = false;
   newHighScore = false;
-  gameStart = millis();
-  lastStateChange = gameStart;
+  
+  bg = DEFAULT_BG;
   
   score = 0;
   timeCounted = 0;
@@ -240,7 +274,7 @@ void setup() {
   lastMouseUp = new float[]{};
   lastMouseDown = new float[]{};
   
-  gameState = Game.start;
+  changeState(Game.start);
 }
 
 void drawBorder() {
@@ -281,7 +315,7 @@ void drawBorder() {
     double percent = b.health / b.maxHealth;
     rect(10, 10, (float) percent * WIDTH + 20, 10);
     
-    if (gameState != Game.gameOver) {
+    if (!gameState.equals(Game.gameOver)) {
       fill(66,135,245);
       textSize(60);
       text((b.timeOut-(millis()-b.phaseStart))/1000, windowPos.x + WIDTH - 60, 70);
@@ -299,7 +333,7 @@ void drawBorder() {
 }
 
 void gameOverScreen() {
-  int elapsed = millis() - lastStateChange;
+  int elapsed = millis() - stateStart;
   
   textSize(64);
   String txt;
@@ -350,8 +384,8 @@ void gameOverScreen() {
 }
 
 void gameTime() {
-  deltaTime = millis() - gameStart - gameTime;
-  gameTime = millis() - gameStart;
+  deltaTime = millis() - stateStart - gameTime;
+  gameTime = millis() - stateStart;
   
   score += (gameTime - timeCounted) / 50; //one point every 50 ms, 20 pts per sec
   timeScore += (gameTime - timeCounted) / 50;
@@ -359,21 +393,29 @@ void gameTime() {
 }
 
 void drawButton(float[] button, String text) {
-    rectMode(CENTER);
-    fill(255,0);
+  int elapsed = millis() - stateStart;
+  
+  rectMode(CENTER);
+  fill(255,0);
+  if (elapsed % 400 < 200) {
     stroke(12, 220, 19);
-    strokeWeight(6);
-    rect(button[0], button[1], button[2], button[3]);
-    
-    fill(250, 157, 157);
-    textSize(64);
-    textAlign(CENTER);
-    text(text, button[0], button[1] + button[3] / 4);
-    
-    textAlign(BASELINE);
-    fill(255);
-    stroke(0);
-    rectMode(CORNER);
+  }
+  else {
+    stroke(50, 168, 82);
+  }
+
+  strokeWeight(6);
+  rect(button[0], button[1], button[2], button[3]);
+  
+  fill(250, 157, 157);
+  textSize(64);
+  textAlign(CENTER);
+  text(text, button[0], button[1] + button[3] / 4);
+  
+  textAlign(BASELINE);
+  fill(255);
+  stroke(0);
+  rectMode(CORNER);
 }
 
 boolean mouseOnButton(float[] button) {
@@ -404,10 +446,28 @@ void updateMouse() {
   }
 }
 
+void changeState(String state) {
+  gameState = state;
+  stateStart = millis();
+  if (state.equals(Game.start)) {
+    changeBGM(bgm01);
+  }
+  else if (state.equals(Game.game)) {
+    changeBGM(bgm16);
+  }
+  else if (state.equals(Game.gameOver)) {
+    bgm.pause();
+    bgm.play();
+  }
+  else {
+    changeBGM(null);
+  }
+}
+
 void draw() {  
   updateMouse();
   
-  if (gameState == Game.start) {
+  if (gameState.equals(Game.start)) {
     background(166,60,91);
     float[] playButton = new float[] {width / 2 - 400, height / 2, 400, 100};
     if (mouseOnButton(playButton)) {
@@ -440,10 +500,10 @@ void draw() {
     strokeWeight(4);
     stroke(0);
   }
-  else if (gameState == Game.game) {
+  else if (gameState.equals(Game.game)) {
     gameTime();
     
-    background(90, 10, 10);
+    background(bg[0], bg[1], bg[2]);
     
     spawnEnemies();
     updateMobs();
@@ -459,7 +519,7 @@ void draw() {
       gameOver(true);
     }
   }
-  else if (gameState == Game.gameOver) {
+  else if (gameState.equals(Game.gameOver)) {
     background(90, 10, 10);
     gameOverScreen();
     drawBorder();
@@ -470,8 +530,7 @@ void draw() {
 }
 
 void gameOver(boolean won) {
-  gameState = Game.gameOver;
-  lastStateChange = millis();
+  changeState(Game.gameOver);
   gameWon = won;
   
   if (won) {
@@ -570,6 +629,7 @@ void spawnEnemies() {
   }
   if (gameTime > 31000 && nextSpawn == 12) {
     new Teacher();
+    changeBGM(bgm17);
     nextSpawn++;
   }
 }
