@@ -3,6 +3,8 @@ public class Bullet extends Mob {
   double damage;
   int[] bulletColor;
   
+  boolean alreadyGrazed;
+  
   boolean homing;
   
   public Bullet(Mob own) {
@@ -97,6 +99,12 @@ public class Bullet extends Mob {
       }
     }
     else {
+      if (!alreadyGrazed && !Game.chr.invincible() && getPos().dist(Game.chr.getPos()) <= getSize() + Game.GRAZE_RADIUS) {
+        alreadyGrazed = true;
+        score += Game.GRAZE_SCORE;
+        grazeScore += Game.GRAZE_SCORE;
+        grazes++;
+      }
       if (!Game.chr.invincible() && getPos().dist(Game.chr.getPos()) <= getSize() + Game.chr.getSize()) {
         Game.chr.takeDamage();
         destroy();

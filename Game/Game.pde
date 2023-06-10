@@ -22,12 +22,16 @@ static int score;
 static int timeScore;
 static int phaseScore;
 static int damageScore;
+static int grazeScore;
 static int killScore;
 
 static int lives;
 static int kills;
 static int lastDied;
 static final int DEATH_TIME = 2000;
+static int grazes;
+static final float GRAZE_RADIUS = 32;
+static final int GRAZE_SCORE = 50;
 
 static int gameStart;
 int nextSpawn;
@@ -232,7 +236,8 @@ void drawBorder() {
   text(chr.getName(), windowPos.x + WIDTH + 25, 200);
   text("Boss", windowPos.x + WIDTH + 25, 300);
   text("Kills", windowPos.x + WIDTH + 25, 400);
-  text("Time", windowPos.x + WIDTH + 25, 500);
+  text("Graze", windowPos.x + WIDTH + 25, 500);
+  text("Time", windowPos.x + WIDTH + 25, 600);
   
   fill(255);
   textSize(48);
@@ -259,7 +264,8 @@ void drawBorder() {
     }
   }
   text(kills, windowPos.x + WIDTH + 150, 400);
-  text(gameTime/1000, windowPos.x + WIDTH + 150, 500);
+  text(grazes, windowPos.x + WIDTH + 150, 500);
+  text(gameTime/1000, windowPos.x + WIDTH + 150, 600);
   
   fill(255);
   stroke(0);
