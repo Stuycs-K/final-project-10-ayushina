@@ -85,6 +85,26 @@
 
 ### 6/7/23
 
+ - changed the bullet color and size for reimu's homing bullets
+
+### 6/8/23
+
  - updated character moving animation
  - moved the moving anim code from drawChar() to drawMoving()
  - moving animation loops after the first part finishes in animTime
+
+ ### 6/9/23
+
+ - added Animation class that stores times and keyframes to maybe help with attack patterns
+ - idle animation flips in the direction last moved (left/right)
+ - character display() draws orbs that float near player
+    - homing bullets spawn at orbs
+    - orbs come closer together when focusing
+ - rewrote button clicking using mousePressed instead of mousePressed() to fix buttons clicking themselves
+ - grazing bullets (being near them) gives score
+ - save and load high score to a txt file, highScore.txt is added to gitignore file
+ - game over screen shows how much score is from time bonus, spellcard (kill boss before timeout) bonus, damage bonus, graze bonus, kill bonus, stage clear bonus
+ - added music that plays in the menu and in the game
+ - boss deletes old bullets when switching phase
+
+ 
