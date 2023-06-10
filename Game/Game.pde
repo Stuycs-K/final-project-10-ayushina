@@ -15,9 +15,13 @@ static int lastStateChange;
 static boolean gameWon;
 static boolean newHighScore;
 
+static final int WIN_SCORE = 20000;
+
 final static String start = "start";
 final static String game = "game";
 final static String gameOver = "gameOver";
+
+static int timeCounted;
 
 static int score;
 static int timeScore;
@@ -27,6 +31,8 @@ static int grazeScore;
 static int killScore;
 
 static int highScore;
+
+static final int PLAYER_LIVES = 1;
 
 static int lives;
 static int kills;
@@ -170,8 +176,9 @@ void newGame() {
   lastStateChange = gameStart;
   
   score = 0;
+  timeCounted = 0;
   timeScore = 0;
-  lives = 5;
+  lives = PLAYER_LIVES;
   kills = 0;
   lastDied = -1;
   
@@ -248,13 +255,15 @@ void drawBorder() {
   rectMode(CORNER);
   fill(220);
   textSize(36);
-  text("High Score", windowPos.x + WIDTH + 25, 100);
-  text("Score", windowPos.x + WIDTH + 25, 200);
-  text(chr.getName(), windowPos.x + WIDTH + 25, 300);
-  text("Boss", windowPos.x + WIDTH + 25, 400);
-  text("Kills", windowPos.x + WIDTH + 25, 500);
-  text("Graze", windowPos.x + WIDTH + 25, 600);
-  text("Time", windowPos.x + WIDTH + 25, 700);
+  textAlign(RIGHT);
+  text("High Score", windowPos.x + WIDTH + 225, 100);
+  text("Score", windowPos.x + WIDTH + 225, 200);
+  text(chr.getName(), windowPos.x + WIDTH + 125, 300);
+  text("Boss", windowPos.x + WIDTH + 125, 400);
+  text("Kills", windowPos.x + WIDTH + 225, 500);
+  text("Graze", windowPos.x + WIDTH + 225, 600);
+  text("Time", windowPos.x + WIDTH + 225, 700);
+  textAlign(BASELINE);
   
   fill(255);
   textSize(48);
@@ -281,15 +290,17 @@ void drawBorder() {
       text((b.timeOut-(millis()-b.phaseStart))/1000, windowPos.x + WIDTH - 60, 70);
     }
   }
-  text(kills, windowPos.x + WIDTH + 150, 500);
-  text(grazes, windowPos.x + WIDTH + 150, 600);
-  text(gameTime/1000, windowPos.x + WIDTH + 150, 700);
+  text(kills, windowPos.x + WIDTH + 250, 500);
+  text(grazes, windowPos.x + WIDTH + 250, 600);
+  text(gameTime/1000, windowPos.x + WIDTH + 250, 700);
   
   fill(255);
   stroke(0);
 }
 
 void gameOverScreen() {
+  int elapsed = millis() - lastStateChange;
+  
   textSize(64);
   String txt;
   if (gameWon) {
@@ -301,11 +312,37 @@ void gameOverScreen() {
   textAlign(CENTER);
   text(txt, windowPos.x + WIDTH / 2, windowPos.y + 100);
   textSize(36);
-  text("Final Score: " + score, windowPos.x + WIDTH / 2, windowPos.y + 300);
+  if (newHighScore) {
+    if (elapsed % 400 < 200) {
+      fill(245, 66, 230);
+    }
+    else {
+      fill(255, 193, 23);
+    }
+    text("New High Score!! ~ " + score, windowPos.x + WIDTH / 2, windowPos.y + 200);
+    fill(255);
+  }
+  else {
+    text("Final Score ~ " + score, windowPos.x + WIDTH / 2, windowPos.y + 200);
+  }
+  textSize(24);
+  fill(200);
+  text("Time Bonus: " + timeScore, windowPos.x + WIDTH / 2, windowPos.y + 250);
+  text("Spellcard Bonus: " + phaseScore, windowPos.x + WIDTH / 2, windowPos.y + 300);
+  text("Damage Bonus: " + damageScore, windowPos.x + WIDTH / 2, windowPos.y + 350);
+  text("Graze Bonus: " + grazeScore, windowPos.x + WIDTH / 2, windowPos.y + 400);
+  text("Kill Bonus: " + killScore, windowPos.x + WIDTH / 2, windowPos.y + 450);
+  if (gameWon) {
+    text("Stage Clear Bonus: " + WIN_SCORE, windowPos.x + WIDTH / 2, windowPos.y + 500);
+  }
+  else {
+    text("Stage Failed: " + 0, windowPos.x + WIDTH / 2, windowPos.y + 500);
+  }
+  fill(255);
   textAlign(BASELINE);
   
   //replay button
-  float[] playButton = new float[] {windowPos.x + WIDTH / 2, windowPos.y + 500, 400, 100};
+  float[] playButton = new float[] {windowPos.x + WIDTH / 2, windowPos.y + 700, 400, 100};
   if (mouseOnButton(playButton)) {
     newGame();
   }
@@ -316,8 +353,9 @@ void gameTime() {
   deltaTime = millis() - gameStart - gameTime;
   gameTime = millis() - gameStart;
   
-  score += (gameTime - timeScore) / 50;
-  timeScore += ((gameTime - timeScore) / 50) * 50;
+  score += (gameTime - timeCounted) / 50; //one point every 50 ms, 20 pts per sec
+  timeScore += (gameTime - timeCounted) / 50;
+  timeCounted += ((gameTime - timeCounted) / 50) * 50;
 }
 
 void drawButton(float[] button, String text) {
@@ -431,8 +469,6 @@ void draw() {
   }
 }
 
-static final int WIN_SCORE = 20000;
-
 void gameOver(boolean won) {
   gameState = Game.gameOver;
   lastStateChange = millis();
@@ -447,6 +483,7 @@ void gameOver(boolean won) {
     scoreData[0] = "" + score;
     saveStrings(SCORE_FILE, scoreData);
     highScore = score;
+    newHighScore = true;
   }
   
   mobList = new ArrayList<Mob>();
