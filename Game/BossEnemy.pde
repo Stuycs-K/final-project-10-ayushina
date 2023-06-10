@@ -32,6 +32,7 @@ public abstract class BossEnemy extends Enemy {
     
     if (givePoints) {
       Game.score += this.points;
+      Game.phaseScore += this.points;
     }
     if (phase >= maxPhases) {
       Game.kills++;
@@ -42,6 +43,7 @@ public abstract class BossEnemy extends Enemy {
   public void takeDamage(double dmg) {
     health -= dmg;
     Game.score += dmg;
+    Game.damageScore += dmg;
     if (health <= 0) {
       nextPhase(true);
     }

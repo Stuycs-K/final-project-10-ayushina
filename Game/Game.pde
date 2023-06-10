@@ -20,6 +20,10 @@ final static String gameOver = "gameOver";
 
 static int score;
 static int timeScore;
+static int phaseScore;
+static int damageScore;
+static int killScore;
+
 static int lives;
 static int kills;
 static int lastDied;
@@ -37,7 +41,7 @@ static int deltaTime;
 
 static float[] lastMouseUp;
 static float[] lastMouseDown;
-
+static boolean mouseDown, justDown, justUp;
 
 static boolean left, down, up, right;
 static boolean leftDown, rightDown;
@@ -280,7 +284,6 @@ void gameOverScreen() {
   float[] playButton = new float[] {windowPos.x + WIDTH / 2, windowPos.y + 500, 400, 100};
   if (mouseOnButton(playButton)) {
     newGame();
-    resetMouse();
   }
   drawButton(playButton, "Play Again?");
 }
@@ -312,21 +315,41 @@ void drawButton(float[] button, String text) {
 }
 
 boolean mouseOnButton(float[] button) {
-  return !mousePressed && inRectCenter(lastMouseDown, button) && inRectCenter(lastMouseUp, button);
+  return justUp && inRectCenter(lastMouseDown, button) && inRectCenter(lastMouseUp, button);
 }
 
-void resetMouse() {
-  lastMouseUp = new float[]{};
-  lastMouseDown = new float[]{};
+void updateMouse() {
+  boolean previousDown = mouseDown;
+  boolean previousUp = !mouseDown;
+  mouseDown = mousePressed;
+  justDown = previousDown == false && mouseDown == true;
+  justUp = previousUp == false && mouseDown == false;
+  
+  if (justDown) {
+    if (lastMouseDown.length == 0) {
+      lastMouseDown = new float[2];
+    }
+    lastMouseDown[0] = mouseX;
+    lastMouseDown[1] = mouseY;
+  }
+
+  if (justUp) {
+    if (lastMouseUp.length == 0) {
+      lastMouseUp = new float[2];
+    }
+    lastMouseUp[0] = mouseX;
+    lastMouseUp[1] = mouseY;
+  }
 }
 
 void draw() {  
+  updateMouse();
+  
   if (gameState == Game.start) {
     background(166,60,91);
     float[] playButton = new float[] {width / 2 - 400, height / 2, 400, 100};
     if (mouseOnButton(playButton)) {
       newGame();
-      resetMouse();
     }
     drawButton(playButton, "Play");
     
@@ -340,7 +363,6 @@ void draw() {
     float[] skipButton = new float[] {width / 2 - 400, height / 2 + 150, 400, 100};
     if (mouseOnButton(skipButton)) {
       newGame(0);
-      resetMouse();
     }
     drawButton(skipButton, "Skip + Inf lives");
     
@@ -348,7 +370,6 @@ void draw() {
     float[] livesButton = new float[] {width / 2 - 400, height / 2 + 300, 400, 100};
     if (mouseOnButton(livesButton)) {
       newGame(1);
-      resetMouse();
     }
     drawButton(livesButton, "Inf lives");
     
@@ -481,21 +502,6 @@ void spawnEnemies() {
     new Teacher();
     nextSpawn++;
   }
-}
-
-void mousePressed() {
-  if (lastMouseDown.length == 0) {
-    lastMouseDown = new float[2];
-  }
-  lastMouseDown[0] = mouseX;
-  lastMouseDown[1] = mouseY;
-}
-void mouseReleased() {
-  if (lastMouseUp.length == 0) {
-    lastMouseUp = new float[2];
-  }
-  lastMouseUp[0] = mouseX;
-  lastMouseUp[1] = mouseY;
 }
 
 void keyPressed() {

@@ -24,9 +24,11 @@ public abstract class Enemy extends Mob {
   public void takeDamage(double dmg) {
     health -= dmg;
     Game.score += dmg;
+    Game.damageScore += dmg;
     if (health <= 0) {
       Game.kills++;
       Game.score += this.points;
+      Game.killScore += this.points;
       Game.removeMob(this);
     }
   }
