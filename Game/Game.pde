@@ -135,9 +135,19 @@ void shootSound() {
   }
 }
 
+void enepSound() {
+  if (random(2) < 1) {
+    enep00.play();
+  }
+  else {
+    enep01.play();
+  }
+}
+
 static SoundFile pldead00;
 static SoundFile tan00,tan01,tan02;
 static SoundFile graze;
+static SoundFile enep00, enep01;
 
 static SoundFile bgm01;
 static SoundFile bgm16;
@@ -149,6 +159,8 @@ void loadSounds() {
   tan01 = new SoundFile(this, "tan01.wav");
   tan02 = new SoundFile(this, "tan02.wav");
   graze = new SoundFile(this, "graze.wav");
+  enep00 = new SoundFile(this, "enep00.wav");
+  enep01 = new SoundFile(this, "enep01.wav");
   
   bgm01 = new SoundFile(this, "01. Wondrous Tales of Romance ~ Mystic Square.wav");
   bgm16 = new SoundFile(this, "16. Alice in Wonderland.wav");

@@ -63,6 +63,9 @@ public class Bullet extends Mob {
   public void destroy() {
     super.destroy();
     Game.removeBullet(this);
+    if (currentBoss.size() > 0) {
+      currentBoss.get(0).removeBullet(this);
+    }
   }
   
   public boolean deleteOffScreen() {
