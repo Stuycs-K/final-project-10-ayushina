@@ -170,10 +170,21 @@ void enepSound() {
   }
 }
 
+void lazerSound() {
+  if (random(2) < 1) {
+    lazer00.play();
+  }
+  else {
+    lazer01.play();
+  }
+}
+
 static SoundFile pldead00;
 static SoundFile tan00,tan01,tan02;
 static SoundFile graze;
 static SoundFile enep00, enep01;
+static SoundFile timeout;
+static SoundFile lazer00, lazer01;
 
 static SoundFile bgm01;
 static SoundFile bgm16;
@@ -187,6 +198,9 @@ void loadSounds() {
   graze = new SoundFile(this, "graze.wav");
   enep00 = new SoundFile(this, "enep00.wav");
   enep01 = new SoundFile(this, "enep01.wav");
+  timeout = new SoundFile(this, "timeout.wav");
+  lazer00 = new SoundFile(this, "lazer00.wav");
+  lazer01 = new SoundFile(this, "lazer01.wav");
   
   bgm01 = new SoundFile(this, "01. Wondrous Tales of Romance ~ Mystic Square.wav");
   bgm16 = new SoundFile(this, "16. Alice in Wonderland.wav");

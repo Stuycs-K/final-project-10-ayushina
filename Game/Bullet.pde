@@ -159,6 +159,7 @@ public class Bullet extends Mob {
         if (spec.equals("laser") && !alreadyHit && !e.invincible() && pointToLine(getPos(), e.getPos()) <= getSize() + e.getSize()) {
           e.takeDamage(damage);
           alreadyHit = true;
+          lazerSound();
         }
         else if (!e.invincible() && getPos().dist(e.getPos()) <= getSize() + e.getSize()) {
           e.takeDamage(damage);

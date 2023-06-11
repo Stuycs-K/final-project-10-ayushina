@@ -6,6 +6,8 @@ public class Teacher extends BossEnemy{
   
   private PVector offset;
   private int lastMove;
+  
+  private int lastBeep;
 
   public Teacher() {
     super(new PVector(0, 0), SIZE, HP, SCORE, PHASES);
@@ -14,6 +16,7 @@ public class Teacher extends BossEnemy{
     targetPos = spawn.copy();    
     lastMove = -1;
     offset = new PVector();
+    lastBeep = -1;
   }
   
   public void display() {
@@ -32,6 +35,13 @@ public class Teacher extends BossEnemy{
     if (phase >= maxPhases) {
       destroy();
       return;
+    }
+    
+    if (timeOut - elapsed < 6000) {
+      if (lastBeep == -1 || millis() - lastBeep >= 1000) {
+        Game.timeout.play();
+        lastBeep = millis();
+      }
     }
     
     if (phase == 0 || phase == 3) {
