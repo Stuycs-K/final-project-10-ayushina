@@ -23,7 +23,7 @@ public abstract class Enemy extends Mob {
   
   public void goTo(PVector targetPos, float time) {
     float rate = targetPos.dist(getPos())/(60*(time/1000)); //in t milliseconds
-    setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+    setVelocity(PVector.sub(targetPos, getPos()).normalize().mult(rate));
   }
   
   public void takeDamage(double dmg) {

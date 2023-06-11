@@ -1,7 +1,7 @@
 public class Teacher extends BossEnemy{
   private static final float SIZE = 30;
   private static final int SCORE = 3000;
-  private static final int PHASES = 3;
+  private static final int PHASES = 4;
   private static final double HP = 500;
   
   
@@ -33,7 +33,10 @@ public class Teacher extends BossEnemy{
       return;
     }
     
-    if (phase == 1) {
+    if (phase == 0 || phase == 3) {
+      bg = Game.DEFAULT_BG;
+    }
+    else if (phase == 1) {
       bg = new int[] {74, 3, 3};
     }
     else if (phase == 2) {
@@ -56,7 +59,7 @@ public class Teacher extends BossEnemy{
     }
     else {
 
-      if (phase == 0) {
+      if (phase == 0 || phase == 3) {
         if (lastMove == -1 || millis() - lastMove >= 1200) { //move every 1.2 seconds
           lastMove = millis();
           targetPos = new PVector(constrain(getPos().x -50 + random(100), 0, Game.WIDTH), constrain(getPos().y - 10 + random(20), 0, Game.HEIGHT));
@@ -150,26 +153,43 @@ public class Teacher extends BossEnemy{
         }
       }
       else if (phase == 2) {
-        elapsed = (elapsed - delay) % 2000;
-        if (elapsed >= nextAttack * 10 && elapsed < 500) {
+        int wait;
+        if (health > maxHealth * 2 / (double) 3) {
+          wait = 2000;
+        }
+        else if (health > maxHealth / (double) 2) {
+          wait = 1000;
+        }
+        else if (health > maxHealth / (double) 4) {
+          wait = 600;
+        }
+        else if (health > maxHealth / (double) 5) {
+          wait = 500;
+        }
+        else {
+          wait = 300;
+        }
+        elapsed = (elapsed - delay) % wait;
+        if (elapsed >= nextAttack * wait / (double) 200 && elapsed < wait / (double) 4) {
           
           if (nextAttack == 0) {
             setPos(new PVector(50, 150));
             targetPos = new PVector(Game.WIDTH - 50, 150);
-            goTo(targetPos, 500);
+            goTo(targetPos, wait / (float) 4);
             shootSound();
           }
           
-          PVector bulletPos = getPos().add(new PVector(-10 + random(20), -40 + random(80)));
-          PVector bulletVel = new PVector(0, -4 - random(4));
+          PVector bulletPos = new PVector(50, 150).lerp(targetPos, elapsed / (wait / (float) 4));
+          bulletPos.add(new PVector(-20 + random(40), -40 + random(80)));
+          PVector bulletVel = new PVector(0, -3 - random(4));
           bullets.add(new Bullet(this, bulletPos, bulletVel, 10, new int[] {3, 248, 252}, "gravity"));
           
           nextAttack++;
         }
-        else if (elapsed >= 500 && nextAttack != 0) {
+        else if (elapsed >= wait / (double) 4 && nextAttack != 0) {
           nextAttack = 0;
           
-          setVelocity(new PVector(0,0));
+          goTo(new PVector(50, 150), wait * 3 / (float) 4);
         }
       }
     }
