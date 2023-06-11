@@ -21,6 +21,7 @@ public class Bullet extends Mob {
     setVelocity(vel);
     type = "bullet";
     owner = own;
+    spec = "";
     this.bulletColor = bulletColor;
     Game.addBullet(this);
   }
@@ -41,6 +42,7 @@ public class Bullet extends Mob {
     type = "bullet";
     owner = own;
     damage = dmg;
+    spec = "";
     this.bulletColor = bulletColor;
     this.homing = homing;
     Game.addBullet(this);
@@ -68,6 +70,9 @@ public class Bullet extends Mob {
       PVector homingTarget = closestEnemy();
       vel.normalize().add((homingTarget.sub(getPos())).normalize().mult(0.3)).normalize().mult(mag);
       setVelocity(vel);
+    }
+    if (spec.equals("gravity")) {
+      setVelocity(getVelocity().add(new PVector(0, 1)));
     }
     super.updatePos();
   }

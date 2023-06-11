@@ -1,7 +1,7 @@
 public class Teacher extends BossEnemy{
   private static final float SIZE = 30;
   private static final int SCORE = 3000;
-  private static final int PHASES = 2;
+  private static final int PHASES = 3;
   private static final double HP = 500;
   
   private boolean entering;
@@ -35,7 +35,10 @@ public class Teacher extends BossEnemy{
     }
     
     if (phase == 1) {
-      Game.bg = new int[] {74, 3, 3};
+      bg = new int[] {74, 3, 3};
+    }
+    else if (phase == 2) {
+      bg = new int[] {0, 87, 97};
     }
     
     int delay;
@@ -49,8 +52,7 @@ public class Teacher extends BossEnemy{
     if (elapsed < delay) {
       if (!entering) {
         entering = true;
-        float rate = targetPos.dist(getPos())/(60 * delay / (float) 1000);
-        setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+        goTo(targetPos, delay);
       }
     }
     else {
@@ -60,8 +62,7 @@ public class Teacher extends BossEnemy{
         if (lastMove == -1 || millis() - lastMove >= 1200) { //move every 1.2 seconds
           lastMove = millis();
           targetPos = new PVector(constrain(getPos().x -50 + random(100), 0, Game.WIDTH), constrain(getPos().y - 10 + random(20), 0, Game.HEIGHT));
-          float rate = targetPos.dist(getPos())/(60*(1200/1000)); //in 1.2 seconds
-          setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+          goTo(targetPos, 1200);
         }
   
         elapsed = (elapsed - delay) % 2000; //every 2 seconds
@@ -101,8 +102,7 @@ public class Teacher extends BossEnemy{
         if (lastMove == -1 || millis() - lastMove >= 1200) { //move every 1.2 seconds
           lastMove = millis();
           targetPos = new PVector(constrain(getPos().x -50 + random(100), 300, Game.WIDTH - 300), constrain(getPos().y - 10 + random(20), 0, 400));
-          float rate = targetPos.dist(getPos())/(60*(1200/1000)); //in 1.2 seconds
-          setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+          goTo(targetPos, 1200);
         }
         
         int elapsedA = (elapsed) % 600; //every 0.6 seconds
@@ -150,6 +150,25 @@ public class Teacher extends BossEnemy{
             }
           }
         }
+      }
+      else if (phase == 2) {
+        setVelocity(new PVector(0,0));
+        //elapsed = (elapsed - delay) % 3000;
+        //if (elapsed >= nextAttack * 200 && elapsed < 2000) {
+        //  nextAttack++;
+          
+        //  if (nextAttack == 0) {
+        //    setPos(new PVector(150, 150));
+        //    targetPos = new PVector(Game.WIDTH - 150, 150);
+        //    //goTo(targetPos, 1.8);
+        //  }
+        //  bullets.add(new Bullet(this, getPos(), new PVector(0,0), 10, new int[] {3, 248, 252}, "gravity"));
+        //}
+        //else if (elapsed >= 2000 && nextAttack == 10) {
+        //  nextAttack++;
+          
+        //  //setVelocity(new PVector(0,0));
+        //}
       }
     }
   }

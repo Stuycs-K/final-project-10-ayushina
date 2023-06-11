@@ -41,7 +41,7 @@ public abstract class BossEnemy extends Enemy {
     phase++;
     phaseStart = millis();
     setVelocity(new PVector(0,0));
-    targetPos = spawn;
+    targetPos = spawn.copy();
     nextAttack = 0;
     health = maxHealth;
     
