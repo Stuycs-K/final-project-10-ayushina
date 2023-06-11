@@ -34,6 +34,10 @@ public class Teacher extends BossEnemy{
       return;
     }
     
+    if (phase == 1) {
+      Game.bg = new int[] {74, 3, 3};
+    }
+    
     int delay;
     if (phase == 0) {
       delay = 6000;
@@ -78,11 +82,13 @@ public class Teacher extends BossEnemy{
         }
         if (elapsed >= 1000 && elapsed < 2000 && nextAttack == 1) {
           //circle
-          for (int i = 0; i < 12; i++) {
-            PVector bulletVel = new PVector(1, 0);
-            bulletVel.rotate(radians(30) * i);
-            for (int spd = 2; spd <= 8; spd += 2) {
-              bullets.add(new Bullet(this, getPos(), bulletVel.normalize().mult(spd), 12, new int[] {90, 112, 224}));
+          for (int a = 0; a < 4; a++) {
+            for (int i = 0; i < 12; i++) {
+              PVector bulletVel = new PVector(1, 0);
+              bulletVel.rotate(radians(30 * i + (-7.5 + a * 5)));
+              for (int spd = 2; spd <= 8; spd += 2) {
+                bullets.add(new Bullet(this, getPos(), bulletVel.normalize().mult(spd), 12, new int[] {90, 112, 224}));
+              }
             }
           }
           shootSound();

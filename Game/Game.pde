@@ -208,7 +208,7 @@ void newGame(int mode) {
     newGame();
     stateStart = millis() - time;
     gameTime = time;
-    nextSpawn = 13;
+    nextSpawn = 15;
     lives = 99;
   }
   else if (mode == 1) {

@@ -7,6 +7,8 @@ public class Bullet extends Mob {
   
   boolean homing;
   
+  String spec;
+  
   public Bullet(Mob own) {
     super(new PVector(0, 0), 10);
     type = "bullet";
@@ -20,6 +22,16 @@ public class Bullet extends Mob {
     type = "bullet";
     owner = own;
     this.bulletColor = bulletColor;
+    Game.addBullet(this);
+  }
+  
+  public Bullet(Mob own, PVector pos, PVector vel, float siz, int[] bulletColor, String spec) {
+    super(pos, siz);
+    setVelocity(vel);
+    type = "bullet";
+    owner = own;
+    this.bulletColor = bulletColor;
+    this.spec = spec;
     Game.addBullet(this);
   }
   
