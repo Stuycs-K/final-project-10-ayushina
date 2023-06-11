@@ -114,10 +114,21 @@ public class Reimu extends Character {
         orbPos = downOrb;
       }
     }
+    int elapsed = millis() - stateStart;
     PVector pos = getDisplayPos();
     imageMode(CENTER);
+    pushMatrix();
+    translate(pos.x + orbPos.x, pos.y + orbPos.y);
+    rotate(radians((elapsed % 1000) / (float) 1000 * 360));
+    translate(-(pos.x + orbPos.x), -(pos.y + orbPos.y));
     image(reimuOrb[0], pos.x + orbPos.x, pos.y + orbPos.y);
+    popMatrix();
+    pushMatrix();
+    translate(pos.x - orbPos.x, pos.y + orbPos.y);
+    rotate(radians((elapsed % 1000) / (float) 1000 * -360));
+    translate(-(pos.x - orbPos.x), -(pos.y + orbPos.y));
     image(reimuOrb[0], pos.x - orbPos.x, pos.y + orbPos.y);
+    popMatrix();
     imageMode(CORNER);
   }
  

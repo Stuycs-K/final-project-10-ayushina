@@ -71,7 +71,7 @@ public class Teacher extends BossEnemy{
               PVector bulletVel = Game.chr.getPos().sub(getPos()).normalize().mult(6 + spd * 1.4);
               bulletVel.rotate(radians(-48 + a * 6));
               if(random(3) < 2) {
-                bullets.add(new Bullet(this, getPos(), bulletVel, 12, new int[] {90, 112, 224}));
+                bullets.add(new Bullet(this, getPos(), bulletVel, 10, new int[] {90, 112, 224}));
               }
             }
           }
@@ -82,7 +82,7 @@ public class Teacher extends BossEnemy{
             PVector bulletVel = new PVector(1, 0);
             bulletVel.rotate(radians(30) * i);
             for (int spd = 2; spd <= 8; spd += 2) {
-              bullets.add(new Bullet(this, getPos(), bulletVel.normalize().mult(spd), 10, new int[] {90, 112, 224}));
+              bullets.add(new Bullet(this, getPos(), bulletVel.normalize().mult(spd), 12, new int[] {90, 112, 224}));
             }
           }
           shootSound();

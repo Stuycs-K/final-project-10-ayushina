@@ -77,6 +77,7 @@ static PImage reimuOrb[];
 
 static PImage nerd;
 static PImage book;
+static PImage zygarde;
 static PImage teacher;
 
 private PImage flipImage(PImage img) {
@@ -119,6 +120,8 @@ void loadImages() {
   nerd = loadImage("nerd.png");
   //book
   book = loadImage("book.png");
+  //zygarde
+  zygarde = loadImage("zygarde.png");
   //teacher
   teacher = loadImage("teacher.png");
 }
@@ -201,11 +204,11 @@ void loadData() {
 
 void newGame(int mode) {
   if (mode == 0) {
-    int time = 30000;
+    int time = 40000;
     newGame();
     stateStart = millis() - time;
     gameTime = time;
-    nextSpawn = 12;
+    nextSpawn = 13;
     lives = 99;
   }
   else if (mode == 1) {
@@ -527,7 +530,7 @@ void draw() {
     
     drawBorder();
     
-    if (gameTime > 33 * 1000 && currentBoss.size() == 0) {// game length
+    if (gameTime > 43000 && currentBoss.size() == 0) {// game length
       gameOver(true);
     }
   }
@@ -603,43 +606,52 @@ void updateMobs() {
 
 void spawnEnemies() {
   if (gameTime > 2000 && nextSpawn == 0) {//2-10
-    new Nerd(new PVector(WIDTH/2, 200), 100, 1000, 8000); //3 attacks
+    new Nerd(new PVector(WIDTH/2, 200), 100, 3);
     nextSpawn++;
   }
   for (int i = 0; i < 4; i++) {
     if (gameTime > 8000 + i * 333 && nextSpawn == 1 + i) {
-      new Nerd(new PVector(WIDTH/2 - 150 + i * 100,300), 25, 1000, 4000); //1 attack
+      new Nerd(new PVector(WIDTH/2 - 150 + i * 100,300), 25, 1);
       nextSpawn++;
     }
   }
   if (gameTime > 10000 && nextSpawn == 5) {
-    new Book(new PVector(WIDTH/2, 100), "left", 50, 1000, 4); //4 shots
+    new Book(new PVector(WIDTH/2, 100), "left", 30, 1000, 4);
     nextSpawn++;
   }
   if (gameTime > 13000 && nextSpawn == 6) {
     nextSpawn++;
-    new Book(new PVector(300, 200), "right", 25, 1500, 2);
-    new Book(new PVector(WIDTH-300, 200), "left", 25, 1500, 2);
-    new Nerd(new PVector(WIDTH/2, 100), 50, 500, 4000); //1 attack;
+    new Book(new PVector(300, 200), "right", 20, 1500, 3);
+    new Book(new PVector(WIDTH-300, 200), "left", 20, 1500, 3);
+    new Nerd(new PVector(WIDTH/2 + 200, 100), 50, 500, 4000); //1 attack;
   }
   if (gameTime > 18000 && nextSpawn == 7) {
     nextSpawn++;
-    new Nerd(new PVector(WIDTH/2, 150), 200, 1000, 10000); //4 attacks;
+    new Nerd(new PVector(WIDTH/2, 150), 100, 4);
   }
   for (int i = 0; i < 4; i++) {
     if (gameTime > 20000 + i * 2000 && nextSpawn == 8 + i) {
       nextSpawn++;
       String randomDir;
+      PVector target;
       if (random(2) < 1) {
         randomDir = "left";
+        target = new PVector(WIDTH*2/3, 300);
       }
       else {
         randomDir = "right";
+        target = new PVector(WIDTH/3, 300);
       }
-      new Book(new PVector(WIDTH/3, 300), randomDir, 50, 1000, 2);
+      new Book(target, randomDir, 20, 1000, 3);
     }
   }
-  if (gameTime > 31000 && nextSpawn == 12) {
+  for (int i = 0; i < 3; i++) {
+    if (gameTime > 29000 + i * 500 && nextSpawn == 12 + i) {
+      nextSpawn++;
+      new Zygarde(new PVector(WIDTH/2-200 + i*200, 100), 30, 4);
+    }
+  }
+  if (gameTime > 41000 && nextSpawn == 15) {
     new Teacher();
     changeBGM(bgm17);
     nextSpawn++;
