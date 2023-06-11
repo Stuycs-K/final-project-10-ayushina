@@ -21,7 +21,18 @@ public abstract class Character extends Mob {
   
   public abstract void loadSprites();
   
-  public abstract void display();
+  public void display() {
+    drawOrbs();
+    drawChar();
+    
+    if (focus == true) {
+      ellipseMode(RADIUS);
+      stroke(255,0,0);
+      circle(getDisplayPos().x, getDisplayPos().y, size);
+      stroke(0);
+    }
+  }
+  
   public abstract void updateAttack();
   
   public String getName() {

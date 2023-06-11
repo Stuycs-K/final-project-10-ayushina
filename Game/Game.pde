@@ -250,9 +250,15 @@ void newGame() {
   score = 0;
   timeCounted = 0;
   timeScore = 0;
+  phaseScore = 0;
+  damageScore = 0;
+  grazeScore = 0;
+  killScore = 0;
+  
   lives = PLAYER_LIVES;
   kills = 0;
   lastDied = -1;
+  grazes = 0;
   
   gameTime = 0;
   deltaTime = 0;
@@ -350,8 +356,9 @@ void drawBorder() {
   text(chr.getName(), windowPos.x + WIDTH + 125, 300);
   text("Boss", windowPos.x + WIDTH + 125, 400);
   text("Kills", windowPos.x + WIDTH + 225, 500);
-  text("Graze", windowPos.x + WIDTH + 225, 600);
-  text("Time", windowPos.x + WIDTH + 225, 700);
+  text("Damage", windowPos.x + WIDTH + 225, 600);
+  text("Graze", windowPos.x + WIDTH + 225, 700);
+  text("Time", windowPos.x + WIDTH + 225, 800);
   textAlign(BASELINE);
   
   fill(255);
@@ -380,8 +387,9 @@ void drawBorder() {
     }
   }
   text(kills, windowPos.x + WIDTH + 250, 500);
-  text(grazes, windowPos.x + WIDTH + 250, 600);
-  text(gameTime/1000, windowPos.x + WIDTH + 250, 700);
+  text(damageScore, windowPos.x + WIDTH + 250, 600);
+  text(grazes, windowPos.x + WIDTH + 250, 700);
+  text(gameTime/1000, windowPos.x + WIDTH + 250, 800);
   
   fill(255);
   stroke(0);
@@ -431,11 +439,11 @@ void gameOverScreen() {
   textAlign(BASELINE);
   
   //replay button
-  float[] playButton = new float[] {windowPos.x + WIDTH / 2, windowPos.y + 700, 400, 100};
-  if (mouseOnButton(playButton)) {
+  float[] startButton = new float[] {windowPos.x + WIDTH / 2, windowPos.y + 700, 400, 100};
+  if (mouseOnButton(startButton)) {
     changeState(Game.start);
   }
-  drawButton(playButton, "Play Again?");
+  drawButton(startButton, "Play Again?");
 }
 
 void gameTime() {
@@ -504,13 +512,13 @@ void updateMouse() {
 void changeState(String state) {
   gameState = state;
   stateStart = millis();
-  if (state.equals(Game.start)) {
+  if (state.equals(Game.start) && bgm != bgm01) {
     changeBGM(bgm01);
   }
   else if (state.equals(Game.charSelect)) {
     menuChars = new ArrayList<Character>();
-    menuChars.add(new Reimu(new PVector(width/2 - 400, height/2 - 200)));
-    menuChars.add(new Marisa(new PVector(width/2 + 400, height/2 - 200)));
+    menuChars.add(new Reimu(new PVector(width/2 - 300, height - 300)));
+    menuChars.add(new Marisa(new PVector(width/2 + 300, height - 300)));
   }
   else if (state.equals(Game.game)) {
     changeBGM(bgm16);
@@ -568,14 +576,20 @@ void draw() {
     text("Character Select", width / 2, 300);
     textAlign(BASELINE);
     
-    float[] reimuButton = new float[] {width / 2 - 400, height / 2, 400, 100};
+    float[] startButton = new float[] {200, 50, 400, 100};
+    if (mouseOnButton(startButton)) {
+      changeState(Game.start);
+    }
+    drawButton(startButton, "Back");
+    
+    float[] reimuButton = new float[] {width / 2 - 300, height - 100, 400, 100};
     if (mouseOnButton(reimuButton)) {
       chosenChar = "Reimu";
       newGame();
     }
     drawButton(reimuButton, "Reimu");
 
-    float[] marisaButton = new float[] {width / 2 + 400, height / 2, 400, 100};
+    float[] marisaButton = new float[] {width / 2 + 300, height - 100, 400, 100};
     if (mouseOnButton(marisaButton)) {
       chosenChar = "Marisa";
       newGame();

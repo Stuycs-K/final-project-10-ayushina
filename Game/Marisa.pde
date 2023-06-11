@@ -1,13 +1,18 @@
 public class Marisa extends Character {
-  private static final float SPEED = 8.0;
-  private static final float FOCUS_SPEED = 5.0;
-  private static final float SIZE = 7;
+  private static final float SPEED = 9.0;
+  private static final float FOCUS_SPEED = 6.0;
+  private static final float SIZE = 8;
   private static final int COOLDOWN = 100;
-  private static final double DAMAGE = 1;
+  private static final double DAMAGE = 1.1;
   private static final String NAME = "Marisa";
+  
+  private static final int LASER_COOLDOWN = 2000;
+  
+  private int lastLaser;
   
   public Marisa(PVector pos) {
     super(pos, SIZE, SPEED, FOCUS_SPEED, NAME);
+    lastLaser = 0;
   }
   
   public void loadSprites() {
@@ -16,18 +21,6 @@ public class Marisa extends Character {
     charStandingLeft = Game.marisaStandingLeft;
     charStandingRight = Game.marisaStandingRight;
     charOrb = Game.marisaOrb;
-  }
- 
-  public void display() {
-    drawOrbs();
-    drawChar();
-    
-    if (focus == true) {
-      ellipseMode(RADIUS);
-      stroke(255,0,0);
-      circle(getDisplayPos().x, getDisplayPos().y, size);
-      stroke(0);
-    }
   }
   
   public void updateAttack() {
@@ -41,28 +34,20 @@ public class Marisa extends Character {
         bulletPos.y -= 10;
         PVector bulletVel = new PVector(0, -30);
         if (focus) {
-          bulletVel.rotate(radians(-4 + i * 4));
-          bulletPos.x = getPos().x - 10 + i * 5;
+          bulletPos.x = getPos().x - 15 + i * 15;
         }
         else {
-          bulletVel.rotate(radians(-6 + i * 6));
-          bulletPos.x = getPos().x - 20 + i * 10;
+          bulletPos.x = getPos().x - 25 + i * 25;
         }
-        new Bullet(this, bulletPos, bulletVel, bulletSize, bulletColor, false, DAMAGE);
+        new Bullet(this, bulletPos, bulletVel, bulletSize, bulletColor, DAMAGE, "");
       }
       
-      PVector leftVel = new PVector(0, -20);
-      PVector rightVel = new PVector(0, -20);
-      if (focus) {
-        leftVel.rotate(radians(15));
-        rightVel.rotate(radians(-15));
+      if (millis() - lastLaser > LASER_COOLDOWN) {
+        new Bullet(this, new PVector(getPos().x + orbPos.x, getPos().y + orbPos.y), new PVector(0,0), bulletSize, homingColor, DAMAGE * 20, "laser");
+        new Bullet(this, new PVector(getPos().x - orbPos.x, getPos().y + orbPos.y), new PVector(0,0), bulletSize, homingColor, DAMAGE * 20, "laser");
+        
+        lastLaser = millis();
       }
-      else {
-        leftVel.rotate(radians(30));
-        rightVel.rotate(radians(-30));
-      }
-      new Bullet(this, new PVector(getPos().x + orbPos.x, getPos().y + orbPos.y), leftVel, bulletSize, homingColor, true, DAMAGE / 2);
-      new Bullet(this, new PVector(getPos().x - orbPos.x, getPos().y + orbPos.y), rightVel, bulletSize, homingColor, true, DAMAGE / 2);
       
       lastAttack = millis();
     }
