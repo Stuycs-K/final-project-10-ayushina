@@ -14,7 +14,6 @@ public class Teacher extends BossEnemy{
     targetPos = spawn.copy();    
     lastMove = -1;
     offset = new PVector();
-    attackPos = chr.getPos();
   }
   
   public void display() {
@@ -117,7 +116,7 @@ public class Teacher extends BossEnemy{
               attackPos = chr.getPos();
               offset = new PVector(-50 + random(100), 0);
             }
-            PVector bulletVel = PVector.sub(attackPos, getPos()).normalize().mult(12);
+            PVector bulletVel = PVector.sub(attackPos, getPos().add(offset)).normalize().mult(12);
             bullets.add(new Bullet(this, getPos().add(offset), bulletVel, 8, new int[] {200, 200, 20}));
             nextAttack++;
           }

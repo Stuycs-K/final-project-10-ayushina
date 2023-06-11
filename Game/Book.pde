@@ -49,8 +49,7 @@ public class Book extends Enemy {
       if (elapsed < delay) {
         if (!entering) {
           entering = true;
-          float rate = targetPos.dist(getPos())/(60 * (delay/1000));
-          setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+          goTo(targetPos, delay);
         }
       }
       else {
@@ -81,8 +80,7 @@ public class Book extends Enemy {
         else {
           targetPos = new PVector(-size, getPos().y);
         }
-        float rate = targetPos.dist(getPos())/60;
-        setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+        goTo(targetPos, 1000);
       }
     }
   }

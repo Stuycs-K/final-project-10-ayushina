@@ -208,7 +208,7 @@ void newGame(int mode) {
     newGame();
     stateStart = millis() - time;
     gameTime = time;
-    nextSpawn = 15;
+    nextSpawn = 18;
     lives = 99;
   }
   else if (mode == 1) {
@@ -648,10 +648,26 @@ void spawnEnemies() {
   for (int i = 0; i < 3; i++) {
     if (gameTime > 29000 + i * 500 && nextSpawn == 12 + i) {
       nextSpawn++;
-      new Zygarde(new PVector(WIDTH/2-200 + i*200, 100), 30, 4);
+      new Zygarde(new PVector(WIDTH/2-200 + i*200, 100), 20, 4);
     }
   }
-  if (gameTime > 41000 && nextSpawn == 15) {
+  if (gameTime > 33000 && nextSpawn == 15) {
+    nextSpawn++;
+    new Zygarde(new PVector(200, 100), 10, 1000, 6000);
+    new Zygarde(new PVector(400, 100), 10, 1000, 6000);
+    new Nerd(new PVector(WIDTH-200, 100), 10, 1000, 6000);
+    new Book(new PVector(500, 100), "left", 10, 1000, 2);
+  }
+  if (gameTime > 35000 && nextSpawn == 16) {
+    nextSpawn++;
+    new Zygarde(new PVector(WIDTH/2, 100), 20, 500, 5000);
+  }
+  if (gameTime > 36000 && nextSpawn == 17) {
+    nextSpawn++;
+    new Nerd(new PVector(200, 100), 10, 500, 4000);
+    new Book(new PVector(WIDTH-500, 100), "right", 10, 500, 4000);
+  }
+  if (gameTime > 41000 && nextSpawn == 18) {
     new Teacher();
     changeBGM(bgm17);
     nextSpawn++;

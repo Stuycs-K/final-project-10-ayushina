@@ -38,8 +38,7 @@ public class Zygarde extends Enemy {
       if (elapsed < delay) {
         if (!entering) {
           entering = true;
-          float rate = targetPos.dist(getPos())/(60 * delay / (float) 1000); //breaks when delay = 0
-          setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+          goTo(targetPos, delay);
         }
       }
       else {
@@ -48,8 +47,11 @@ public class Zygarde extends Enemy {
         if (elapsed >= nextAttack * 50 && elapsed < 400) {
           //laser beam
           int i = nextAttack;
-          PVector bulletVel = Game.chr.getPos().sub(getPos()).normalize().mult(2 + i * 1.2);
-          new Bullet(this, getPos(), bulletVel, 9, new int[] {94, 12, 94});
+          if (nextAttack == 0) {
+            attackPos = chr.getPos();
+          }
+          PVector bulletVel = PVector.sub(attackPos, getPos()).normalize().mult(3 + i * 0.3);
+          new Bullet(this, getPos(), bulletVel, 11, new int[] {94, 12, 94});
 
           if (nextAttack == 0) {
             shootSound();
@@ -61,7 +63,7 @@ public class Zygarde extends Enemy {
           for (int i = 0; i < 4; i++) {
             PVector bulletVel = Game.chr.getPos().sub(getPos()).normalize().mult(6);
             bulletVel.rotate(radians(-4.5 + i * 3));
-            new Bullet(this, getPos(), bulletVel, 5, new int[] {94, 12, 94});
+            new Bullet(this, getPos(), bulletVel, 10, new int[] {94, 12, 94});
           }
           nextAttack = 0;
           shootSound();
@@ -72,8 +74,7 @@ public class Zygarde extends Enemy {
       if (!leaving) {
         leaving = true;
         targetPos = new PVector(getPos().x, Game.HEIGHT + size);
-        float rate = targetPos.dist(getPos())/60;
-        setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+        goTo(targetPos, 1000);
       }
     }
   }

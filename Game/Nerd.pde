@@ -43,8 +43,7 @@ public class Nerd extends Enemy {
       if (elapsed < delay) {
         if (!entering) {
           entering = true;
-          float rate = targetPos.dist(getPos())/(60 * delay / (float) 1000); //breaks when delay = 0
-          setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+          goTo(targetPos, delay);
         }
       }
       else {
@@ -80,8 +79,7 @@ public class Nerd extends Enemy {
         else {
           targetPos = new PVector(Game.WIDTH + size, Game.HEIGHT + size);
         }
-        float rate = targetPos.dist(getPos())/60;
-        setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+        goTo(targetPos, 1000);
       }
     }
   }

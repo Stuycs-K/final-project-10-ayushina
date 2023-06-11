@@ -12,6 +12,8 @@ public abstract class Enemy extends Mob {
     health = hp;
     type = "enemy";
     this.points = points;
+    targetPos = new PVector(0,0);
+    attackPos = new PVector(0,0);
     Game.addEnemy(this);
   }
   
