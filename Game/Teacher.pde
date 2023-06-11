@@ -186,13 +186,13 @@ public class Teacher extends BossEnemy{
         if (elapsed >= nextAttack * wait / (double) 200 && elapsed < wait / (double) 4) {
           
           if (nextAttack == 0) {
-            setPos(new PVector(50, 150));
-            targetPos = new PVector(Game.WIDTH - 50, 150);
+            setPos(new PVector(5, 150));
+            targetPos = new PVector(Game.WIDTH - 5, 150);
             goTo(targetPos, wait / (float) 4);
             shootSound();
           }
           
-          PVector bulletPos = new PVector(50, 150).lerp(targetPos, elapsed / (wait / (float) 4));
+          PVector bulletPos = new PVector(5, 150).lerp(targetPos, elapsed / (wait / (float) 4));
           bulletPos.add(new PVector(-20 + random(40), -40 + random(80)));
           PVector bulletVel = new PVector(0, -3 - random(4));
           bullets.add(new Bullet(this, bulletPos, bulletVel, 10, new int[] {3, 248, 252}, "gravity"));

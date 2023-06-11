@@ -173,7 +173,9 @@ public class Bullet extends Mob {
         score += Game.GRAZE_SCORE;
         grazeScore += Game.GRAZE_SCORE;
         grazes++;
-        Game.graze.play();
+        if (!Game.graze.isPlaying()) {
+          Game.graze.play();
+        }
       }
       if (!Game.chr.invincible() && getPos().dist(Game.chr.getPos()) <= getSize() + Game.chr.getSize()) {
         Game.chr.takeDamage();

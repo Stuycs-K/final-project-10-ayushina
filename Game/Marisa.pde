@@ -1,7 +1,7 @@
 public class Marisa extends Character {
   private static final float SPEED = 9.0;
   private static final float FOCUS_SPEED = 6.0;
-  private static final float SIZE = 8;
+  private static final float SIZE = 7.5;
   private static final int COOLDOWN = 100;
   private static final double DAMAGE = 1.1;
   private static final String NAME = "Marisa";
@@ -12,7 +12,7 @@ public class Marisa extends Character {
   
   public Marisa(PVector pos) {
     super(pos, SIZE, SPEED, FOCUS_SPEED, NAME);
-    lastLaser = 0;
+    lastLaser = -1;
   }
   
   public void loadSprites() {
@@ -42,7 +42,7 @@ public class Marisa extends Character {
         new Bullet(this, bulletPos, bulletVel, bulletSize, bulletColor, DAMAGE, "");
       }
       
-      if (millis() - lastLaser > LASER_COOLDOWN) {
+      if (lastLaser == -1 || millis() - lastLaser > LASER_COOLDOWN) {
         new Bullet(this, new PVector(getPos().x + orbPos.x, getPos().y + orbPos.y), new PVector(0,0), bulletSize, homingColor, DAMAGE * 20, "laser");
         new Bullet(this, new PVector(getPos().x - orbPos.x, getPos().y + orbPos.y), new PVector(0,0), bulletSize, homingColor, DAMAGE * 20, "laser");
         
