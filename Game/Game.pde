@@ -15,6 +15,8 @@ static int stateStart;
 static boolean gameWon;
 static boolean newHighScore;
 
+static int cheatMode;
+
 static final int WIN_SCORE = 5000;
 
 final static String start = "start";
@@ -239,21 +241,6 @@ void loadData() {
   }
 }
 
-void newGame(int mode) {
-  if (mode == 0) {
-    int time = 40000;
-    newGame();
-    stateStart = millis() - time;
-    gameTime = time;
-    nextSpawn = 18;
-    lives = 99;
-  }
-  else if (mode == 1) {
-    newGame();
-    lives = 99;
-  }
-}
-
 void newGame() { 
   changeState(Game.game);
   gameWon = false;
@@ -307,6 +294,17 @@ void newGame() {
   else {
     chr = new Reimu(new PVector(WIDTH/2,800));
   }
+  
+  if (cheatMode == 1) {
+    int time = 40000;
+    stateStart = millis() - time;
+    gameTime = time;
+    nextSpawn = 18;
+    lives = 99;
+  }
+  else if (cheatMode == 2) {
+    lives = 99;
+  }
 }
 
 boolean inRectCenter(float[] coords, float[] rect) {
@@ -349,6 +347,9 @@ void setup() {
   lastMouseDown = new float[]{};
   chosenChar = "";
   
+  cheatMode = 0;
+  
+  gameState = "";
   changeState(Game.start);
 }
 
@@ -524,10 +525,16 @@ void updateMouse() {
 }
 
 void changeState(String state) {
+  String previousState = gameState;
   gameState = state;
   stateStart = millis();
-  if (state.equals(Game.start) && bgm != bgm01) {
-    changeBGM(bgm01);
+  if (state.equals(Game.start)) {
+    if (bgm != bgm01) {
+      changeBGM(bgm01);
+    }
+    if (!previousState.equals(Game.charSelect)) {
+      cheatMode = 0;
+    }
   }
   else if (state.equals(Game.charSelect)) {
     menuChars = new ArrayList<Character>();
@@ -554,7 +561,12 @@ void draw() {
     if (mouseOnButton(playButton)) {
       changeState(Game.charSelect);
     }
-    drawButton(playButton, "Play");
+    if (cheatMode != 0) {
+      drawButton(playButton, "Cheats On! (#" + cheatMode + ")");
+    }
+    else {
+      drawButton(playButton, "Play");
+    }
     
     textAlign(CENTER);
     textSize(96);
@@ -565,14 +577,14 @@ void draw() {
     //cheat 1
     float[] skipButton = new float[] {width / 2 - 400, height / 2 + 150, 400, 100};
     if (mouseOnButton(skipButton)) {
-      newGame(0);
+      cheatMode = 1;
     }
     drawButton(skipButton, "Skip + Inf lives");
     
     //cheat 2
     float[] livesButton = new float[] {width / 2 - 400, height / 2 + 300, 400, 100};
     if (mouseOnButton(livesButton)) {
-      newGame(1);
+      cheatMode = 2;
     }
     drawButton(livesButton, "Inf lives");
     
