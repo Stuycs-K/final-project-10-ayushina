@@ -1,21 +1,21 @@
-public class Reimu extends Character {
+public class Marisa extends Character {
   private static final float SPEED = 8.0;
   private static final float FOCUS_SPEED = 5.0;
   private static final float SIZE = 7;
   private static final int COOLDOWN = 100;
   private static final double DAMAGE = 1;
-  private static final String NAME = "Reimu";
+  private static final String NAME = "Marisa";
   
-  public Reimu(PVector pos) {
+  public Marisa(PVector pos) {
     super(pos, SIZE, SPEED, FOCUS_SPEED, NAME);
   }
   
   public void loadSprites() {
-    charLeft = Game.reimuLeft;
-    charRight = Game.reimuRight;
-    charStandingLeft = Game.reimuStandingLeft;
-    charStandingRight = Game.reimuStandingRight;
-    charOrb = Game.reimuOrb;
+    charLeft = Game.marisaLeft;
+    charRight = Game.marisaRight;
+    charStandingLeft = Game.marisaStandingLeft;
+    charStandingRight = Game.marisaStandingRight;
+    charOrb = Game.marisaOrb;
   }
  
   public void display() {

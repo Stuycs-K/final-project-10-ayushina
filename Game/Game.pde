@@ -72,11 +72,8 @@ static boolean focus;
 
 static PImage heart;
 
-static PImage reimuStandingLeft[];
-static PImage reimuStandingRight[];
-static PImage reimuLeft[];
-static PImage reimuRight[];
-static PImage reimuOrb[];
+static PImage[] reimuStandingLeft, reimuStandingRight, reimuLeft, reimuRight, reimuOrb;
+static PImage[] marisaStandingLeft, marisaStandingRight, marisaLeft, marisaRight, marisaOrb;
 
 static PImage nerd;
 static PImage book;
@@ -117,6 +114,29 @@ void loadImages() {
   reimuOrb = new PImage[4];
   for (int i = 0; i < 4; i++) {
     reimuOrb[i] = reimuSprites.get(4 * 64 + i * 32, 32, 32, 32);
+  }
+  
+  //marisa
+  PImage marisaSprites = loadImage("marisa-sprites.png");
+  marisaStandingLeft = new PImage[4];
+  for(int i = 0; i < 4; i++) {
+    marisaStandingLeft[i] = marisaSprites.get(i * 64, 0, 64, 96);
+  }
+  marisaStandingRight = new PImage[4];
+  for(int i = 0; i < 4; i++) {
+    marisaStandingRight[i] = flipImage(marisaSprites.get(i * 64, 0, 64, 96));
+  }
+  marisaLeft = new PImage[7];
+  for (int i = 0; i < 7; i++) {
+    marisaLeft[i] = marisaSprites.get(i * 64, 96, 64, 96);
+  }
+  marisaRight = new PImage[7];
+  for (int i = 0; i < 7; i++) {
+    marisaRight[i] = flipImage(marisaSprites.get(i * 64, 96, 64, 96));
+  }
+  marisaOrb = new PImage[4];
+  for (int i = 0; i < 4; i++) {
+    marisaOrb[i] = marisaSprites.get(4 * 64 + i * 32, 64, 32, 32);
   }
   
   //nerd
@@ -260,6 +280,9 @@ void newGame() {
   
   if (chosenChar.equals("Reimu")) {
     chr = new Reimu(new PVector(WIDTH/2,800));
+  }
+  else if (chosenChar.equals("Marisa")) {
+    chr = new Marisa(new PVector(WIDTH/2,800));
   }
   else {
     chr = new Reimu(new PVector(WIDTH/2,800));
@@ -487,7 +510,7 @@ void changeState(String state) {
   else if (state.equals(Game.charSelect)) {
     menuChars = new ArrayList<Character>();
     menuChars.add(new Reimu(new PVector(width/2 - 400, height/2 - 200)));
-    menuChars.add(new Reimu(new PVector(width/2 + 400, height/2 - 200)));
+    menuChars.add(new Marisa(new PVector(width/2 + 400, height/2 - 200)));
   }
   else if (state.equals(Game.game)) {
     changeBGM(bgm16);
@@ -554,10 +577,10 @@ void draw() {
 
     float[] marisaButton = new float[] {width / 2 + 400, height / 2, 400, 100};
     if (mouseOnButton(marisaButton)) {
-      chosenChar = "Reimu";
+      chosenChar = "Marisa";
       newGame();
     }
-    drawButton(marisaButton, "Also reimu for now");
+    drawButton(marisaButton, "Marisa");
     
     for (int i = 0; i < menuChars.size(); i++) {
       menuChars.get(i).display();
