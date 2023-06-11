@@ -4,7 +4,7 @@ public class Teacher extends BossEnemy{
   private static final int PHASES = 4;
   private static final double HP = 500;
   
-  
+  private PVector offset;
   private int lastMove;
 
   public Teacher() {
@@ -13,6 +13,8 @@ public class Teacher extends BossEnemy{
     this.spawn = new PVector(WIDTH/2, 100);
     targetPos = spawn.copy();    
     lastMove = -1;
+    offset = new PVector();
+    attackPos = chr.getPos();
   }
   
   public void display() {
@@ -106,18 +108,20 @@ public class Teacher extends BossEnemy{
           goTo(targetPos, 1200);
         }
         
-        int elapsedA = (elapsed) % 600; //every 0.6 seconds
-        for (int i = 0; i < 4; i++) {
-          if (elapsedA >= 0 + i * 100 && elapsedA < 400 && nextAttack == i) {
+        int elapsedA = (elapsed) % 300; //every 0.3 seconds
+        for (int i = 0; i < 8; i++) {
+          if (elapsedA >= 0 + i * 25 && elapsedA < 200 && nextAttack == i) {
             //laser beam
             if (nextAttack == 0) {
               shootSound();
+              attackPos = chr.getPos();
+              offset = new PVector(-50 + random(100), 0);
             }
-            PVector bulletVel = Game.chr.getPos().sub(getPos()).normalize().mult(12);
-            bullets.add(new Bullet(this, getPos(), bulletVel, 8, new int[] {200, 200, 20}));
+            PVector bulletVel = PVector.sub(attackPos, getPos()).normalize().mult(12);
+            bullets.add(new Bullet(this, getPos().add(offset), bulletVel, 8, new int[] {200, 200, 20}));
             nextAttack++;
           }
-          if (elapsedA >= 400 && elapsedA < 600 && nextAttack == 4) {
+          if (elapsedA >= 200 && nextAttack == 8) {
             nextAttack = 0;
           }
         }
@@ -167,7 +171,7 @@ public class Teacher extends BossEnemy{
           wait = 500;
         }
         else {
-          wait = 300;
+          wait = 450;
         }
         elapsed = (elapsed - delay) % wait;
         if (elapsed >= nextAttack * wait / (double) 200 && elapsed < wait / (double) 4) {

@@ -4,6 +4,7 @@ public abstract class Enemy extends Mob {
   int nextAttack;
   int nextAttackB;
   PVector targetPos;
+  PVector attackPos;
 
   
   public Enemy(PVector pos, float siz, double hp, int points) {
