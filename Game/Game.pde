@@ -18,8 +18,11 @@ static boolean newHighScore;
 static final int WIN_SCORE = 5000;
 
 final static String start = "start";
+final static String charSelect = "charSelect";
 final static String game = "game";
 final static String gameOver = "gameOver";
+
+String chosenChar;
 
 static int[] bg;
 static final int[] DEFAULT_BG = new int[] {90, 10, 10};
@@ -255,7 +258,12 @@ void newGame() {
   eNext = new ArrayList<Enemy>();
   currentBoss = new ArrayList<BossEnemy>();
   
-  chr = new Reimu(new PVector(600,800));
+  if (chosenChar.equals("Reimu")) {
+    chr = new Reimu(new PVector(WIDTH/2,800));
+  }
+  else {
+    chr = new Reimu(new PVector(WIDTH/2,800));
+  }
 }
 
 boolean inRectCenter(float[] coords, float[] rect) {
@@ -286,8 +294,17 @@ void setup() {
   HEIGHT = 850;
   windowPos = new PVector(50, 25);
   
+  mobList = new ArrayList<Mob>();
+  bulletList = new ArrayList<Bullet>();
+  enemyList = new ArrayList<Enemy>();
+  mNext = new ArrayList<Mob>();
+  bNext = new ArrayList<Bullet>();
+  eNext = new ArrayList<Enemy>();
+  currentBoss = new ArrayList<BossEnemy>();
+  
   lastMouseUp = new float[]{};
   lastMouseDown = new float[]{};
+  chosenChar = "";
   
   changeState(Game.start);
 }
@@ -393,7 +410,7 @@ void gameOverScreen() {
   //replay button
   float[] playButton = new float[] {windowPos.x + WIDTH / 2, windowPos.y + 700, 400, 100};
   if (mouseOnButton(playButton)) {
-    newGame();
+    changeState(Game.start);
   }
   drawButton(playButton, "Play Again?");
 }
@@ -467,6 +484,11 @@ void changeState(String state) {
   if (state.equals(Game.start)) {
     changeBGM(bgm01);
   }
+  else if (state.equals(Game.charSelect)) {
+    menuChars = new ArrayList<Character>();
+    menuChars.add(new Reimu(new PVector(width/2 - 400, height/2 - 200)));
+    menuChars.add(new Reimu(new PVector(width/2 + 400, height/2 - 200)));
+  }
   else if (state.equals(Game.game)) {
     changeBGM(bgm16);
   }
@@ -474,10 +496,9 @@ void changeState(String state) {
     bgm.pause();
     bgm.play();
   }
-  else {
-    changeBGM(null);
-  }
 }
+
+private ArrayList<Character> menuChars;
 
 void draw() {  
   updateMouse();
@@ -486,7 +507,7 @@ void draw() {
     background(166,60,91);
     float[] playButton = new float[] {width / 2 - 400, height / 2, 400, 100};
     if (mouseOnButton(playButton)) {
-      newGame();
+      changeState(Game.charSelect);
     }
     drawButton(playButton, "Play");
     
@@ -514,6 +535,33 @@ void draw() {
     fill(255);
     strokeWeight(4);
     stroke(0);
+  }
+  else if (gameState.equals(Game.charSelect)) {
+    background(166,60,91);
+    
+    textAlign(CENTER);
+    textSize(96);
+    fill(255);
+    text("Character Select", width / 2, 300);
+    textAlign(BASELINE);
+    
+    float[] reimuButton = new float[] {width / 2 - 400, height / 2, 400, 100};
+    if (mouseOnButton(reimuButton)) {
+      chosenChar = "Reimu";
+      newGame();
+    }
+    drawButton(reimuButton, "Reimu");
+
+    float[] marisaButton = new float[] {width / 2 + 400, height / 2, 400, 100};
+    if (mouseOnButton(marisaButton)) {
+      chosenChar = "Reimu";
+      newGame();
+    }
+    drawButton(marisaButton, "Also reimu for now");
+    
+    for (int i = 0; i < menuChars.size(); i++) {
+      menuChars.get(i).display();
+    }
   }
   else if (gameState.equals(Game.game)) {
     gameTime();
