@@ -72,7 +72,7 @@ public class Bullet extends Mob {
       setVelocity(vel);
     }
     if (spec.equals("gravity")) {
-      setVelocity(getVelocity().add(new PVector(0, 1)));
+      setVelocity(getVelocity().add(new PVector(0, 0.1)));
     }
     super.updatePos();
   }
@@ -87,6 +87,15 @@ public class Bullet extends Mob {
   
   public boolean deleteOffScreen() {
     PVector p = getPos();
+    if (spec.equals("gravity")) {
+      if (p.x < -size || p.x > Game.WIDTH+size || p.y > Game.HEIGHT+size) {
+        destroy();
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
     if (p.x < -size || p.x > Game.WIDTH+size || p.y < -size || p.y > Game.HEIGHT+size) {
       destroy();
       return true;

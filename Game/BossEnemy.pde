@@ -6,6 +6,8 @@ public abstract class BossEnemy extends Enemy {
   int timeOut;
   PVector spawn;
   
+  boolean entering;
+  
   ArrayList<Bullet> bullets;
   
   public BossEnemy(PVector pos, float siz, double hp, int points, int maxPhases) {
@@ -40,6 +42,7 @@ public abstract class BossEnemy extends Enemy {
     
     phase++;
     phaseStart = millis();
+    entering = false;
     setVelocity(new PVector(0,0));
     targetPos = spawn.copy();
     nextAttack = 0;

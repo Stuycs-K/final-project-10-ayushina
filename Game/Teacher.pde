@@ -4,7 +4,6 @@ public class Teacher extends BossEnemy{
   private static final int PHASES = 3;
   private static final double HP = 500;
   
-  private boolean entering;
   
   private int lastMove;
 
@@ -56,7 +55,6 @@ public class Teacher extends BossEnemy{
       }
     }
     else {
-      entering = false;
 
       if (phase == 0) {
         if (lastMove == -1 || millis() - lastMove >= 1200) { //move every 1.2 seconds
@@ -152,23 +150,27 @@ public class Teacher extends BossEnemy{
         }
       }
       else if (phase == 2) {
-        setVelocity(new PVector(0,0));
-        //elapsed = (elapsed - delay) % 3000;
-        //if (elapsed >= nextAttack * 200 && elapsed < 2000) {
-        //  nextAttack++;
+        elapsed = (elapsed - delay) % 2000;
+        if (elapsed >= nextAttack * 10 && elapsed < 500) {
           
-        //  if (nextAttack == 0) {
-        //    setPos(new PVector(150, 150));
-        //    targetPos = new PVector(Game.WIDTH - 150, 150);
-        //    //goTo(targetPos, 1.8);
-        //  }
-        //  bullets.add(new Bullet(this, getPos(), new PVector(0,0), 10, new int[] {3, 248, 252}, "gravity"));
-        //}
-        //else if (elapsed >= 2000 && nextAttack == 10) {
-        //  nextAttack++;
+          if (nextAttack == 0) {
+            setPos(new PVector(50, 150));
+            targetPos = new PVector(Game.WIDTH - 50, 150);
+            goTo(targetPos, 500);
+            shootSound();
+          }
           
-        //  //setVelocity(new PVector(0,0));
-        //}
+          PVector bulletPos = getPos().add(new PVector(-10 + random(20), -40 + random(80)));
+          PVector bulletVel = new PVector(0, -4 - random(4));
+          bullets.add(new Bullet(this, bulletPos, bulletVel, 10, new int[] {3, 248, 252}, "gravity"));
+          
+          nextAttack++;
+        }
+        else if (elapsed >= 500 && nextAttack != 0) {
+          nextAttack = 0;
+          
+          setVelocity(new PVector(0,0));
+        }
       }
     }
   }
