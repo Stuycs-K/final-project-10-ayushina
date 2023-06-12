@@ -3,7 +3,7 @@ public class Marisa extends Character {
   private static final float FOCUS_SPEED = 6.0;
   private static final float SIZE = 7.5;
   private static final int COOLDOWN = 100;
-  private static final double DAMAGE = 1.1;
+  private static final double DAMAGE = 1.2;
   private static final String NAME = "Marisa";
   
   private static final int LASER_COOLDOWN = 2000;

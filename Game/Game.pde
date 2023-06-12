@@ -702,7 +702,7 @@ void draw() {
     drawBorder();
     drawBGM(10, height - 5);
     
-    if (nextDialogue == 2 && currentBoss.size() == 0) {
+    if (nextSpawn == 22 && currentBoss.size() == 0) {
       gameOver(true);
     }
   }
@@ -987,6 +987,11 @@ void spawnEnemies() {
     else if (currentBoss.size() == 0 && nextSpawn == 20) {
       nextSpawn++;
       changeState(Game.dialogue);
+    }
+  }
+  else if (nextDialogue == 2) {
+    if (gameTime > 1000 && nextSpawn == 21) {
+      nextSpawn++;
     }
   }
 }

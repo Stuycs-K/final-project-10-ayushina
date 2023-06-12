@@ -55,6 +55,8 @@ public abstract class BossEnemy extends Enemy {
     }
     if (phase >= maxPhases) {
       Game.kills++;
+      Game.score += this.points;
+      Game.killScore += this.points;
       Game.removeMob(this);
     }
   }
