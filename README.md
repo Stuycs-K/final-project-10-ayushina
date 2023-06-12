@@ -17,7 +17,8 @@ This is a bullet hell game in Processing inspired by Touhou. The player moves ar
  - The character shoots upwards automatically while in the game
  - During dialogue, click anywhere to go to the next line
  - In the game over screen, click Play Again? to return to the menu
-## Characters
+## Extra Info
+Characters
 1. Reimu
  - Shoots 3 normal bullets in a cone and 2 homing bullets (x0.5 damage) every 100 ms
     - Speed = 8
@@ -33,7 +34,8 @@ This is a bullet hell game in Processing inspired by Touhou. The player moves ar
     - Size = 7.5
     - Damage = 1.2
  - Good character for single target damage but hard to dodge enemy attacks because of high speed and size
-## Enemies
+
+Enemies
 1. Nerd
  - Shoots a line and then a circle of bullets at you every 2 seconds
 2. Book
