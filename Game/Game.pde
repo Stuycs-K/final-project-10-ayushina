@@ -129,8 +129,8 @@ void loadImages() {
     reimuOrb[i] = reimuSprites.get(4 * 64 + i * 32, 32, 32, 32);
   }
   PImage reimuEmotes = loadImage("reimu-dialogue.png");
-  reimuDialogue = new PImage[2];
-  for (int i = 0; i < 2; i++) {
+  reimuDialogue = new PImage[6];
+  for (int i = 0; i < 6; i++) {
     reimuDialogue[i] = reimuEmotes.get(i * 128, 0, 128, 256);
   }
   
@@ -157,8 +157,8 @@ void loadImages() {
     marisaOrb[i] = marisaSprites.get(4 * 64 + i * 32, 64, 32, 32);
   }
   PImage marisaEmotes = loadImage("marisa-dialogue.png");
-  marisaDialogue = new PImage[2];
-  for (int i = 0; i < 2; i++) {
+  marisaDialogue = new PImage[6];
+  for (int i = 0; i < 6; i++) {
     marisaDialogue[i] = marisaEmotes.get(i * 128, 0, 128, 256);
   }
   
@@ -721,11 +721,19 @@ void draw() {
     ArrayList<String[]> messages = getNextDialogue();
     if (nextMessage < messages.size()) {
       String[] msg = messages.get(nextMessage);
+      
+      if (nextMessage > 0) {
+        String[] prevMessage = messages.get(nextMessage - 1);
+        if (prevMessage[0] != msg[0]) {
+          drawMessage(prevMessage, false, true);
+        }
+      }
+      
       if (elapsed < MESSAGE_TIME) {
-        drawMessage(msg, false);
+        drawMessage(msg, false, false);
       }
       else {
-        drawMessage(msg, true);
+        drawMessage(msg, true, false);
         if (mousePressed) {
           nextMessage++;
           messageStart = millis();
@@ -750,7 +758,7 @@ void draw() {
   }
 }
 
-void drawMessage(String[] msg, boolean skippable) {
+void drawMessage(String[] msg, boolean skippable, boolean imageOnly) {
   rectMode(CORNERS);
   textSize(36);
   if (msg[0].equals("Player")) {
@@ -758,10 +766,24 @@ void drawMessage(String[] msg, boolean skippable) {
     if (msg[2].equals("Serious")) {
       index = 1;
     }
-    image(chr.charDialogue[index], windowPos.x + 10, windowPos.y + HEIGHT - 300 - 256);
+    else if (msg[2].equals("Laughing")) {
+      index = 2;
+    }
+    else if (msg[2].equals("Resting")) {
+      index = 3;
+    }
+    else if (msg[2].equals("Angry")) {
+      index = 4;
+    }
+    else if (msg[2].equals("Sweating")) {
+      index = 5;
+    }
+    image(chr.charDialogue[index], windowPos.x + 10, windowPos.y + HEIGHT - 300 - 256 - 40);
     
-    textAlign(LEFT, BOTTOM);
-    text(chr.getName(), windowPos.x + 10, windowPos.y + HEIGHT - 300);
+    if (!imageOnly) {
+      textAlign(LEFT, BOTTOM);
+      text(chr.getName(), windowPos.x + 10, windowPos.y + HEIGHT - 300);
+    }
   }
   else if (msg[0].equals("Teacher")) {
     int index = 1;
@@ -771,36 +793,52 @@ void drawMessage(String[] msg, boolean skippable) {
     else if (msg[2].equals("Serious")) {
       index = 2;
     }
-    image(teacherDialogue[index], windowPos.x + WIDTH - 10 - 128, windowPos.y + HEIGHT - 300 - 128);
+    image(teacherDialogue[index], windowPos.x + WIDTH - 10 - 128, windowPos.y + HEIGHT - 300 - 128 - 40);
     
-    textAlign(RIGHT, BOTTOM);
-    text("Teacher", windowPos.x + WIDTH - 10, windowPos.y + HEIGHT - 300);
+    if (!imageOnly) {
+      textAlign(RIGHT, BOTTOM);
+      text("Teacher", windowPos.x + WIDTH - 10, windowPos.y + HEIGHT - 300);
+    }
   }
+  
+  if (imageOnly) {
+    textAlign(BASELINE);
+    rectMode(CORNER);
+    return;
+  }
+  
   if (skippable) {
     textAlign(RIGHT, BOTTOM);
-    text("Click Anywhere to Continue", windowPos.x + WIDTH, windowPos.y + HEIGHT);
+    text("Click Anywhere to Continue", windowPos.x + WIDTH - 5, windowPos.y + HEIGHT);
   }
   
   fill(255, 127);
   stroke(0, 0);
-  rect(windowPos.x, windowPos.y + HEIGHT, windowPos.x + WIDTH, windowPos.y + HEIGHT - 300);
+  rect(windowPos.x + 5, windowPos.y + HEIGHT - 5, windowPos.x + WIDTH - 5, windowPos.y + HEIGHT - 300);
   stroke(0);
   fill(255);
   
-  textSize(24);
+  textSize(32);
   textAlign(LEFT, TOP);
-  text(msg[1], windowPos.x + 10, windowPos.y + HEIGHT - 300);
+  text(msg[1], windowPos.x + 10, windowPos.y + HEIGHT - 10, windowPos.x + WIDTH - 10, windowPos.y + HEIGHT - 300);
   textAlign(BASELINE);
-  rectMode(CORNERS);
+  rectMode(CORNER);
 }
 
 ArrayList<String[]> getNextDialogue() {
   ArrayList<String[]> messages = new ArrayList<String[]>();
   if (nextDialogue == 0) {
-    messages.add(new String[] {"Player", "Hi", ""});
-    messages.add(new String[] {"Player", "Heeeeeeeeeeeeeeeeeeey", ""});
-    messages.add(new String[] {"Teacher", "Hey", ""});
-    messages.add(new String[] {"Player", "OKkkk", "Serious"});
+    messages.add(new String[] {"Player", "What a nice day it is today. The sun is shining, and the weather is perfect for going outside.", "Resting"});
+    messages.add(new String[] {"Player", "I wish I could go outside right now, but my lunch period is almost over...", ""});
+    messages.add(new String[] {"Player", "I know! I'll skip Physics!", "Laughing"});
+    messages.add(new String[] {"Teacher", "Hey! " + chr.getName() + "! Class is starting soon! What are you doing here?", ""});
+    messages.add(new String[] {"Player", "Uhhh, nothing!", "Sweating"});
+    messages.add(new String[] {"Teacher", "You suck at physics, so hurry and get to class!", ""});
+    messages.add(new String[] {"Player", "?!", "Angry"});
+    messages.add(new String[] {"Teacher", "I won't let you skip my class! And I'm changing your grade to -999999!", "Serious"});
+    messages.add(new String[] {"Player", "If you think you can get in my way, I won't let you!", "Serious"});
+    messages.add(new String[] {"Teacher", "This physics textbook has the most powerful spells in this universe!", "Reading"});
+    messages.add(new String[] {"Player", "Bring it on!", "Serious"});
   }
   return messages;
 }
