@@ -702,7 +702,7 @@ void draw() {
     drawBorder();
     drawBGM(10, height - 5);
     
-    if (gameTime > 5000 && nextDialogue == 1 && currentBoss.size() == 0) {
+    if (nextDialogue == 2 && currentBoss.size() == 0) {
       gameOver(true);
     }
   }
@@ -837,8 +837,14 @@ ArrayList<String[]> getNextDialogue() {
     messages.add(new String[] {"Player", "?!", "Angry"});
     messages.add(new String[] {"Teacher", "I won't let you skip my class! And I'm changing your grade to -999999!", "Serious"});
     messages.add(new String[] {"Player", "If you think you can get in my way, I won't let you!", "Serious"});
-    messages.add(new String[] {"Teacher", "This physics textbook has the most powerful spells in this universe!", "Reading"});
+    messages.add(new String[] {"Teacher", "This physics textbook has the most powerful magic spells in this universe!", "Reading"});
     messages.add(new String[] {"Player", "Bring it on!", "Serious"});
+  }
+  else if (nextDialogue == 1) {
+    messages.add(new String[] {"Teacher", "Ahhhh!", ""});
+    messages.add(new String[] {"Player", "You weren't that strong! Maybe I am good at physics after all!", "Laughing"});
+    messages.add(new String[] {"Teacher", "Fine, you win!", "Serious"});
+    messages.add(new String[] {"Player", "See you later!", ""});
   }
   return messages;
 }
@@ -977,6 +983,10 @@ void spawnEnemies() {
       new Teacher();
       changeBGM(bgm17);
       nextSpawn++;
+    }
+    else if (currentBoss.size() == 0 && nextSpawn == 20) {
+      nextSpawn++;
+      changeState(Game.dialogue);
     }
   }
 }
