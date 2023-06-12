@@ -805,7 +805,12 @@ void drawMessage(String[] msg, boolean skippable, boolean imageOnly) {
     else if (msg[2].equals("Sweating")) {
       index = 5;
     }
-    image(chr.charDialogue[index], windowPos.x + 10, windowPos.y + HEIGHT - 300 - 256 - 40);
+    if (imageOnly) {
+      image(chr.charDialogue[index], windowPos.x + 10, windowPos.y + HEIGHT - 300 - 256);
+    }
+    else {
+      image(chr.charDialogue[index], windowPos.x + 10, windowPos.y + HEIGHT - 300 - 256 - 40);
+    }
     
     if (!imageOnly) {
       textAlign(LEFT, BOTTOM);
@@ -820,7 +825,12 @@ void drawMessage(String[] msg, boolean skippable, boolean imageOnly) {
     else if (msg[2].equals("Serious")) {
       index = 2;
     }
-    image(teacherDialogue[index], windowPos.x + WIDTH - 10 - 128, windowPos.y + HEIGHT - 300 - 128 - 40);
+    if (imageOnly) {
+      image(teacherDialogue[index], windowPos.x + WIDTH - 10 - 128, windowPos.y + HEIGHT - 300 - 128);
+    }
+    else {
+      image(teacherDialogue[index], windowPos.x + WIDTH - 10 - 128, windowPos.y + HEIGHT - 300 - 128 - 40);
+    }
     
     if (!imageOnly) {
       textAlign(RIGHT, BOTTOM);
