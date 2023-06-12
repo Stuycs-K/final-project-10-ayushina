@@ -220,6 +220,7 @@ static SoundFile lazer00, lazer01;
 static SoundFile bgm01;
 static SoundFile bgm16;
 static SoundFile bgm17;
+static SoundFile bgm19;
 
 void loadSounds() {
   pldead00 = new SoundFile(this, "pldead00.wav");
@@ -236,6 +237,7 @@ void loadSounds() {
   bgm01 = new SoundFile(this, "01. Wondrous Tales of Romance ~ Mystic Square.wav");
   bgm16 = new SoundFile(this, "16. Alice in Wonderland.wav");
   bgm17 = new SoundFile(this, "17. the Grimoire of Alice.wav");
+  bgm19 = new SoundFile(this, "19. Endless.wav");
 }
 
 String getMusicName(SoundFile music) {
@@ -247,6 +249,9 @@ String getMusicName(SoundFile music) {
   }
   else if (music == bgm17) {
     return "17. the Grimoire of Alice";
+  }
+  else if (music == bgm19) {
+    return "19. Endless";
   }
   return "";
 }
@@ -275,7 +280,6 @@ void loadData() {
 }
 
 void newGame() { 
-  changeState(Game.game);
   gameWon = false;
   newHighScore = false;
   
@@ -331,6 +335,8 @@ void newGame() {
   else {
     chr = new Reimu(new PVector(WIDTH/2,800));
   }
+  
+  changeState(Game.game);
   
   if (cheatMode == 1) {
     int time = 40000;
@@ -583,7 +589,12 @@ void changeState(String state) {
     }
     gameTime = 0;
     timeCounted = 0;
-    changeBGM(bgm16);
+    if (nextDialogue == 2) {
+      changeBGM(bgm19);
+    }
+    else {
+      changeBGM(bgm16);
+    }
   }
   else if (state.equals(Game.dialogue)) {
     nextMessage = 0;
