@@ -2,7 +2,7 @@ public class Teacher extends BossEnemy{
   private static final float SIZE = 30;
   private static final int SCORE = 3000;
   private static final int PHASES = 4;
-  private static final double HP = 50;
+  private static final double HP = 500;
   
   private PVector offset;
   private int lastMove;
