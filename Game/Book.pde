@@ -1,6 +1,6 @@
 public class Book extends Enemy {
   private static final float SIZE = 30;
-  private static final int SCORE = 6900;
+  private static final int SCORE = 690;
   
   private boolean entering;
   private boolean leaving;
@@ -49,8 +49,7 @@ public class Book extends Enemy {
       if (elapsed < delay) {
         if (!entering) {
           entering = true;
-          float rate = targetPos.dist(getPos())/(60 * (delay/1000));
-          setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+          goTo(targetPos, delay);
         }
       }
       else {
@@ -81,8 +80,7 @@ public class Book extends Enemy {
         else {
           targetPos = new PVector(-size, getPos().y);
         }
-        float rate = targetPos.dist(getPos())/60;
-        setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+        goTo(targetPos, 1000);
       }
     }
   }

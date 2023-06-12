@@ -4,6 +4,7 @@ public abstract class Enemy extends Mob {
   int nextAttack;
   int nextAttackB;
   PVector targetPos;
+  PVector attackPos;
 
   
   public Enemy(PVector pos, float siz, double hp, int points) {
@@ -11,6 +12,8 @@ public abstract class Enemy extends Mob {
     health = hp;
     type = "enemy";
     this.points = points;
+    targetPos = new PVector(0,0);
+    attackPos = new PVector(0,0);
     Game.addEnemy(this);
   }
   
@@ -21,11 +24,19 @@ public abstract class Enemy extends Mob {
   
   public abstract void display();
   
+  public void goTo(PVector targetPos, float time) {
+    float rate = targetPos.dist(getPos())/(60*(time/1000)); //in t milliseconds
+    setVelocity(PVector.sub(targetPos, getPos()).normalize().mult(rate));
+  }
+  
   public void takeDamage(double dmg) {
     health -= dmg;
+    Game.score += dmg;
+    Game.damageScore += dmg;
     if (health <= 0) {
       Game.kills++;
       Game.score += this.points;
+      Game.killScore += this.points;
       Game.removeMob(this);
     }
   }

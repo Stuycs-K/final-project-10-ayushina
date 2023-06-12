@@ -1,6 +1,6 @@
 public class Nerd extends Enemy {
   private static final float SIZE = 20;
-  private static final int SCORE = 5000;
+  private static final int SCORE = 500;
   
   private boolean entering;
   private boolean leaving;
@@ -16,6 +16,10 @@ public class Nerd extends Enemy {
     PVector p = targetPos.copy();
     p.y = -size;
     setPos(p);
+  }
+  
+  public Nerd(PVector targetPos, int hp, int attacks) {
+    this(targetPos, hp, 1000, 2000 + attacks * 2000);
   }
   
   public void display() {
@@ -39,8 +43,7 @@ public class Nerd extends Enemy {
       if (elapsed < delay) {
         if (!entering) {
           entering = true;
-          float rate = targetPos.dist(getPos())/(60 * (delay/1000));
-          setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+          goTo(targetPos, delay);
         }
       }
       else {
@@ -76,8 +79,7 @@ public class Nerd extends Enemy {
         else {
           targetPos = new PVector(Game.WIDTH + size, Game.HEIGHT + size);
         }
-        float rate = targetPos.dist(getPos())/60;
-        setVelocity(targetPos.sub(getPos()).normalize().mult(rate));
+        goTo(targetPos, 1000);
       }
     }
   }
