@@ -28,6 +28,9 @@ final static String gameOver = "gameOver";
 String chosenChar;
 int nextDialogue;
 int nextMessage;
+int messageStart;
+
+static final int MESSAGE_TIME = 1000;
 
 static int[] bg;
 static final int[] DEFAULT_BG = new int[] {90, 10, 10};
@@ -273,6 +276,8 @@ void newGame() {
   nextSpawn = 0;
   
   nextDialogue = 0;
+  nextMessage = 0;
+  messageStart = 0;
   
   left = false;
   down = false;
@@ -559,6 +564,7 @@ void changeState(String state) {
   }
   else if (state.equals(Game.dialogue)) {
     nextMessage = 0;
+    messageStart = millis();
   }
   else if (state.equals(Game.gameOver)) {
     bgm.pause();
@@ -675,25 +681,31 @@ void draw() {
     drawBorder();
     drawBGM(10, height - 5);
     
-    if (gameTime > 43000 && currentBoss.size() == 0) {// game length
+    if (gameTime > 3000 && nextDialogue == 1 && currentBoss.size() == 0) {
       gameOver(true);
     }
   }
-  else if (gameState.equals(Game.dialogue)) {    
+  else if (gameState.equals(Game.dialogue)) {
     background(bg[0], bg[1], bg[2]);
     
     updateMobs();
-    updateCharacter();
+    chr.setVelocity(new PVector(0,0));
   
     mobList = new ArrayList<Mob>(mNext);
     bulletList = new ArrayList<Bullet>(bNext);
     enemyList = new ArrayList<Enemy>(eNext);
     
+    int elapsed = millis() - messageStart;
+    
     ArrayList<String[]> messages = getNextDialogue();
     if (nextMessage < messages.size()) {
       String[] msg = messages.get(nextMessage);
-      drawMessage(msg);
-      nextMessage++;
+      if (elapsed <= MESSAGE_TIME) {
+        drawMessage(msg, false);
+      }
+      else {
+        drawMessage(msg, true);
+      }
     }
     else {
       changeState(Game.game);
@@ -713,27 +725,33 @@ void draw() {
   }
 }
 
-void drawMessage(String[] msg) {
+void drawMessage(String[] msg, boolean skippable) {
   rectMode(CORNERS);
   fill(255, 127);
-  rect(windowPos.x + WIDTH, windowPos.y + HEIGHT - 300, windowPos.x + WIDTH, windowPos.y + HEIGHT);
+  stroke(0, 0);
+  rect(windowPos.x, windowPos.y + HEIGHT, windowPos.x + WIDTH, windowPos.y + HEIGHT - 300);
+  stroke(0);
   fill(255);
   textSize(36);
   if (msg[0].equals("Player")) {
     textAlign(LEFT, BOTTOM);
-    text(chr.getName(), windowPos.x, windowPos.y + HEIGHT - 300);
+    text(chr.getName(), windowPos.x + 10, windowPos.y + HEIGHT - 300);
   }
   else if (msg[0].equals("Boss")) {
     textAlign(RIGHT, BOTTOM);
     if (currentBoss.size() > 0) {
-      text(currentBoss.get(0).getName(), windowPos.x + WIDTH, windowPos.y + HEIGHT - 300);
+      text(currentBoss.get(0).getName(), windowPos.x + WIDTH - 10, windowPos.y + HEIGHT - 300);
     }
+  }
+  if (skippable) {
+    textAlign(RIGHT, BOTTOM);
+    text("Click Anywhere to Continue", windowPos.x + WIDTH, windowPos.y + HEIGHT);
   }
   textSize(24);
   textAlign(LEFT, TOP);
-  text(msg[1], windowPos.x, windowPos.y + HEIGHT - 300);
+  text(msg[1], windowPos.x + 10, windowPos.y + HEIGHT - 300);
   textAlign(BASELINE);
-  rectMode(CORNER);
+  rectMode(CORNERS);
 }
 
 ArrayList<String[]> getNextDialogue() {
@@ -806,72 +824,79 @@ void updateMobs() {
 }
 
 void spawnEnemies() {
-  if (gameTime > 2000 && nextSpawn == 0) {//2-10
-    new Nerd(new PVector(WIDTH/2, 200), 100, 3);
-    nextSpawn++;
-  }
-  for (int i = 0; i < 4; i++) {
-    if (gameTime > 8000 + i * 333 && nextSpawn == 1 + i) {
-      new Nerd(new PVector(WIDTH/2 - 150 + i * 100,300), 25, 1);
+  if (nextDialogue == 0) {
+    if (gameTime > 2000 && nextSpawn == 0) {//2-10
+      new Nerd(new PVector(WIDTH/2, 200), 100, 3);
       nextSpawn++;
     }
-  }
-  if (gameTime > 10000 && nextSpawn == 5) {
-    new Book(new PVector(WIDTH/2, 100), "left", 30, 1000, 4);
-    nextSpawn++;
-  }
-  if (gameTime > 13000 && nextSpawn == 6) {
-    nextSpawn++;
-    new Book(new PVector(300, 200), "right", 20, 1500, 3);
-    new Book(new PVector(WIDTH-300, 200), "left", 20, 1500, 3);
-    new Nerd(new PVector(WIDTH/2 + 200, 100), 50, 500, 4000); //1 attack;
-  }
-  if (gameTime > 18000 && nextSpawn == 7) {
-    nextSpawn++;
-    new Nerd(new PVector(WIDTH/2, 150), 100, 4);
-  }
-  for (int i = 0; i < 4; i++) {
-    if (gameTime > 20000 + i * 2000 && nextSpawn == 8 + i) {
-      nextSpawn++;
-      String randomDir;
-      PVector target;
-      if (random(2) < 1) {
-        randomDir = "left";
-        target = new PVector(WIDTH*2/3, 300);
+    for (int i = 0; i < 4; i++) {
+      if (gameTime > 8000 + i * 333 && nextSpawn == 1 + i) {
+        new Nerd(new PVector(WIDTH/2 - 150 + i * 100,300), 25, 1);
+        nextSpawn++;
       }
-      else {
-        randomDir = "right";
-        target = new PVector(WIDTH/3, 300);
-      }
-      new Book(target, randomDir, 20, 1000, 3);
     }
-  }
-  for (int i = 0; i < 3; i++) {
-    if (gameTime > 29000 + i * 500 && nextSpawn == 12 + i) {
+    if (gameTime > 10000 && nextSpawn == 5) {
+      new Book(new PVector(WIDTH/2, 100), "left", 30, 1000, 4);
       nextSpawn++;
-      new Zygarde(new PVector(WIDTH/2-200 + i*200, 100), 20, 4);
+    }
+    if (gameTime > 13000 && nextSpawn == 6) {
+      nextSpawn++;
+      new Book(new PVector(300, 200), "right", 20, 1500, 3);
+      new Book(new PVector(WIDTH-300, 200), "left", 20, 1500, 3);
+      new Nerd(new PVector(WIDTH/2 + 200, 100), 50, 500, 4000); //1 attack;
+    }
+    if (gameTime > 18000 && nextSpawn == 7) {
+      nextSpawn++;
+      new Nerd(new PVector(WIDTH/2, 150), 100, 4);
+    }
+    for (int i = 0; i < 4; i++) {
+      if (gameTime > 20000 + i * 2000 && nextSpawn == 8 + i) {
+        nextSpawn++;
+        String randomDir;
+        PVector target;
+        if (random(2) < 1) {
+          randomDir = "left";
+          target = new PVector(WIDTH*2/3, 300);
+        }
+        else {
+          randomDir = "right";
+          target = new PVector(WIDTH/3, 300);
+        }
+        new Book(target, randomDir, 20, 1000, 3);
+      }
+    }
+    for (int i = 0; i < 3; i++) {
+      if (gameTime > 29000 + i * 500 && nextSpawn == 12 + i) {
+        nextSpawn++;
+        new Zygarde(new PVector(WIDTH/2-200 + i*200, 100), 20, 4);
+      }
+    }
+    if (gameTime > 33000 && nextSpawn == 15) {
+      nextSpawn++;
+      new Zygarde(new PVector(200, 100), 10, 1000, 6000);
+      new Zygarde(new PVector(400, 100), 10, 1000, 6000);
+      new Nerd(new PVector(WIDTH-200, 100), 10, 1000, 6000);
+      new Book(new PVector(500, 100), "left", 10, 1000, 2);
+    }
+    if (gameTime > 35000 && nextSpawn == 16) {
+      nextSpawn++;
+      new Zygarde(new PVector(WIDTH/2, 100), 20, 500, 5000);
+    }
+    if (gameTime > 36000 && nextSpawn == 17) {
+      nextSpawn++;
+      new Nerd(new PVector(200, 100), 10, 500, 4000);
+      new Book(new PVector(WIDTH-500, 100), "right", 10, 500, 4000);
+    }
+    if (gameTime > 41000 && nextSpawn == 18) {
+      changeState(Game.dialogue);
     }
   }
-  if (gameTime > 33000 && nextSpawn == 15) {
-    nextSpawn++;
-    new Zygarde(new PVector(200, 100), 10, 1000, 6000);
-    new Zygarde(new PVector(400, 100), 10, 1000, 6000);
-    new Nerd(new PVector(WIDTH-200, 100), 10, 1000, 6000);
-    new Book(new PVector(500, 100), "left", 10, 1000, 2);
-  }
-  if (gameTime > 35000 && nextSpawn == 16) {
-    nextSpawn++;
-    new Zygarde(new PVector(WIDTH/2, 100), 20, 500, 5000);
-  }
-  if (gameTime > 36000 && nextSpawn == 17) {
-    nextSpawn++;
-    new Nerd(new PVector(200, 100), 10, 500, 4000);
-    new Book(new PVector(WIDTH-500, 100), "right", 10, 500, 4000);
-  }
-  if (gameTime > 41000 && nextSpawn == 18) {
-    new Teacher();
-    changeBGM(bgm17);
-    nextSpawn++;
+  else if (nextDialogue == 1) {
+    if (gameTime > 1000 && nextSpawn == 19) {
+      new Teacher();
+      changeBGM(bgm17);
+      nextSpawn++;
+    }
   }
 }
 
