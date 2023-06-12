@@ -19,28 +19,28 @@ This is a bullet hell game in Processing inspired by Touhou. The player moves ar
  - In the game over screen, click Play Again? to return to the menu
 ## Characters
 1. Reimu
-    Shoots 3 normal bullets in a cone and 2 homing bullets (x0.5 damage) every 100 ms
+ - Shoots 3 normal bullets in a cone and 2 homing bullets (x0.5 damage) every 100 ms
     - Speed = 8
     - Focus Speed = 5
     - Size = 7
     - Damage = 1
-    Good character for crowd control and easy to dodge enemy attacks but low damage output
+ - Good character for crowd control and easy to dodge enemy attacks but low damage output
 
 2. Marisa
-    Shoots 3 normal bullets every 100 ms and 2 lasers (x10 damage) every 2000 ms
+ - Shoots 3 normal bullets every 100 ms and 2 lasers (x10 damage) every 2000 ms
     - Speed = 9
     - Focus Speed = 6
     - Size = 7.5
     - Damage = 1.2
-    Good character for single target damage but hard to dodge enemy attacks because of high speed and size
+ - Good character for single target damage but hard to dodge enemy attacks because of high speed and size
 ## Enemies
 1. Nerd
-    Shoots a line and then a circle of bullets at you every 2 seconds
+ - Shoots a line and then a circle of bullets at you every 2 seconds
 2. Book
-    Shoots two circles of bullets every 1 second
+ - Shoots two circles of bullets every 1 second
 3. Zygarde
-    Shoots an accelerating line and then a small arc of bullets at you every 2 seconds
+ - Shoots an accelerating line and then a small arc of bullets at you every 2 seconds
 4. Teacher (BOSS)
-    Phase 1 and 4: Shoots four arcs with bullets removed with different velocities and then one circle with bullets removed every 2 seconds. Moves every 1.2 seconds.
-    Phase 2: Shoots lines of bullets at you and arcs of bullets to the side at the same time. Moves every 1.2 seconds.
-    Phase 3: Moves across the screen spawning bullets accelerating downward every 2 seconds. Attack speeds up as boss health gets lower.
+ - Phase 1 and 4: Shoots four arcs with bullets removed with different velocities and then one circle with bullets removed every 2 seconds. Moves every 1.2 seconds.
+ - Phase 2: Shoots lines of bullets at you and arcs of bullets to the side at the same time. Moves every 1.2 seconds.
+ - Phase 3: Moves across the screen spawning bullets accelerating downward every 2 seconds. Attack speeds up as boss health gets lower.
