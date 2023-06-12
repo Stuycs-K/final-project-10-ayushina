@@ -30,9 +30,9 @@ int nextDialogue;
 int nextMessage;
 int messageStart;
 
-static final int MESSAGE_TIME = 1000;
+static final int MESSAGE_TIME = 800;
 
-static final int SPELLCARD_TIME = 4000;
+static final int SPELLCARD_TIME = 7000;
 
 static int[] bg;
 static final int[] DEFAULT_BG = new int[] {90, 10, 10};
@@ -602,7 +602,7 @@ private void drawBGM(float x, float y) {
   }
   textAlign(LEFT);
   textSize(24);
-  float op = pow(255 - (elapsed) / (float) BGM_INFO_TIME * 255, 2);
+  float op = 255 - pow((elapsed) / (float) BGM_INFO_TIME, 5) * 255;
   fill(255, op);
   text("♪ " + getMusicName(bgm), x, y);
   fill(255);
@@ -624,7 +624,7 @@ private void drawSpellcard() {
       if (elapsed < SPELLCARD_TIME) {
         textAlign(RIGHT, BOTTOM);
         textSize(32);
-        float op = 255 - pow(elapsed / (float) SPELLCARD_TIME, 2) * 255;
+        float op = 255 - pow(elapsed / (float) SPELLCARD_TIME, 5) * 255;
         fill(255, op);
         text(spell, windowPos.x + WIDTH, windowPos.y + HEIGHT);
         fill(255);

@@ -156,10 +156,12 @@ public class Bullet extends Mob {
   public void registerHit() {
     if (owner.type == "character") {
       for (Enemy e : Game.enemyList) {
-        if (spec.equals("laser") && !alreadyHit && !e.invincible() && pointToLine(getPos(), e.getPos()) <= getSize() + e.getSize()) {
-          e.takeDamage(damage);
-          alreadyHit = true;
-          lazerSound();
+        if (spec.equals("laser")) {
+          if (!alreadyHit && !e.invincible() && e.getPos().y - e.getSize() <= getPos().y && pointToLine(getPos(), e.getPos()) <= getSize() + e.getSize()) {
+            e.takeDamage(damage);
+            alreadyHit = true;
+            lazerSound();
+          }
         }
         else if (!e.invincible() && getPos().dist(e.getPos()) <= getSize() + e.getSize()) {
           e.takeDamage(damage);
