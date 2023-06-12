@@ -22,9 +22,12 @@ static final int WIN_SCORE = 5000;
 final static String start = "start";
 final static String charSelect = "charSelect";
 final static String game = "game";
+final static String dialogue = "dialogue";
 final static String gameOver = "gameOver";
 
 String chosenChar;
+int nextDialogue;
+int nextMessage;
 
 static int[] bg;
 static final int[] DEFAULT_BG = new int[] {90, 10, 10};
@@ -268,6 +271,8 @@ void newGame() {
   gameTime = 0;
   deltaTime = 0;
   nextSpawn = 0;
+  
+  nextDialogue = 0;
   
   left = false;
   down = false;
@@ -546,7 +551,14 @@ void changeState(String state) {
     menuChars.add(new Marisa(new PVector(width/2 + 300, height - 300)));
   }
   else if (state.equals(Game.game)) {
+    if (previousState.equals(Game.dialogue)) {
+      nextMessage = 0;
+      nextDialogue++;
+    }
     changeBGM(bgm16);
+  }
+  else if (state.equals(Game.dialogue)) {
+    nextMessage = 0;
   }
   else if (state.equals(Game.gameOver)) {
     bgm.pause();
@@ -667,6 +679,29 @@ void draw() {
       gameOver(true);
     }
   }
+  else if (gameState.equals(Game.dialogue)) {    
+    background(bg[0], bg[1], bg[2]);
+    
+    updateMobs();
+    updateCharacter();
+  
+    mobList = new ArrayList<Mob>(mNext);
+    bulletList = new ArrayList<Bullet>(bNext);
+    enemyList = new ArrayList<Enemy>(eNext);
+    
+    ArrayList<String[]> messages = getNextDialogue();
+    if (nextMessage < messages.size()) {
+      String[] msg = messages.get(nextMessage);
+      drawMessage(msg);
+      nextMessage++;
+    }
+    else {
+      changeState(Game.game);
+    }
+    
+    drawBorder();
+    drawBGM(10, height - 5);
+  }
   else if (gameState.equals(Game.gameOver)) {
     background(90, 10, 10);
     drawBGM(10, height - 5);
@@ -676,6 +711,38 @@ void draw() {
   else {
     print(gameState);
   }
+}
+
+void drawMessage(String[] msg) {
+  rectMode(CORNERS);
+  fill(255, 127);
+  rect(windowPos.x + WIDTH, windowPos.y + HEIGHT - 300, windowPos.x + WIDTH, windowPos.y + HEIGHT);
+  fill(255);
+  textSize(36);
+  if (msg[0].equals("Player")) {
+    textAlign(LEFT, BOTTOM);
+    text(chr.getName(), windowPos.x, windowPos.y + HEIGHT - 300);
+  }
+  else if (msg[0].equals("Boss")) {
+    textAlign(RIGHT, BOTTOM);
+    if (currentBoss.size() > 0) {
+      text(currentBoss.get(0).getName(), windowPos.x + WIDTH, windowPos.y + HEIGHT - 300);
+    }
+  }
+  textSize(24);
+  textAlign(LEFT, TOP);
+  text(msg[1], windowPos.x, windowPos.y + HEIGHT - 300);
+  textAlign(BASELINE);
+  rectMode(CORNER);
+}
+
+ArrayList<String[]> getNextDialogue() {
+  ArrayList<String[]> messages = new ArrayList<String[]>();
+  if (nextDialogue == 0) {
+    messages.add(new String[] {"Player", "Hi"});
+    messages.add(new String[] {"Player", "Hey"});
+  }
+  return messages;
 }
 
 void gameOver(boolean won) {

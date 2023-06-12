@@ -3,6 +3,7 @@ public class Teacher extends BossEnemy{
   private static final int SCORE = 3000;
   private static final int PHASES = 4;
   private static final double HP = 500;
+  private static final String NAME = "Teacher";
   
   private PVector offset;
   private int lastMove;
@@ -10,7 +11,7 @@ public class Teacher extends BossEnemy{
   private int lastBeep;
 
   public Teacher() {
-    super(new PVector(0, 0), SIZE, HP, SCORE, PHASES);
+    super(new PVector(0, 0), SIZE, HP, SCORE, PHASES, NAME);
     
     this.spawn = new PVector(WIDTH/2, 100);
     targetPos = spawn.copy();    
