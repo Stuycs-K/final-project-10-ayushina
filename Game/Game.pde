@@ -561,6 +561,8 @@ void changeState(String state) {
       nextMessage = 0;
       nextDialogue++;
     }
+    gameTime = 0;
+    timeCounted = 0;
     changeBGM(bgm16);
   }
   else if (state.equals(Game.dialogue)) {
