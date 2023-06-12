@@ -232,6 +232,9 @@ String getMusicName(SoundFile music) {
 }
 
 void changeBGM(SoundFile music) {
+  if (bgm == music) {
+    return;
+  }
   if (bgm != null) {
     bgm.stop();
   }
@@ -543,9 +546,7 @@ void changeState(String state) {
   gameState = state;
   stateStart = millis();
   if (state.equals(Game.start)) {
-    if (bgm != bgm01) {
-      changeBGM(bgm01);
-    }
+    changeBGM(bgm01);
     if (!previousState.equals(Game.charSelect)) {
       cheatMode = 0;
     }
@@ -681,7 +682,7 @@ void draw() {
     drawBorder();
     drawBGM(10, height - 5);
     
-    if (gameTime > 3000 && nextDialogue == 1 && currentBoss.size() == 0) {
+    if (gameTime > 5000 && nextDialogue == 1 && currentBoss.size() == 0) {
       gameOver(true);
     }
   }
@@ -700,11 +701,15 @@ void draw() {
     ArrayList<String[]> messages = getNextDialogue();
     if (nextMessage < messages.size()) {
       String[] msg = messages.get(nextMessage);
-      if (elapsed <= MESSAGE_TIME) {
+      if (elapsed < MESSAGE_TIME) {
         drawMessage(msg, false);
       }
       else {
         drawMessage(msg, true);
+        if (mousePressed) {
+          nextMessage++;
+          messageStart = millis();
+        }
       }
     }
     else {
@@ -758,7 +763,8 @@ ArrayList<String[]> getNextDialogue() {
   ArrayList<String[]> messages = new ArrayList<String[]>();
   if (nextDialogue == 0) {
     messages.add(new String[] {"Player", "Hi"});
-    messages.add(new String[] {"Player", "Hey"});
+    messages.add(new String[] {"Player", "Heeeeeeeeeeeeeeeeeeey"});
+    messages.add(new String[] {"Player", "OKkkk"});
   }
   return messages;
 }
@@ -888,6 +894,7 @@ void spawnEnemies() {
       new Book(new PVector(WIDTH-500, 100), "right", 10, 500, 4000);
     }
     if (gameTime > 41000 && nextSpawn == 18) {
+      nextSpawn++;
       changeState(Game.dialogue);
     }
   }
