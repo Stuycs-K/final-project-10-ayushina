@@ -32,6 +32,8 @@ int messageStart;
 
 static final int MESSAGE_TIME = 1000;
 
+static final int SPELLCARD_TIME = 4000;
+
 static int[] bg;
 static final int[] DEFAULT_BG = new int[] {90, 10, 10};
 
@@ -607,6 +609,30 @@ private void drawBGM(float x, float y) {
   textAlign(BASELINE);
 }
 
+private void drawSpellcard() {
+  if (currentBoss.size() > 0) {
+    BossEnemy b = currentBoss.get(0);
+    String spell = "";
+    if (b.phase == 1) {
+      spell = "Wave Mechanic \"Transverse Waves\"";
+    }
+    else if (b.phase == 2) {
+      spell = "Projectile Motion \"Horizontal Velocity = Zero\"";
+    }
+    if (!spell.equals("")) {
+      int elapsed = millis() - b.phaseStart;
+      if (elapsed < SPELLCARD_TIME) {
+        textAlign(RIGHT, BOTTOM);
+        textSize(32);
+        float op = 255 - pow(elapsed / (float) SPELLCARD_TIME, 2) * 255;
+        fill(255, op);
+        text(spell, windowPos.x + WIDTH, windowPos.y + HEIGHT);
+        fill(255);
+      }
+    }
+  }
+}
+
 private ArrayList<Character> menuChars;
 
 void draw() {  
@@ -701,6 +727,7 @@ void draw() {
     
     drawBorder();
     drawBGM(10, height - 5);
+    drawSpellcard();
     
     if (nextSpawn == 22 && currentBoss.size() == 0) {
       gameOver(true);
