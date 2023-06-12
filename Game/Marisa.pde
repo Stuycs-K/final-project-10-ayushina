@@ -21,6 +21,7 @@ public class Marisa extends Character {
     charStandingLeft = Game.marisaStandingLeft;
     charStandingRight = Game.marisaStandingRight;
     charOrb = Game.marisaOrb;
+    charDialogue = Game.marisaDialogue;
   }
   
   public void updateAttack() {

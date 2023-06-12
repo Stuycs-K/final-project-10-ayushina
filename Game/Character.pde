@@ -5,7 +5,7 @@ public abstract class Character extends Mob {
   
   String name;
   
-  PImage[] charLeft, charRight, charStandingLeft, charStandingRight, charOrb;
+  PImage[] charLeft, charRight, charStandingLeft, charStandingRight, charOrb, charDialogue;
   PVector orbPos;
   
   public Character(PVector pos, float siz, float speed, float focus, String name) {

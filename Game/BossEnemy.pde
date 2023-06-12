@@ -6,22 +6,16 @@ public abstract class BossEnemy extends Enemy {
   int timeOut;
   PVector spawn;
   
-  String name;
-  
   boolean entering;
   
   ArrayList<Bullet> bullets;
   
-  String getName() {
-    return name;
-  }
-  
-  public BossEnemy(PVector pos, float siz, double hp, int points, int maxPhases, String name) {
+  public BossEnemy(PVector pos, float siz, double hp, int points, int maxPhases) {
     super(pos, siz, hp, points);
     phase = 0;
     this.maxPhases = maxPhases;
     phaseStart = millis();
-    this.name = name;
+
     
     bullets = new ArrayList<Bullet>();
     

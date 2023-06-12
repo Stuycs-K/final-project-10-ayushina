@@ -16,6 +16,7 @@ public class Reimu extends Character {
     charStandingLeft = Game.reimuStandingLeft;
     charStandingRight = Game.reimuStandingRight;
     charOrb = Game.reimuOrb;
+    charDialogue = Game.reimuDialogue;
   }
   
   public void updateAttack() {

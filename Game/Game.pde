@@ -83,8 +83,10 @@ static boolean focus;
 
 static PImage heart;
 
-static PImage[] reimuStandingLeft, reimuStandingRight, reimuLeft, reimuRight, reimuOrb;
-static PImage[] marisaStandingLeft, marisaStandingRight, marisaLeft, marisaRight, marisaOrb;
+static PImage[] reimuStandingLeft, reimuStandingRight, reimuLeft, reimuRight, reimuOrb, reimuDialogue;
+static PImage[] marisaStandingLeft, marisaStandingRight, marisaLeft, marisaRight, marisaOrb, marisaDialogue;
+
+static PImage[] teacherDialogue;
 
 static PImage nerd;
 static PImage book;
@@ -126,6 +128,11 @@ void loadImages() {
   for (int i = 0; i < 4; i++) {
     reimuOrb[i] = reimuSprites.get(4 * 64 + i * 32, 32, 32, 32);
   }
+  PImage reimuEmotes = loadImage("reimu-dialogue.png");
+  reimuDialogue = new PImage[2];
+  for (int i = 0; i < 2; i++) {
+    reimuDialogue[i] = reimuEmotes.get(i * 128, 0, 128, 256);
+  }
   
   //marisa
   PImage marisaSprites = loadImage("marisa-sprites.png");
@@ -148,6 +155,17 @@ void loadImages() {
   marisaOrb = new PImage[4];
   for (int i = 0; i < 4; i++) {
     marisaOrb[i] = marisaSprites.get(4 * 64 + i * 32, 64, 32, 32);
+  }
+  PImage marisaEmotes = loadImage("marisa-dialogue.png");
+  marisaDialogue = new PImage[2];
+  for (int i = 0; i < 2; i++) {
+    marisaDialogue[i] = marisaEmotes.get(i * 128, 0, 128, 256);
+  }
+  
+  PImage teacherEmotes = loadImage("teacher-dialogue.png");
+  teacherDialogue = new PImage[3];
+  for (int i = 0; i < 3; i++) {
+    teacherDialogue[i] = teacherEmotes.get(i * 128, 0, 128, 128);
   }
   
   //nerd
@@ -734,26 +752,41 @@ void draw() {
 
 void drawMessage(String[] msg, boolean skippable) {
   rectMode(CORNERS);
-  fill(255, 127);
-  stroke(0, 0);
-  rect(windowPos.x, windowPos.y + HEIGHT, windowPos.x + WIDTH, windowPos.y + HEIGHT - 300);
-  stroke(0);
-  fill(255);
   textSize(36);
   if (msg[0].equals("Player")) {
+    int index = 0;
+    if (msg[2].equals("Serious")) {
+      index = 1;
+    }
+    image(chr.charDialogue[index], windowPos.x + 10, windowPos.y + HEIGHT - 300 - 256);
+    
     textAlign(LEFT, BOTTOM);
     text(chr.getName(), windowPos.x + 10, windowPos.y + HEIGHT - 300);
   }
-  else if (msg[0].equals("Boss")) {
-    textAlign(RIGHT, BOTTOM);
-    if (currentBoss.size() > 0) {
-      text(currentBoss.get(0).getName(), windowPos.x + WIDTH - 10, windowPos.y + HEIGHT - 300);
+  else if (msg[0].equals("Teacher")) {
+    int index = 1;
+    if (msg[2].equals("Reading")) {
+      index = 0;
     }
+    else if (msg[2].equals("Serious")) {
+      index = 2;
+    }
+    image(teacherDialogue[index], windowPos.x + WIDTH - 10 - 128, windowPos.y + HEIGHT - 300 - 128);
+    
+    textAlign(RIGHT, BOTTOM);
+    text("Teacher", windowPos.x + WIDTH - 10, windowPos.y + HEIGHT - 300);
   }
   if (skippable) {
     textAlign(RIGHT, BOTTOM);
     text("Click Anywhere to Continue", windowPos.x + WIDTH, windowPos.y + HEIGHT);
   }
+  
+  fill(255, 127);
+  stroke(0, 0);
+  rect(windowPos.x, windowPos.y + HEIGHT, windowPos.x + WIDTH, windowPos.y + HEIGHT - 300);
+  stroke(0);
+  fill(255);
+  
   textSize(24);
   textAlign(LEFT, TOP);
   text(msg[1], windowPos.x + 10, windowPos.y + HEIGHT - 300);
@@ -764,9 +797,10 @@ void drawMessage(String[] msg, boolean skippable) {
 ArrayList<String[]> getNextDialogue() {
   ArrayList<String[]> messages = new ArrayList<String[]>();
   if (nextDialogue == 0) {
-    messages.add(new String[] {"Player", "Hi"});
-    messages.add(new String[] {"Player", "Heeeeeeeeeeeeeeeeeeey"});
-    messages.add(new String[] {"Player", "OKkkk"});
+    messages.add(new String[] {"Player", "Hi", ""});
+    messages.add(new String[] {"Player", "Heeeeeeeeeeeeeeeeeeey", ""});
+    messages.add(new String[] {"Teacher", "Hey", ""});
+    messages.add(new String[] {"Player", "OKkkk", "Serious"});
   }
   return messages;
 }
