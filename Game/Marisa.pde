@@ -43,8 +43,8 @@ public class Marisa extends Character {
       }
       
       if (lastLaser == -1 || millis() - lastLaser > LASER_COOLDOWN) {
-        new Bullet(this, new PVector(getPos().x + orbPos.x, getPos().y + orbPos.y), new PVector(0,0), bulletSize, homingColor, DAMAGE * 20, "laser");
-        new Bullet(this, new PVector(getPos().x - orbPos.x, getPos().y + orbPos.y), new PVector(0,0), bulletSize, homingColor, DAMAGE * 20, "laser");
+        new Bullet(this, new PVector(getPos().x + orbPos.x, getPos().y + orbPos.y), new PVector(0,0), bulletSize, homingColor, DAMAGE * 10, "laser");
+        new Bullet(this, new PVector(getPos().x - orbPos.x, getPos().y + orbPos.y), new PVector(0,0), bulletSize, homingColor, DAMAGE * 10, "laser");
         
         lastLaser = millis();
       }

@@ -19,7 +19,7 @@ public abstract class BossEnemy extends Enemy {
     bullets = new ArrayList<Bullet>();
     
     maxHealth = hp;
-    timeOut = 40000;
+    timeOut = 45000;
     Game.addBoss(this);
   }
   

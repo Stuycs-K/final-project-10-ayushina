@@ -29,7 +29,10 @@ String chosenChar;
 static int[] bg;
 static final int[] DEFAULT_BG = new int[] {90, 10, 10};
 
+static int bgmStart;
 static SoundFile bgm;
+
+static final double BGM_INFO_TIME = 7000;
 
 static int timeCounted;
 
@@ -228,6 +231,7 @@ void changeBGM(SoundFile music) {
   }
   if (music != null) {
     bgm = music;
+    bgmStart = millis();
     bgm.loop();
   }
 }
@@ -550,6 +554,20 @@ void changeState(String state) {
   }
 }
 
+private void drawBGM(float x, float y) {
+  int elapsed = millis() - bgmStart;
+  if (elapsed > BGM_INFO_TIME) {
+    return;
+  }
+  textAlign(LEFT);
+  textSize(24);
+  float op = pow(255 - (elapsed) / (float) BGM_INFO_TIME * 255, 2);
+  fill(255, op);
+  text("♪ " + getMusicName(bgm), x, y);
+  fill(255);
+  textAlign(BASELINE);
+}
+
 private ArrayList<Character> menuChars;
 
 void draw() {  
@@ -557,6 +575,8 @@ void draw() {
   
   if (gameState.equals(Game.start)) {
     background(166,60,91);
+    drawBGM(10, height - 5);
+    
     float[] playButton = new float[] {width / 2 - 400, height / 2, 400, 100};
     if (mouseOnButton(playButton)) {
       changeState(Game.charSelect);
@@ -595,6 +615,7 @@ void draw() {
   }
   else if (gameState.equals(Game.charSelect)) {
     background(166,60,91);
+    drawBGM(10, height - 5);
     
     textAlign(CENTER);
     textSize(96);
@@ -640,6 +661,7 @@ void draw() {
     enemyList = new ArrayList<Enemy>(eNext);
     
     drawBorder();
+    drawBGM(10, height - 5);
     
     if (gameTime > 43000 && currentBoss.size() == 0) {// game length
       gameOver(true);
@@ -647,6 +669,7 @@ void draw() {
   }
   else if (gameState.equals(Game.gameOver)) {
     background(90, 10, 10);
+    drawBGM(10, height - 5);
     gameOverScreen();
     drawBorder();
   }
