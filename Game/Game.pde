@@ -776,9 +776,9 @@ void draw() {
   }
   else if (gameState.equals(Game.gameOver)) {
     background(90, 10, 10);
-    drawBGM(10, height - 5);
     gameOverScreen();
     drawBorder();
+    drawBGM(10, height - 5);
   }
   else {
     print(gameState);
@@ -867,7 +867,7 @@ ArrayList<String[]> getNextDialogue() {
   if (nextDialogue == 0) {
     messages.add(new String[] {"Player", "What a nice day it is today. The sun is shining, and the weather is perfect for going outside.", "Resting"});
     messages.add(new String[] {"Player", "I wish I could go outside right now, but my lunch period is almost over...", ""});
-    messages.add(new String[] {"Player", "I know! I'll skip Physics!", "Laughing"});
+    messages.add(new String[] {"Player", "I know! I'll skip physics!", "Laughing"});
     messages.add(new String[] {"Teacher", "Hey! " + chr.getName() + "! Class is starting soon! What are you doing here?", ""});
     messages.add(new String[] {"Player", "Uhhh, nothing!", "Sweating"});
     messages.add(new String[] {"Teacher", "You suck at physics, so hurry and get to class!", ""});
