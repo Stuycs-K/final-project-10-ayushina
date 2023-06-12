@@ -107,4 +107,27 @@
  - added music that plays in the menu and in the game
  - boss deletes old bullets when switching phase
 
- 
+ ### 6/11/23 (Weekend)
+
+ - new enemy Zygarde
+ - background color changes based on boss's current phase
+ - fixed bug with not using the static version of PVector.add (for targetPos)
+ - changed boss second phase
+    - first bullet in a line stores character position so all the bullets in the line go to the same target position
+ - added third boss phase
+    - boss slides across screen and back
+    - shoots gravity bullets, special type of bullet that accelerates downward
+    - attack pattern gets faster when boss hp drops to 2/3, 1/2, etc.
+ - added goTo() to calculate the velocity to reach x position in y milliseconds
+ - menu play button leads to character select screen
+ - menu cheat buttons change cheat mode instead of putting you straight into the game
+ - new character Marisa
+    - marisa shoots laser bullets, special bullet that is stationary and rectangular like a laser beam and calculates hits differently
+ - sounds for laser hit and time running out
+ - names of background music and current boss phase show up and fade out
+ - dialogue before and after fighting boss
+    - dialogue game state stops game time from being counted and character from being updated
+    - methods for getting next dialogue line and drawing dialogue box
+    - clicking progresses to the next line/message
+    - profile image reactions from the player and the boss in each line of dialogue
+ - deleted Animation class because it was unused
