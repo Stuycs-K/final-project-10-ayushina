@@ -43,9 +43,91 @@
  
  - bullets owned by enemies kill player
  - first enemy attack pattern
- - nerd enemy attacks every 2 seconds and despawns after a few seconds
+ - nerd enemy attacks every 2 seconds
+ - enemey moves off screen and despawns after a few seconds
 
  ### 5/31/23
 
  - fixed stayOnScreen()
  - made game area smaller and in the middle of the processing window
+
+ ### 6/1/23
+
+ - drawBorder() draws the background, score, lives, kills outside of the game window
+ - added character sprite animations with PImage
+    - flipImage() based on which arrow key left/right was held last
+    - moving animation
+    - death animation
+ - character shoots bullets in a cone (different angles)
+ - imported sound library for death sound
+ - draw() is different based on game state
+    - gameOver state with game over screen and play again button
+    - start state with play button
+ - moved code from setup to newGame()
+ - new enemy Book
+ - new BossEnemy Teacher with 2 phases
+    - one attack pattern per phase
+
+### 6/5/23
+
+ - boss changes phase after 30 second timeout if not killed
+ - draw time left before time out
+ - give points for
+    - killing boss phase before timeout
+    - dealing damage to enemies
+
+### 6/6/23
+
+ - character plays reversed moving animation after letting go of left/right
+ - added new homing bullets
+    - reimu character shoots homing bullets
+    - homing bullets find and move towards nearest enemy
+
+### 6/7/23
+
+ - changed the bullet color and size for reimu's homing bullets
+
+### 6/8/23
+
+ - updated character moving animation
+ - moved the moving anim code from drawChar() to drawMoving()
+ - moving animation loops after the first part finishes in animTime
+
+ ### 6/9/23
+
+ - added Animation class that stores times and keyframes to maybe help with attack patterns
+ - idle animation flips in the direction last moved (left/right)
+ - character display() draws orbs that float near player
+    - homing bullets spawn at orbs
+    - orbs come closer together when focusing
+ - rewrote button clicking using mousePressed instead of mousePressed() to fix buttons clicking themselves
+ - grazing bullets (being near them) gives score
+ - save and load high score to a txt file, highScore.txt is added to gitignore file
+ - game over screen shows how much score is from time bonus, spellcard (kill boss before timeout) bonus, damage bonus, graze bonus, kill bonus, stage clear bonus
+ - added music that plays in the menu and in the game
+ - boss deletes old bullets when switching phase
+
+ ### 6/11/23 (Weekend)
+
+ - new enemy Zygarde
+ - background color changes based on boss's current phase
+ - fixed bug with not using the static version of PVector.add (for targetPos)
+ - changed boss second phase
+    - first bullet in a line stores character position so all the bullets in the line go to the same target position
+ - added third boss phase
+    - boss slides across screen and back
+    - shoots gravity bullets, special type of bullet that accelerates downward
+    - attack pattern gets faster when boss hp drops to 2/3, 1/2, etc.
+ - added goTo() to calculate the velocity to reach x position in y milliseconds
+ - menu play button leads to character select screen
+ - menu cheat buttons change cheat mode instead of putting you straight into the game
+ - new character Marisa
+    - marisa shoots laser bullets, special bullet that is stationary and rectangular like a laser beam and calculates hits differently
+ - sounds for laser hit and time running out
+ - names of background music and current boss phase show up and fade out
+ - dialogue before and after fighting boss
+    - dialogue game state stops game time from being counted and character from being updated
+    - methods for getting next dialogue line and drawing dialogue box
+    - clicking progresses to the next line/message
+    - profile image reactions from the player and the boss in each line of dialogue
+ - deleted Animation class because it was unused
