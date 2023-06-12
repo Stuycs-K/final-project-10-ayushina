@@ -1,5 +1,6 @@
 # APCS Final Project
 ## Group Info
+Group name: Arsalone
 Group members: Arslan Ayushin
 ## Overview
 This is a bullet hell game in Processing inspired by Touhou. The player moves around shooting enemies while dodging enemies' bullets. Each enemy has its own attack pattern. The player wins after killing the boss and loses if they get hit too many times.
