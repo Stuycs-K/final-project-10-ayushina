@@ -147,6 +147,7 @@
  - Enemies spawn and move into the screen in a fixed pattern based on the game time, and they run off screen if they aren't killed in time
  - Game over screen after killing the boss (winning) or dying (losing)
    - Score is earned from: time survived, killing a boss phase before it times out, damage, grazes (how many bullets went near you), kills
+   - save and load high score with file highScore.txt
    - Button that leads back to menu
  - Boss enemy spawns with four phases (shown by how many hearts it has) and a health bar at the top of the screen
    - Boss moves to the next phase when their health bar or the timer at the top right goes to 0
@@ -179,3 +180,5 @@
 ### Useful Resources
 
  - The gameplay and some attacks are inspired by Touhou Project games
+ - Shoutout to this equation from Wikipedia (used for Marisa's lasers)
+https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points
