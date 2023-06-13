@@ -173,7 +173,7 @@
    - Not much of a problem because player bullets are transparent, and they usually don't build up that much
    - Could be fixed by changing how homing works and deleting bullets that are too old
  - Boss third phase where the boss rapidly moves across the screen shooting gravity bullets
-   - When the attack speed increases as the boss loses health, the boss teleports and skips forward or backward
+   - When the attack speed increases as the boss loses health, the boss teleports and skips forward or backward and skips part of the attack
    - Should just finish the current movement and increase the velocity instead of teleporting
 
 ### Useful Resources
