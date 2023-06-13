@@ -131,3 +131,51 @@
     - clicking progresses to the next line/message
     - profile image reactions from the player and the boss in each line of dialogue
  - deleted Animation class because it was unused
+
+### Working Features
+
+ - Menu screen where you can change character (Reimu or Marisa)
+ - Character sprite animations: a looping idle animation and moving animation and a short transition to moving animation (I did not draw the sprite sheets)
+   - Sprites flip to the direction (left/right) arrow key pressed last
+   - Orbs around the character spin and move closer if the player is focused (shift key)
+ - Characters/enemies shoot bullets that do damage to enemies/take away lives from the player
+ - Bullets are removed if they hit or go off screen
+ - Special bullets
+   - Homing bullets shot by Reimu's orbs always move toward the nearest enemy
+   - Lasers shot by Marisa's orbs are rectangular and stationary but fade away after a few seconds (can only hit one target) and have different hit detection
+   - Gravity bullets shot by the boss accelerate downward
+ - Enemies spawn and move into the screen in a fixed pattern based on the game time, and they run off screen if they aren't killed in time
+ - Game over screen after killing the boss (winning) or dying (losing)
+   - Score is earned from: time survived, killing a boss phase before it times out, damage, grazes (how many bullets went near you), kills
+   - Button that leads back to menu
+ - Boss enemy spawns with four phases (shown by how many hearts it has) and a health bar at the top of the screen
+   - Boss moves to the next phase when their health bar or the timer at the top right goes to 0
+   - In the transition between phases, the boss moves to the center and deletes the bullets from the previous phase
+   - Different attack pattern for each phase and changes background color
+   - For the third phase, the boss speeds up its attack as its health gets lower
+ - Dialogue that pauses the game until it is finished
+   - After a delay click anywhere to move to the next line
+   - Both dialogues are between the chosen character and the boss
+   - Each line of dialogue shows the sprite and name of the speaker and previous speaker
+   - The dialogue also changes the sprites to different emotions like Angry or Serious
+ - Background music that loops in the game
+   - Menu screen theme, stage theme, boss theme, ending theme
+   - Sounds play when: player dying, grazing, enemies shooting, boss dying, running out of time, Marisa's laser hitting
+ - Name of current music or current boss phase shows at the bottom of the screen and fades out
+
+ ### Broken Features / Bugs
+
+ - Audio sometimes breaks and suddenly becomes irreversibly lower quality and stalls
+   - I have encountered this when standing near an enemy, at the start of the game, game over screen, and maybe when shooting Marisa's lasers
+   - Probably because there are too many loud sounds playing at the same time
+ - Reimu's homing bullets can infinitely orbit around an enemy in a perfect circle and build up
+   - Can be encountered by just moving to the top left or top right of an enemy
+   - Not much of a problem because player bullets are transparent, and they usually don't build up that much
+   - Could be fixed by changing how homing works and deleting bullets that are too old
+ - Boss third phase where the boss rapidly moves across the screen shooting gravity bullets
+   - When the attack speed increases as the boss loses health, the boss teleports and skips forward or backward
+   - Should just finish the current movement and increase the velocity instead of teleporting
+
+### Useful Resources
+
+ - The gameplay and some attacks are inspired by Touhou Project games
